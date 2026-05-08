@@ -1,0 +1,25 @@
+
+CDMX a [FECHA]
+
+
+PRIMO AUDIOVISUAL SA DE CV
+PRESENTE
+
+
+<Mediante el presente escrito [PROVEEDOR_RAZON_SOCIAL] con Registro Federal de Contribuyentes [PROVEEDOR_RFC] y domicilio fiscal en [{Domicilio_Fiscal}*].>
+<Mediante el presente escrito [{Nombre_Representante_Legal}*] con Registro Federal de Contribuyentes [{RFC_Representante_Legal}*], manifiesto ser el representante legal de mi representada: [PROVEEDOR_RAZON_SOCIAL] con Registro Federal de Contribuyentes [PROVEEDOR_RFC] y domicilio fiscal en [{Domicilio_Fiscal}*].personamoral>
+
+
+Manifiesto BAJO PROTESTA DE DECIR VERDAD que:
+
+
+No me encuentro obligado a estar inscrito en el padrón REPSE, como se establece en La Ley Federal del Trabajo en su artículo 15, siendo que yo, persona física o moral no proporciono servicios especializados o ejecuto obras especializadas, ya que no pongan trabajadores propios a disposición del contratante.
+
+
+Por lo anterior, manifiesto que liberaré y sacaré a salvo a PRIMO AUDIOVISUAL SA DE CV, de todo reclamo por parte de terceros, en cualquier materia y por cualquier relación que derive o haya derivado entre RAMIRO JULIO ZENDEJAS MONTES y cualesquiera de sus oficiales, empleados, prestadores o subcontratistas, lo anterior, incluirá el costo razonable de abogados.
+
+
+[Acordado y aceptado por]:
+
+
+<[PROVEEDOR_RAZON_SOCIAL]><, representada por [{Nombre_Representante_Legal}*]>

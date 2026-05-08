@@ -1,0 +1,153 @@
+/* Specific CSS */
+
+#sidebar {
+    padding-right:20px;
+}
+
+/* Quotes */
+.level_total {
+  background-color: #f9f9f9;
+  font-weight:bold;
+}
+
+.level_0 {
+    background-color: #e9e9e9;
+    font-weight:bold;
+}
+
+.level_1 {
+    background-color: #f9f9f9;
+    font-style:italic;
+}
+
+.level_2 {
+    background-color: white;
+}
+
+/* POs */
+
+.label-Pendiente,
+.badge-Pendiente {
+  background-color: #f89406;
+}
+
+.label-Pendiente[href],
+.badge-Pendiente[href] {
+  background-color: #c67605;
+}
+
+.label-Pagado,
+.badge-Pagado {
+  background-color: #468847;
+}
+
+.label-Pagado[href],
+.badge-Pagado[href] {
+  background-color: #356635;
+}
+
+.label-Autorizado,
+.badge-Autorizado {
+  background-color: #3a87ad;
+}
+
+.label-Autorizado[href],
+.badge-Autorizado[href] {
+  background-color: #2d6987;
+}
+
+.label-Cancelado,
+.badge-Cancelado {
+  background-color: #999999;
+}
+
+.label-Cancelado[href],
+.badge-Cancelado[href] {
+  background-color: #7c7c7c;
+}
+
+/* Contratos */
+
+.label-Firmado,
+.badge-Firmado {
+  background-color: #468847;
+}
+
+.label-Firmado[href],
+.badge-Firmado[href] {
+  background-color: #356635;
+}
+
+.label-Aprobado,
+.badge-Aprobado {
+  background-color: #3a87ad;
+}
+
+.label-Aprobado[href],
+.badge-Aprobado[href] {
+  background-color: #2d6987;
+}
+
+/* Tipos de pago */
+
+.label-pronto-pago,
+.badge-pronto-pago {
+  background-color: #b94a48;
+}
+
+.label-pronto-pago[href],
+.badge-pronto-pago[href] {
+  background-color: #953b39;
+}
+
+/* archivos */
+
+.filebox {
+  width: 180px;
+  min-height: 120px;
+  float: left;
+  margin-top: 10px;
+  margin-left: 10px;
+  padding: 5px;
+  text-align: center;
+  border: 2px solid #eaeaea;
+  border-radius: 10px;
+  box-shadow: 2px 2px #aaaaaa;
+}
+
+.filebox_missing {
+  background-color: #e3b0af;
+}
+
+.filebox_header {
+  min-height: 40px;
+  font-weight: bold;
+}
+
+.filebox_content {
+  min-height: 50px;
+}
+
+.filebox_footer {
+  width: 160px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+
+.file_box div {
+  margin-bottom: 11px;
+}
+
+.file_box_cont {
+  width: 150px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+
+.file_box_label {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

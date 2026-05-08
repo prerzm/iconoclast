@@ -1,0 +1,74 @@
+[CONTRATO DE AUTORIZACIÓN DE USO DE IMAGEN E INTERPRETACIÓN ARTÍSTICA]
+
+[CARÁTULA DE DATOS:]
+
+[PRODUCTORA:]
+- Nombre: [PRIMO AUDIOVISUAL SA DE CV]
+- Domicilio: [Torcuato Tasso 245 Despacho 404, Colonia Polanco V Sección, 11560, Delegación Miguel Hidalgo, Ciudad de México]
+- Nacionalidad: [Mexicana]
+
+[TALENTO:]
+- Nombre: [PROVEEDOR_RAZON_SOCIAL]
+- Domicilio: [{Domicilio_Completo}*]
+- Nacionalidad: [{Nacionalidad}*]
+
+[SERVICIOS:]
+- Rol o Personaje: [|Rol_o_Personaje|]
+- Lugar de Prestación: [PROYECTO_LUGAR]
+- Contraprestación: La cantidad a pagar por concepto de su Participación en el Rol asignado será determinado al finalizar la producción, toda vez que está relacionado con el número de días efectivamente colaborados y el acuerdo de las partes, no pudiendo rebasar los montos, cantidades que estén fuera de lo que comúnmente se paga en la industria del entretenimiento o audiovisual.
+- Duración de los Servicios: Del [PROYECTO_FECHA_INICIO] al [PROYECTO_FECHA_FIN]
+- Nombre en Créditos: [{Nombre_en_Creditos}*]
+- Vigencia: [{Vigencia}*]
+- Término de renovación: [{Termino_de_Renovacion}*]
+
+[DATOS ADICIONALES:]
+- Alergias o Padecimientos: [{Alergias_o_Padecimientos}*]
+
+                                 [C L Á U S U L A S]
+
+[1. OBJETO]
+
+El presente contrato tiene por objeto la autorización del uso de la imagen y voz, de manera conjunta y/o separada, así como establecer las bases de participación y prestación de los servicios por parte del TALENTO en comerciales para televisión e internet primordialmente, en lo sucesivo, EL COMERCIAL en el rol o personaje especificado en la carátula de datos, con el alcance y condiciones aquí establecidas.
+
+[2. PARTICIPACIÓN ESPORÁDICA]
+
+Ambas partes acuerdan que las participaciones del TALENTO son interpretaciones artísticas en términos de la Ley Federal del Derecho de Autor, a menos que la PRODUCTORA determine lo contrario.
+
+[3. AUTORIZACIÓN DE USO DE PARTICIPACIÓN]
+
+El TALENTO autoriza a la PRODUCTORA a fijar, reproducir, distribuir y comunicar públicamente su imagen, voz, participaciones y/o actuaciones, de manera conjunta o separada, así como en su totalidad o en parte; en EL COMERCIAL, para su uso y explotación en cualquier medio, formato y territorio del mundo, durante la vigencia y renovables de manera automática por el término pactado en la carátula de datos, con la simple ejecución del pago de la misma contraprestación en este acuerdo establecida, por el tiempo adicional que el CLIENTE requiera para explotarlos comercialmente. Asimismo, el TALENTO autoriza a la PRODUCTORA a llevar a cabo cualquier modificación a la participación del TALENTO, y éste último acepta que cualquier omisión o corte a la participación del TALENTO dentro del COMERCIAL no será considerada una violación a los derechos morales que en su caso le pudieran corresponder. 
+
+[4. AUTORIZACIÓN EN CASO DE INTERPRETACIONES ARTÍSTICAS]
+
+El TALENTO autoriza a la PRODUCTORA a utilizar el material resultante en cualquier medio, formato y en todos los territorios del mundo, durante la vigencia establecida en la cláusula tercera y por el tiempo adicional que el CLIENTE requiera para explotarlos comercialmente.
+
+[5. CONTRAPRESTACIÓN]
+
+La PRODUCTORA se obliga a pagar al TALENTO la cantidad pactada como contraprestación única y absoluta, establecida en la carátula de datos, y la cual incluye todos los pagos por cualquier derecho de comunicación pública, incluyendo derechos de remuneración simple o residuales no establecidos en este contrato, pero que pudieran estar considerados por algún sindicato o gremio, en cuyo caso, las Partes acuerdan que se descontará de la contraprestación pactada las cantidades que tengan que ser pagadas a dichos gremios, sociedades de gestión o sindicatos. 
+
+[6. USO DE MATERIAL EN REDES SOCIALES]
+
+El TALENTO acepta y autoriza que dentro de los servicios y autorizaciones consideradas en la contraprestación pactada, la PRODUCTORA podrá utilizar el COMERCIAL en sus redes sociales con fines de promoción y publicidad, tanto de la PRODUCTORA como para el TALENTO.
+
+[7. AUTORIZACIÓN DE USO DE IMAGEN PARA PROMOCIÓN]
+
+El TALENTO autoriza a la PRODUCTORA a utilizar su imagen, biografía, parecido, interpretaciones, apariciones o participaciones esporádicas para fines de promoción y publicidad de los servicios de la PRODUCTORA y del TALENTO.
+
+[8. CONFIDENCIALIDAD]
+
+Ambas partes se obligan a mantener la confidencialidad de los términos del contrato, montos, contactos, estrategias de venta, comercialización, guiones y cualquier otro elemento inherente a la producción de el COMERCIAL.
+
+[9. PROTECCIÓN DE DATOS PERSONALES]
+
+El TALENTO autoriza a la PRODUCTORA a tratar sus datos personales para los fines de la contratación y prestación de los servicios. La PRODUCTORA se obliga a cumplir con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares y a compartir los datos del TALENTO únicamente con el personal y ciertos integrantes de la producción necesarios para la realización de el COMERCIAL.
+
+[10. JURISDICCIÓN]
+
+Para la interpretación y cumplimiento del presente contrato, las partes se someten a la jurisdicción de los tribunales de la Ciudad de México.
+
+
+[Acordado y aceptado por]:
+
+[PRIMO AUDIOVISUAL SA DE CV], representada por [JAIME VIDAL]
+
+[PROVEEDOR_RAZON_SOCIAL]

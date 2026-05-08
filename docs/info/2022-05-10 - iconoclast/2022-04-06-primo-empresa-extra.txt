@@ -1,0 +1,104 @@
+modify programming/queries
+- lib.abp.php
+- add and get info from primo_companies
+- Cuentas por Pagar y Gastos: pos.php
+- Contratos Proveedores: contracts.admin.php
+- Proyectos: projects.php
+- Archivos de Nómina: wages.php
+- Reportes: reports.php
+- Configuración del Sistema: settings.php
+- Usuarios: users.php
+- Contratos: contracts.php
+- Header: header.php - change company id
+- Values companies: mail_reply_to, contracts_signatures
+
+modify db and queires for
+- primo_configuracion
+- primo_contratos
+- primo_gastos
+- primo_proyectos
+- primo_usuarios
+
+
+Pendiente:
+
+* Verificar guardado de configuración por empresa
+* Verificar que se jale la configuración por empresa en lugar de constantes definidas en config o DB
+* Sustitución de constantes de config o DB en todos los archivos pertinentes
+* Igualar valores de configuración antes de exportar tabla de configuración
+	facturacion@primocontent.com
+	nora@iconoclast.tv				
+	99-Por definir
+	PPD-Pago en parcialidades o diferido
+	G03-Gastos en general
+	Pagos:
+	Viernes
+	A partir de que se suba la factura
+	Semanas 3
+
+
+Flujo para pruebas:
+
+* Backup archivos
+* Backup db
+
+Verificar previamente
+* correo de empresa
+* configuración de empresas
+* configuración de envío de correos
+
+*1. Carga de archivo de nómina
+   * agregando 1 proveedor
+   * usando un proveedor existente
+   * utilizar nombre de empresa correcto en correo de notificación de pago
+   * verificar cuentas x pagar en Cuentas por Pagar
+*2. Verificación de correo y proveedor
+*3. Registro de proveedor en plataforma
+   * mails sin nombre de empresa (solo Servicios ABP)
+*4. Agregar factura
+*5. Editar CxP
+*6. Reportes
+
+
+Opción 1 - Montar una "copia" de la plataforma actual en otro servidor.
+
+Ventajas:
+- Se puede migrar la base de datos de proveedores actual junto con toda su documentación
+- Lo más rápido: 3 días hábiles
+
+Desventajas:
+- Cada usuario deberá iniciar sesión por separado cuando quiera usar una u otra plataforma
+- Cada proveedor deberá ingresar por separado a cada plataforma dependiendo del proyecto
+- Se tendría que pagar completo el hospedaje de otro servidor para la nueva plataforma (y renovar cada año)
+
+Costo: $ 3,000 (migración) + $ 15,000 (servidor)
+
+Opción 2 - Modificar la plataforma actual para incluir a la nueva compañía.
+
+Ventajas:
+- Mantener solo una plataforma, los usuarios podrán iniciar sesión y seleccionar la empresa con la que desean trabajar
+- División por empresa de cuentas por pagar, proyectos, reportes, etc.
+- Compartir la misma base de datos de proveedores y éstos solo tendrán que ingresar a una sola plataforma
+
+Desventajas:
+- Tiempo: 15 días hábiles
+
+Costo: $ 14,500 + IVA
+(el costo servidor se mantiene igual y más adelante se analizaría el incremento de la demanda para ver si es necesario aumentar la capacidad del servidor actual)
+
+
+Opción 3 - Ambas Opción 1 y 2 - Se haría una copia ahorita y después se desarrollarían las adaptaciones para utilizar una sola plataforma.
+
+Ventajas:
+- Se puede comenzar a utilizar en 3 días hábiles para la nueva empresa
+- Posteriormente se podrá utilizar 1 sola plataforma
+
+Desventajas:
+- Las mismas de la opción 1 mientras no se realice la opción 2
+- Mayor costo
+
+Costo:
+$  3,000 de la migración de la plataforma actual
+$  1,250 mensulaes en lo que se termina el desarrollo (opción 2)
+$ 14,500 del desarrollo
+$  3,000 para volver a migrar e integrar la información de la "copia" a la plataforma original

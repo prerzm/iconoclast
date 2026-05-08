@@ -1,0 +1,146 @@
+Check Contratos
+
+PROJECTS - NEW VEW
+
+☻ Functionality update project info
+☻ Functionality load crew file
+☻ Functionality load wage file
+☻ Functionality add contract for vendor
+☻ Functionality update old contract for vendor
+
+VENDORS ADMIN
+☻ Add repse fields to view form
+☻ Add repse fields to edit form
+
+ADMIN
+
+☻ Crew-load: Add contracts
+☻ Crew-load: Display contracts
+
+☻ Crew-load: Add adendas
+☻ Crew-load: Display adendas
+
+☻ Wages-load: Add contracts
+☻ Wages-load: Add adendas
+☻ Wages-load: Functionality to change payment amount to text
+
+CONTRACTS
+☻ Display differently old vs new contracts in contracts.admin.detail
+  ☻ offer new version update for old pending contracts
+☻ Functionality reject contracts
+☻ Functionality delete contracts
+☻ Functionality delete attachments
+☻ Functionality delete nda for old contracts
+☻ Functionality to change dates to text
+
+☻ Review & add Contrato obra por encargo
+☻ Add Contrato obra por encargo
+
+VENDORS
+
+Contracts
+☻ Form & upload attachment
+☻ Sign contract
+☻ Display contract
+
+Adendas
+☻ Form & upload attachment
+☻ Sign adenda
+☻ Display adenda
+
+☻ Display differently old vs new contracts & adendas
+
+
+2024-11-06 - Dudas
+
+Descarga de contrato
+☻ Si agregar leyenda de firma en fecha y acordado por
+- Analizar carga de listado de gente que trabaja para un proveedor
+
+Daniel:
+☻ Contratos post
+☻ Cartas de sesión de derechos / cobro
+
+Contrato Talento
+☻ Productora nacionalidad?
+   mexicana
+☻ Rol o personaje: es el que se pone en el archivo de crew? es el de puesto en archivo
+   si y en el concepto en el archivo de nómina
+☻ Duración de los servicios vs Vigencia??
+   Duración: proyecto inicio - fin
+   Vigencia: El talento agrega la vigencia
+☻ Término de renovación: quién ingresa este campo?
+   El talento lo llena
+☻ Datos bancarios ? Si los va a llenar a través del sistema
+  se quita
+☻ Transportación, alimentación, viáticos, hospedaje: quién ingresa estos campos?
+  se quitan todos estos campos
+
+2024-10-23 - Revisión Contratos
+
+Generar/Disparar adenda
+
+- si el contrato ya está firmado y 
+  - se agrega una cuenta por pagar (monto de pago)
+  - se cambian las fechas de inicio/fin en el proyecto
+  - se cambia el lugar de filmación del proyecto
+
+- Mantener carta/registro REPSE
+- Quitar carta de confidencialidad para nacionales, mantener para extranjeros
+- Poder descargar contrato en PDF (solo admin)
+- Anexar INE y Comprobante de domicilio
+- d32, csf y carátula para facturas
+
+2024-10-03 - Primo - Contratos
+
+Adaptación de contratos
+☻ Reemplazar contratos anteriores
+☻ Extracción de todos los campos a llenar por el proveedor
+
+Firma de proveedor
+☻ Se quitará la firma "autógrafa" y se sustituirá con la casilla y leyendas válidas de aceptación de los términos y condiciones
+☻ Se agregará la opción para firmar adendas revisando la nueva información
+
+Backend PRIMO - Administración de contratos
+- Agregar contratos manualmente seleccionando el proyecto y proveedor
+☻ Eliminar contratos de los proveedores por proyecto
+☻ Revisar cada campo y contrato completo llenado por el proveedor
+☻ Posibilidad de rechazar documentos individualmente
+☻ Posibilidad de modificar cierta información generando adendas
+
+
+Adenda
+https://protecciondatos-lopd.com/empresas/adenda/
+
+2027-09-25 - Daniel (Primo)
+
+Encargado de realizar los contratos de PRIMO
+
+- Talento, repse, prestador de servicios
+  - Crear catálogo de los conceptos para empatarlo con el tipo de contrato
+  - Siermpre tiene que haber alguien revisando el buen llenado de los contratos
+
+- Repse - cuando el proveedor ingresa su número
+
+- Normatividad firma electrónica
+  - Login (aceptando términos y condiciones), Checkbox aceptando términos y condiciones (sin estar checado antes)
+
+- Contratos previo a la filmación
+  - Se hace contrato antes de la filmación
+  - Se pueden generan adendas con diferente fecha de firma
+
+
+proveedores
+SELECT * FROM primo_proveedores WHERE email LIKE '%ramirozm%' OR email LIKE '%rzendejas%'
+
+DELETE FROM primo_proveedores WHERE email = 'ramirozm@gmail.com' OR  email = 'ramirozm@hotmail.com' OR email = 'ramirozm@yahoo.com' OR email = 'ramirozm@outlook.com'
+
+
+contratos_proveedores
+SELECT id, parentId, proveedorId, proyectoId, contratoId, firmaStatusId, fechaCreado, firmaFecha, fieldsValues, anexo
+FROM primo_contratos_proveedores 
+WHERE proyectoId = 2 
+ORDER BY id ASC, parentId ASC, firmaStatusId ASC
+
+DELETE FROM primo_contratos_proveedores WHERE proyectoId = 2 OR proveedorId = 1
+

@@ -1,0 +1,13 @@
+2024-12-05 - Primo - Contratos
+
+Notas
+☻ Generar un solo contrato nuevo con monto de pago incluido cuando se carga por cuentas por pagar
+☻ Revisar que se elimina el contrato al eliminar la última cuenta por pagar
+☻ Generar contrato de obra determinada al agregar cuentas por pagar y el título del proyecto es post
+
+☻ Revisar servicios proporcionados crew-load
+☻ Revisar adenda a través de wages-load !!No se generó!!
+☻ Revisar asignar nuevo contrato para contratos viejos pendientes al dar firmar
+☻ Quitar tipo de contrato en proveedor (normal/agencia)
+☻ Enviar listado de contratos pendientes de firmar
+☻ Que la adenda (nombre) le mencione al proveedor que es del pago/días de trabajo

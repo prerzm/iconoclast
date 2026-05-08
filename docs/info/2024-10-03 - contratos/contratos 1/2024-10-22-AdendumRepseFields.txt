@@ -1,0 +1,31 @@
+[Adendum al Contrato de Prestación de Servicios Especializados]
+
+[Fecha:] [ADENDA_FECHA_CREADA]
+
+[Partes:]
+[- PRODUCTORA:] [PRIMO AUDIOVISUAL SA DE CV]
+[- PROVEEDOR:] [PROVEEDOR_RAZON_SOCIAL]
+
+[Contrato Original:]
+
+Este Adendum modifica el Contrato de Prestación de Servicios Especializados (en adelante, el "Contrato") celebrado entre la PRODUCTORA y el PROVEEDOR con fecha [CONTRATO_FECHA_FIRMA].
+
+[Objeto:]
+
+El presente Adendum tiene como objeto modificar las cláusulas del Contrato relativas a la duración de los servicios y la contraprestación, en los siguientes términos:
+
+[Cláusulas:]
+
+<CLAUSULAS>
+
+[Ratificación:]
+
+En todos los demás aspectos no modificados por este Adendum, el Contrato original permanece en pleno vigor y efecto.
+
+Aceptación:
+
+Ambas partes, la PRODUCTORA y el PROVEEDOR, declaran su conformidad con los términos de este Adendum y lo firman en la ciudad de [PROYECTO_LUGAR] el día [ADENDA_FECHA_FIRMA].
+
+[PRIMO AUDIOVISUAL SA DE CV], representada por [JAIME VIDAL]
+
+[PROVEEDOR_RAZON_SOCIAL]

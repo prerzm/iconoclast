@@ -1,0 +1,32 @@
+2023-10-03 - Pamela Romero
+
+* Verificar en proyectos no guarda el director
+* Copiar contratos de Auiovisual o Iconoclast a LLC
+* Al crear cuenta por pagar manual quitar iva, ret iva y ret isr
+* Revisar cambiar colores de cada empresa
+* Resaltar nombres de empresas
+- Agregar "tutorial" en la pantalla de cuenta por pagar
+
+
+2023-09-12 - Pamela Romero - Integrar LLC para facturas sin IVA
+
+- que el correo lleve el mensaje de factura sin iva
+- crear nueva empresa
+- en pesos con xml pero sin iva
+- las facturas en tasa cero requieren complemeento?
+  - para revisarel candado de complementos para factguras con tasa cero
+
+
+Usuarios
+
+florencia@primocontent.com
+FloPri2023
+
+ferquiroga@primocontent.com
+PrimoFer2023
+
+micaela@primocontent.com
+LLCMica2023
+
+soledadleivas@primocontent.com
+solPrimo2023

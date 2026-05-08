@@ -1,0 +1,24 @@
+2021-12-21 PRIMO
+
+Contratos
+1. Agregar archivo de nómina para generar contratos
+2. Revisión y firma de contratos en perfil de proveedores (persona moral y persona física)
+3. Revisión de módulo de contratos en perfil de administrador
+ *siempre se debe subir anexo para personas morales?
+ * SIEMPRE ES OBLIGATORIO
+ * Revisar REPSE cuando es en blanco
+ * Otorgar permisos de contratos a Producción cAuth y Reportes
+ * Al eliminar una cuenta por pagar, eliminar automáticamente el contrato del proyecto
+ * Agregar leyenda  de realizar la firma lo más parecida a la firma de la identificación
+ * Envío de correo cuando se rechaza un contrato
+ * Es necesario subir la identificación para recibir pagos
+
+Pendientes
+* Desglosar impuestos en reporte de cuentas por pagar
+* Caracteres con acentos
+* Ordenamiento de fechas en reportes de cuentas por pagar
+  * Revisar por qué unas cuentas por pagar no traen fecha cuando ya se cargó la factura
+* Agrupación de montos en reporte de proveedores
+  * Ordenar por orden alfabético reporte de proveedores
+* Búsqueda por proveedor en reporte de proveedores
+

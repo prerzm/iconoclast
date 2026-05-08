@@ -1,0 +1,85 @@
+* quitar versiones
+  * contratos
+  * contratos_proveedores
+  * contratos_versiones
+* modificar contratos_proveedores
+  * quitar versionId
+  * quitar contratoOriginal
+  * adaptar para 1 registro por contrato por proveedor
+* alta de contratos / nóminas
+  * ligar contratos al cargar una nómina para el proveedor
+- firma contratos
+  - pasar a transparencia firma de primo
+
+https://www.google.com/search?client=firefox-b-d&q=capture+signature+html5
+
+https://www.zetakey.com/codesample-signature.php
+https://www.aspsnippets.com/Articles/Capture-Signature-using-HTML5-Canvas-using-jQuery.aspx
+https://github.com/thread-pond/signature-pad/blob/master/documentation.md
+
+https://stackoverflow.com/questions/11112321/how-to-save-canvas-as-png-image
+https://stackoverflow.com/questions/13198131/how-to-save-an-html5-canvas-as-an-image-on-a-server
+
+perfil proveedor
+- modificar listado contratos
+  - títulos tabla: Contrato, Carta NDA
+  - debajo de Contrato y Carta NDA se despliega el estatus
+  - cambiar link a proyecto en lugar de contrato
+- detalles contrato
+  - agregar nombre de proyecto
+  - dividir contrato y nda
+  - quitar contrato original
+  - agregar link para pasar a llenado de contrato
+  - agregar pantalla para llenado de campos
+- generación de contrato
+  - agregar constantes contratos y nda
+  - definir reglas específicas para seleccionar contrato de acuerdo al proveedor
+  - programación de sustitución de campos y almacenamiento de información
+  - 
+
+
+Primo - Contratos
+
+1. Diferencia entre contratos Servicios Profesionales con Trabajadores y Servicios Profesionales Primo es por ser extranjeros?
+2. Son 2 contratos + la carta de confidencialidad por proveedor por proyecto?
+3. Opción de agregar dirección, curp, registro patronal, registro repse
+4. Lugar, se puede llenar desde antes?
+
+X. Requerimiento: Imagen con transparencia de firma de PRIMO
+
+NDA PRIMO
+
+1. Confirmar: por proveedor por proyecto
+
+CONTRATO PROVEEDORES 2021
+
+1. Es para personas morales?
+2. Qué es el Anexo, cómo lo tiene que llenar el proveedor?
+3. Confirmar: la fecha es del día que el proveedor llena/firma el contrato.
+
+CONTRATO SERVICIOS PROFESIONALES CON TRABAJADORES 2021
+
+1. Es para personas físicas?
+
+CONTRATO SERVICIOS PROFESIONALES PRIMO 2021 (1)
+
+1. Es para personas físicas extranjeras?
+
+
+
+
+2021-11-18
+
+- Revisar carga de talento a 9 semanas, no calculó la fecha automáticamente
+  - Revisar Cruz Roja
+  - Revisar Citibanamex
+
+- Agregar usuario
+Berenice Acosta
+berenice@primocontent.com
+5F63WixCz
+editar contraseña proveedores
+agregar facturas (cuentas por pagar)
+reportes si
+
+

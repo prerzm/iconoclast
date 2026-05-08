@@ -1,0 +1,33 @@
+[Adendum al Contrato de Autorización de Uso de Imagen e Interpretación Artística]
+
+[Fecha:] [ADENDA_FECHA_CREADA]
+
+[Partes:]
+[- PRODUCTORA:] [PRIMO AUDIOVISUAL SA DE CV]
+[- TALENTO:] [PROVEEDOR_RAZON_SOCIAL]
+
+[Contrato Original:]
+
+Este Adendum modifica el Contrato de Autorización de Uso de Imagen e Interpretación Artística (en adelante, el "Contrato") celebrado entre la PRODUCTORA y el TALENTO con fecha [CONTRATO_FECHA_FIRMA].
+
+[Objeto:]
+
+El presente Adendum tiene como objeto modificar las cláusulas del Contrato relativas a la duración de los servicios y la contraprestación, en los siguientes términos:
+
+[Cláusulas Modificadas:]
+
+<[Duración de los Servicios:] La duración de los servicios del TALENTO se extiende por [{Adenda_Extension_Plazo}], comenzando a partir de la fecha de finalización del plazo original.>
+
+<[Contraprestación:] En virtud de la extensión del plazo, la contraprestación total a ser pagada al TALENTO se ajustará proporcionalmente a los días adicionales trabajados. El monto adicional a pagar será de [{Monto_Pago_Adicional}].>
+
+[Ratificación:]
+
+En todos los demás aspectos no modificados por este Adendum, el Contrato original permanece en pleno vigor y efecto.
+
+Aceptación:
+
+Ambas partes, la PRODUCTORA y el PROVEEDOR, declaran su conformidad con los términos de este Adendum y lo firman en la ciudad de [PROYECTO_LUGAR] el día [ADENDA_FECHA_FIRMA].
+
+[PRIMO AUDIOVISUAL SA DE CV], representada por [JAIME VIDAL]
+
+[PROVEEDOR_RAZON_SOCIAL]

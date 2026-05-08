@@ -1,0 +1,29 @@
+Proyectos
+- cambiar campo productor por productor en línea
+
+Cuentas por Pagar
+- Revisar cálculo de impuestos al editar una cuenta por pagar
+- Envíar correo al proveedor al marcar una cuenta por pagar como pagada
+- Revisar carga de comprobantes de pago electrónico al cambiar el tipo de una cuenta por pagar
+
+Monedas
+- Agregar euros como moneda
+
+
+2021-03-11
+
+Cuentas por pagar
+- Cambiar el correo que llega al dar de alta una cuenta por pagar
+- Revisar editar una cuenta por pagar se quedó en blanco no regresó al listado/detalle
+
+Usuarios
+- Cambiar y enviar contraseñas a cada usuario
+- Revisar el cambio de contraseña *no sirvió después de cambiarla
+
+Proceso de Acceso Proveedores
+- Enviar proceso de alta de Proveedores
+
+- Enviar pantallas de dónde se deben autorizar los pagos
+
+* Quitar permiso de pagar a rol de Administrador
+

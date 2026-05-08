@@ -1,0 +1,23 @@
+2023-11-22 - Primo
+
+Prontos pagos
+- Marcar prontos pagos para poder identificarlas en la plataforma
+- Identificar tanto en listado como en reporte de cuentas por pagar
+
+Cambiar cxp de empresa
+- Agregar opción al editar una cxp de cambiar la cxp a otra empresa-proyecto
+
+Proveedores
+- Que sea obligatorio el ABA Routing
+- que no sea la clabe o el swift
+- deshabilitar el campo de swift y aba para los que ya están correctos
+- 
+
+Cotización
+
+1. Modificar la carga de archivos de nómina para catalogar prontos pagos - $ 1,000.00 + IVA
+2. Identificar prontos pagos tanto en el listado del sistema como en el reporte de cuentas por pagar - $ 500.00 + IVA
+3. Agregar la opción de cambiar de empresa y proyecto una cuenta por pagar - $ 1,000.00 + IVA
+4. Hacer obligatorio el campo ABA para proveedores y validar que no ingresen ni la clabe ni el swift en este campo - $ 500.00 + IVA
+5. Agregar opción de bloquear edición de información a proveedores - $ 750.00 + IVA
+

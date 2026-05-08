@@ -1,0 +1,61 @@
+2024-04-25 - Primo
+
+Agregar campo de año para proyectos
+* db
+  * agregar campo en db
+* proyectos
+  * listado
+  * projects.edit
+
+Agrupar proyectos por año
+* admin
+  * cuentas por pagar
+    * agregar
+    * buscar
+    * editar
+  * contratos proveedores
+    * buscar
+* proyectos
+  * nóminas
+* reportes
+  * seleccionar reporte
+
+Agregar vigencia de 3 meses a documentos
+- csf
+  * db
+  * lib.abp check
+- opinión de cumplimiento
+  * db
+  * lib.abp check
+- comprobante de domicilio
+  * db
+  * lib.abp check
+  * vendors: display for foreign/local
+  * admin: display for foreign/local
+
+Leyenda comprobante de domicilio / comprobante de residencia
+- admin
+  * proveedores
+- vendors
+  * info
+
+Agregar encuesta antes de subir factura requiriendo 3/4 preguntas
+- db
+  * table/fields
+- vendors.pos
+  * html
+  * js
+  * php
+* reporte encuesta
+
+- fix php8 compat
+  * add composer
+  * add phpmailer via composer
+  * new class NEWMailer
+  * replace all instances
+  - test emails
+    * login/recover
+    - contracts-rejected
+    - pos add/manual
+    - pos pay
+    * pos add/wages
