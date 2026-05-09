@@ -2,9 +2,9 @@
 
 require('fpdf/htmlpdf.php');
 
-class PrimoPDF extends HtmlPDF {
+class IcoPDF extends HtmlPDF {
 
-    // add Primo signature
+    // add Ico signature
     public function add_signature($signature, $offset_x, $offset_y) {
         $this->Image($signature, $this->GetX()-$offset_x, $this->GetY()-$offset_y);
     }

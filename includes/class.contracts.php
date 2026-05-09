@@ -224,7 +224,7 @@ class ContractPM extends Contract {
 		$html = $this->get_html_for_pdf();
 
         # generate pdf
-        $pdf = new PrimoPDF();
+        $pdf = new IcoPDF();
         $pdf->AddPage();
         $pdf->SetFont('Arial','', 10);
         $pdf->WriteHTML($html);
@@ -269,7 +269,7 @@ class ContractPF extends Contract {
 		$html = $this->get_html_for_pdf();
 
         # generate pdf
-        $pdf = new PrimoPDF();
+        $pdf = new IcoPDF();
         $pdf->AddPage();
         $pdf->SetFont('Arial','', 10);
         $pdf->WriteHTML($html);
@@ -314,7 +314,7 @@ class ContractNDA extends Contract {
 		$html = $this->get_html_for_pdf();
 
         # generate pdf
-        $pdf = new PrimoPDF();
+        $pdf = new IcoPDF();
         $pdf->AddPage();
         $pdf->SetFont('Arial','', 10);
         $pdf->WriteHTML($html);
@@ -358,7 +358,7 @@ class ContractAgenciasPM extends Contract {
 		$html = $this->get_html_for_pdf();
 
         # generate pdf
-        $pdf = new PrimoPDF();
+        $pdf = new IcoPDF();
         $pdf->AddPage();
         $pdf->SetFont('Arial','', 10);
         $pdf->WriteHTML($html);
@@ -403,7 +403,7 @@ class ContractAgenciasPF extends Contract {
 		$html = $this->get_html_for_pdf();
 
         # generate pdf
-        $pdf = new PrimoPDF();
+        $pdf = new IcoPDF();
         $pdf->AddPage();
         $pdf->SetFont('Arial','', 10);
         $pdf->WriteHTML($html);
@@ -448,7 +448,7 @@ class ContractAgenciasNDA extends Contract {
 		$html = $this->get_html_for_pdf();
 
         # generate pdf
-        $pdf = new PrimoPDF();
+        $pdf = new IcoPDF();
         $pdf->AddPage();
         $pdf->SetFont('Arial','', 10);
         $pdf->WriteHTML($html);

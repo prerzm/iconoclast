@@ -86,9 +86,6 @@ session_set_data( array("token" => sec_generate_random_token() ) );
 
 				<button class="btn btn-large btn-primary" type="submit">Guardar</button>
 
-                <div style="margin-top:20px;text-align:center;">
-                    <img src="images/PrimoSelloCert.gif" />
-                </div>
 			</form>
 
 		</div> <!-- /container -->

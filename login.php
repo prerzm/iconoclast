@@ -68,9 +68,6 @@ session_set_data( array("token" => sec_generate_random_token() ) );
 
                 <button class="btn btn-large btn-primary" type="submit">Ingresar</button>
                 <a href="#alertHelp" data-toggle="modal" class="btn btn-large btn-info" style="float:right;">Ayuda</a>
-                <div style="margin-top:20px;text-align:center;">
-                    <img src="images/PrimoSelloCert.gif" />
-                </div>
                 <div id="alertHelp" class="modal hide">
                     <div class="modal-header">
                         <button data-dismiss="modal" class="close" type="button">&times;</button>

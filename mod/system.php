@@ -245,7 +245,7 @@ switch(aglobal('cmd', 20)) {
 
 	case 'backupdb':
 	
-		$cmd = PATH_MYSQL."mysqldump --defaults-extra-file=".PATH_DBUPDATE."config.cnf servicio_primo --add-drop-table --no-tablespaces > ".PATH_DBUPDATE.date("Y-m-d")."_servicio_primo.sql";
+		$cmd = PATH_MYSQL."mysqldump --defaults-extra-file=".PATH_DBUPDATE."config.cnf servicio_ico --add-drop-table --no-tablespaces > ".PATH_DBUPDATE.date("Y-m-d")."_servicio_ico.sql";
 		exec($cmd, $output, $result);
 		
 		if($output==0) {

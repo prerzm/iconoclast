@@ -57,7 +57,7 @@ session_set_data( array("token" => sec_generate_random_token() ) );
 
                 <?php display_alerts(); ?>
                 
-                <p>Favor de ingresar su RFC o correo electrónico y se le enviará un correo a la cuenta registrada previamente por PRIMO Audiovisual para que pueda establecer su contraseña.</p>
+                <p>Favor de ingresar su RFC o correo electrónico y se le enviará un correo a la cuenta registrada previamente para que pueda establecer su contraseña.</p>
 
 				<div class="control-group">
 					<div class="controls">
@@ -76,9 +76,6 @@ session_set_data( array("token" => sec_generate_random_token() ) );
 
 				<button class="btn btn-large btn-primary" type="submit">Continuar</button>
 
-                <div style="margin-top:20px;text-align:center;">
-                    <img src="images/PrimoSelloCert.gif" />
-                </div>
 			</form>
 
 		</div> <!-- /container -->
