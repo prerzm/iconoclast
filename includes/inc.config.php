@@ -5,18 +5,18 @@
 date_default_timezone_set('America/Mexico_City');
 
 # Set the error reporting level
-if($_SERVER['SERVER_NAME']=="localprimo") {
+if($_SERVER['SERVER_NAME']=="localico") {
     define("ENVIRONMENT", "DEVELOPMENT");
-    define("SITE_URL", "http://localprimo/");
-    define("PATH_ROOT", "C:/Users/ramir/PRE/Sites/primo/");
+    define("SITE_URL", "http://localico/");
+    define("PATH_ROOT", "C:/Users/ramir/PRE/Sites/iconoclast/");
     error_reporting(E_ALL);
     ini_set('display_errors', '1');
     #error_reporting(0);
     #ini_set('display_errors', '0');
 } else {
     define("ENVIRONMENT", "PRODUCTION");
-    define("SITE_URL", "https://primo.serviciosabp.com/");
-    define("PATH_ROOT", "/home/servicio/public_html/primo/");
+    define("SITE_URL", "https://iconoclast.serviciosabp.com/");
+    define("PATH_ROOT", "/home/servicio/public_html/iconoclast/");
     error_reporting(0);
     ini_set('display_errors', '0');
 }
@@ -26,9 +26,9 @@ define("SITE_FOOTER_COPY", "");
 
 # Database login details
 define("HOST", "localhost");
-define("DATABASE", "servicio_primo");
-define("USER", "servicio_primo");
-define("PASSWORD", '3sMBN1v40rRHlXKC');
+define("DATABASE", "servicio_ico");
+define("USER", "servicio_ico");
+define("PASSWORD", 'HxJx8sgy25s9nSF8s');
 
 # Secure settings
 define("SEC_SESSION_ID", "sess_primo");
@@ -46,12 +46,12 @@ define("PATH_DBUPDATE", PATH_ROOT . "files/db/");
 define("PATH_MAILS", PATH_ROOT . "mails/");
 
 # Mail settings
-define("MAIL_FROM", "plataforma@serviciosabp.com");
+define("MAIL_FROM", "iconoclast@serviciosabp.com");
 define("MAIL_FROM_NAME", "Plataforma ABP");
 define("MAIL_HOST", "mail.serviciosabp.com");
 define("MAIL_PORT", "465");
-define("MAIL_USER", "plataforma@serviciosabp.com");
-define("MAIL_PSWD", "duyanHVF4HBxd2q");
+define("MAIL_USER", "iconoclast@serviciosabp.com");
+define("MAIL_PSWD", "o7MEppRv2HoNq5c2");
 
 # Other settings
 define("PAYMENT_STATUS_PENDING", "1");

@@ -14,7 +14,7 @@ if($projects==false) {
 }
 
 # results
-$sql_project = ($projectId>0) ? " AND proyectoId = $projectId" : " AND proyectoId IN (SELECT proyectoId FROM primo_proyectos WHERE companyId = ".session_get_data("companyId").")";
+$sql_project = ($projectId>0) ? " AND proyectoId = $projectId" : " AND proyectoId IN (SELECT proyectoId FROM ".TABLE_PROJECTS." WHERE companyId = ".session_get_data("companyId").")";
 $res1_good = query_select_single_value("COUNT(res1)", TABLE_POLLS_ANSWERS, "res1 = 1 $sql_project", "");
 $res1_bad = query_select_single_value("COUNT(res1)", TABLE_POLLS_ANSWERS, "res1 = 0 $sql_project", "");
 $res1_js = "data[0] = { label: \"Buena\", data: $res1_good }; data[1] = { label: \"Mala\", data: $res1_bad };";

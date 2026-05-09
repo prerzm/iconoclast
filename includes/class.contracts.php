@@ -19,7 +19,7 @@ class Contract {
 	public function __construct($class_name, $contract_vendor_id) {
 
 		$record = sql_select_row("	SELECT 	c.*, CONCAT('".PATH_SIGNATURES."', co.firmaContratos) AS firmaContratos 
-									FROM 	primo_contratos_proveedores cp, primo_proyectos p, primo_contratos c, primo_companies co 
+									FROM 	".TABLE_CONTRACTS_VENDORS." cp, ".TABLE_PROJECTS." p, ".TABLE_CONTRACTS." c, ".TABLE_COMPANIES." co 
 									WHERE 	cp.proyectoId = p.proyectoId AND p.companyId = c.companyId AND p.companyId = co.companyId AND 
 											c.className = '$class_name' AND cp.id = $contract_vendor_id");
 		if($record) {

@@ -262,7 +262,7 @@ switch(aglobal('cmd', 20)) {
 
 		$files = sql_select("SELECT g.gastoId, g.proveedorId, g.transfer AS file, 
 									p.proyectoId, CONCAT('".PATH_PROJECTS."', p.uniqId, '/transfers/') AS path 
-							FROM primo_gastos g, primo_proyectos p 
+							FROM ".TABLE_POS." g, ".TABLE_PROJECTS." p 
 							WHERE g.proyectoId = p.proyectoId AND g.transfer LIKE '%,%'");
 
 		$i = 0;
@@ -271,7 +271,7 @@ switch(aglobal('cmd', 20)) {
 			if(file_is_valid($filename)) {
 				$new_file = str_replace(",", ".", $f['file']);
 				if(rename($filename, $f['path'].$new_file)) {
-					query_update("primo_gastos", array("transfer" => $new_file), "gastoId = ".(int)$f['gastoId']);
+					query_update(TABLE_POS, array("transfer" => $new_file), "gastoId = ".(int)$f['gastoId']);
 					print "file ".$f['file']." renamed to $new_file<br>";
 					$i++;
 				}

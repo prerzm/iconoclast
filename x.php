@@ -25,7 +25,7 @@ require_once ("includes/PHPExcel.php");
 */
 
 # process
-#$record = sql_select_row("SELECT * FROM primo_contratos WHERE contratoId = 1");
+#$record = sql_select_row("SELECT * FROM xxxx WHERE contratoId = 1");
 #$contract = base64_decode($record['contrato']);
 
 // secciones

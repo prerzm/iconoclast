@@ -966,7 +966,7 @@ function vendor_verify_doc_date($doc_date, $days_limit=90) {
 
 function vendor_has_contracts_pending($vendorId) {
     $result = sql_select_row("SELECT COUNT(*) AS total
-                            FROM primo_contratos_proveedores cp, primo_proyectos p 
+                            FROM ".TABLE_CONTRACTS_VENDORS." cp, ".TABLE_PROJECTS." p 
                             WHERE cp.proyectoId = p.proyectoId AND cp.proveedorId = $vendorId AND 
                                 (cp.firmaStatusId = 1 OR cp.firmaFecha IS NULL)");
     if((int)$result['total']>0) {
@@ -1627,7 +1627,7 @@ function vendor_remove_contract($vendorId, $proyectoId) {
                                 CONCAT('".PATH_PROJECTS."', p.uniqId, '/contratos/', contrato) AS contrato, 
                                 CONCAT('".PATH_PROJECTS."', p.uniqId, '/contratos/', anexo) AS anexo, 
                                 CONCAT('".PATH_PROJECTS."', p.uniqId, '/contratos/', carta) AS carta 
-                            FROM primo_contratos_proveedores cv, primo_proyectos p 
+                            FROM ".TABLE_CONTRACTS_VENDORS." cv, ".TABLE_PROJECTS." p 
                             WHERE cv.proyectoId = p.proyectoId AND cv.proveedorId = $vendorId AND cv.proyectoId = $proyectoId;");
     if($record) {
         if(file_is_valid($record['contrato'])) { file_delete($record['contrato']); }
