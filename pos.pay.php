@@ -82,7 +82,7 @@ $history = get_po_log($poId);
                                                 <?php if($record['pagoStatusId']==PAYMENT_STATUS_PENDING) { ?><strong>Fecha Tentativa de Pago:</strong> <?php } ?>
                                                 <?php if($record['pagoStatusId']==PAYMENT_STATUS_AUTHORIZED) { ?><strong>Fecha Programada de Pago:</strong> <?php } ?>
                                                 <?php if($record['pagoStatusId']==PAYMENT_STATUS_PAYED) { ?><strong>Fecha de Pago:</strong> <?php } ?>
-                                                <?php if(strtotime($record['fechaDePago'])==false) { ?>
+                                                <?php if(is_null($record['fechaDePago']) || strtotime($record['fechaDePago'])==false) { ?>
                                                     -
                                                 <?php } else { ?>
                                                     <?=get_date_es("d \d\\e F \d\\e Y", $record['fechaDePago']);?>
