@@ -177,6 +177,47 @@ class RepPos extends Report {
 # ./RepPos
 
 
+# RepComp - Cuentas por Pagar sin complemento
+class RepComp extends Report {
+
+	public function __construct($filters) {
+
+		$this->name = "Cuentas sin Complemento de Pago";
+		$this->query($filters);
+
+	}
+
+	public function query($filters) {
+
+		# query
+		list($this->header, $this->rows, $this->totals) = get_report_comp($filters);
+
+	}
+
+	public function displayHeader() {
+
+		if(is_array($this->header)) {
+			print "\t<tr>\n";
+			foreach($this->header as $th) {
+				if($th!="Total" && $th!="Banco" && $th!="CLABE" && $th!="ABA" && $th!="SWIFT") {
+					print "\t<th>$th</th>\n";
+				}
+			}
+			print "\t</tr>\n";
+		}
+
+	}
+
+	public function export() {
+
+		get_excel_comp($this->header, $this->rows);
+
+	}
+
+}
+# ./RepComp
+
+
 # RepProy - Proyectos
 class RepProy extends Report {
 

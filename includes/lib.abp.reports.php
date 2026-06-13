@@ -314,6 +314,215 @@ function get_excel_pos($header, $results) {
 }
 
 
+# REP_COMP - RepComp - Cuentas por Pagar sin complemento
+function get_report_comp($filters) {
+
+    # filters
+	$header = array("Proyecto", "Proveedor", "Concepto", "Feecha de Pago", "Forma de Pago", "Total MXN", "Estatus");
+
+	if($filters['projectId']>0) {
+		$sql_project = "AND g.proyectoId = ".$filters['projectId'];
+	} else {
+		$sql_project = "";
+	}
+
+    if(strtotime($filters['dateFrom'])==false || strtotime($filters['dateTo'])==false) {
+        $sql_date = "";
+    } else {
+        $sql_date = "AND g.fechaDePago BETWEEN '".$filters['dateFrom']."' AND '".$filters['dateTo']."'";
+    }
+
+    # query
+	$results = sql_select(" SELECT	CONCAT(p.clave, ' - ', p.titulo) AS proyecto, v.razonSocial, g.concepto, g.fechaDePago, fp.pagoForma, g.totalMXN, ps.pagoStatus
+							FROM ".TABLE_POS." g, ".TABLE_VENDORS." v, ".TABLE_PROJECTS." p, ".TABLE_SAT_FORMA_PAGO." fp, ".TABLE_PAYMENTS_STATUS." ps
+							WHERE g.proveedorId = v.proveedorId AND g.proyectoId = p.proyectoId AND g.pagoFormaId = fp.pagoFormaId AND 
+								g.pagoStatusId = ps.pagoStatusId AND g.pagoStatusId = 3 AND g.facturaUuid <> '' AND g.comprobante = ''
+								$sql_project 
+								$sql_date 
+							ORDER BY p.clave ASC, p.titulo ASC, g.fechaDePago ASC");
+
+	# totals
+	$totals = false;
+
+	# return
+	return array($header, $results, $totals);
+
+}
+
+function get_excel_comp($header, $results) {
+
+	#var_dump($header, $results);
+
+	# Create PHPExcel object
+	$objPHPExcel = new PHPExcel();
+
+	# vars
+	global $styles;
+    $currentRow = 2;
+    
+	# Set document properties
+	$objPHPExcel->getProperties()->setCreator(session_get_data("name"))
+								->setLastModifiedBy(session_get_data("name"))
+								->setTitle("Cuentas por Pagar");
+
+	# Title
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$currentRow, 'Cuentas por Pagar');
+	$objPHPExcel->setActiveSheetIndex(0)->mergeCells('A'.$currentRow.':Q'.$currentRow);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.($currentRow).':Q'.$currentRow)->applyFromArray( get_style("title") );
+
+	$currentRow += 2;
+
+	# Data header
+	$tableStartRow = $currentRow;
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$currentRow, "Fecha");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$currentRow, "Proyecto");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$currentRow, "Concepto");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$currentRow, "Proveedor");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$currentRow, "Factura");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$currentRow, "Forma de Pago");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$currentRow, "Monto");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$currentRow, "Moneda");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$currentRow, "IVA");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$currentRow, "IVA Ret");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$currentRow, "ISR Ret");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$currentRow, "Total MXN");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$currentRow, "Estatus");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$currentRow, "Banco");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$currentRow, "CLABE");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$currentRow, "ABA");
+	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q'.$currentRow, "SWIFT");
+
+	# Style header
+	$objPHPExcel->getActiveSheet()->getStyle('A'.$currentRow.':Q'.$currentRow)->applyFromArray( get_style("header") );
+
+	# Set columns widths
+	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(8);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('P')->setWidth(15);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setWidth(15);
+    
+    $currentRow++;
+    
+    # Data
+    if($results) {
+
+        $dataStartRow = $currentRow;
+
+		$vendor_id = $results[0]['proveedorId'];
+		$vendor_row_start = $currentRow;
+		$row_bg = 1;
+
+		for($i=0; $i<count($results); $i++, $currentRow++) {
+
+			$new_vendor_id = $results[$i]['proveedorId'];
+
+			# fecha
+			if(is_null($results[$i]['fechaDePago'])) {
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$currentRow, "-");
+			} else {
+				$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$currentRow, PHPExcel_Shared_Date::PHPToExcel($results[$i]['fechaDePago']));
+			}
+			$objPHPExcel->setActiveSheetIndex(0)->getStyleByColumnAndRow(0, $currentRow)->getNumberFormat()->setFormatCode("dd/mm/yyy");
+		
+			# info
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$currentRow, $results[$i]['clave']." - ".$results[$i]['titulo']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$currentRow, $results[$i]['concepto']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$currentRow, $results[$i]['razonSocial']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$currentRow, $results[$i]['facturaUuid']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$currentRow, $results[$i]['pagoForma']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$currentRow, $results[$i]['monto']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$currentRow, $results[$i]['moneda']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$currentRow, $results[$i]['iva']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$currentRow, $results[$i]['retIVA']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$currentRow, $results[$i]['retISR']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$currentRow, $results[$i]['totalMXN']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$currentRow, $results[$i]['pagoStatus']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$currentRow, $results[$i]['banco']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$currentRow, $results[$i]['clabe']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$currentRow, $results[$i]['aba']);
+			$objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q'.$currentRow, $results[$i]['swift']);
+
+			if($new_vendor_id!=$vendor_id) {
+				# group and sum total
+				$objPHPExcel->setActiveSheetIndex(0)->mergeCells('N'.$vendor_row_start.':N'.($currentRow-1));
+
+				# group banco, clabe, aba, swift
+				$objPHPExcel->setActiveSheetIndex(0)->mergeCells('N'.$vendor_row_start.':N'.($currentRow-1));
+				$objPHPExcel->setActiveSheetIndex(0)->mergeCells('O'.$vendor_row_start.':O'.($currentRow-1));
+				$objPHPExcel->setActiveSheetIndex(0)->mergeCells('P'.$vendor_row_start.':P'.($currentRow-1));
+				$objPHPExcel->setActiveSheetIndex(0)->mergeCells('Q'.$vendor_row_start.':Q'.($currentRow-1));
+
+				# apply style to previous row's cells
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$vendor_row_start.':Q'.($currentRow-1))->applyFromArray( get_style("row".($row_bg%2)) );
+
+				# change vendor
+				$vendor_id = $results[$i]['proveedorId'];
+				$vendor_row_start = $currentRow;
+				$row_bg++;
+			}
+
+			if($results[$i]['prontoPago']==1) {
+				# apply style to prontos pagos
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$currentRow.':Q'.$currentRow)->applyFromArray( get_style("ppago") );
+			}
+
+		}
+
+		# last row
+		# group and sum total
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('N'.$vendor_row_start.':N'.($currentRow-1));
+
+		# group banco, clabe, aba, swift
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('N'.$vendor_row_start.':N'.($currentRow-1));
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('O'.$vendor_row_start.':O'.($currentRow-1));
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('P'.$vendor_row_start.':P'.($currentRow-1));
+		$objPHPExcel->setActiveSheetIndex(0)->mergeCells('Q'.$vendor_row_start.':Q'.($currentRow-1));
+
+		# apply style to previous row's cells
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$vendor_row_start.':Q'.($currentRow-1))->applyFromArray( get_style("row".($row_bg%2)) );
+
+		# Set total row
+		$objPHPExcel->getActiveSheet()->setCellValue("F".$currentRow, "Totales");
+		$objPHPExcel->getActiveSheet()->setCellValue("G".$currentRow, "=sum(G".$dataStartRow.":G".($currentRow-1).")");
+		$objPHPExcel->getActiveSheet()->setCellValue("I".$currentRow, "=sum(I".$dataStartRow.":I".($currentRow-1).")");
+		$objPHPExcel->getActiveSheet()->setCellValue("J".$currentRow, "=sum(J".$dataStartRow.":J".($currentRow-1).")");
+		$objPHPExcel->getActiveSheet()->setCellValue("K".$currentRow, "=sum(K".$dataStartRow.":K".($currentRow-1).")");
+		$objPHPExcel->getActiveSheet()->setCellValue("L".$currentRow, "=sum(L".$dataStartRow.":L".($currentRow-1).")");
+    
+        # Set formats
+		$objPHPExcel->getActiveSheet()->getStyle("G".$dataStartRow.":G".$currentRow)->getNumberFormat()->setFormatCode('#,##0.00');
+		$objPHPExcel->getActiveSheet()->getStyle("I".$dataStartRow.":L".$currentRow)->getNumberFormat()->setFormatCode('#,##0.00');
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$currentRow.':Q'.$currentRow)->applyFromArray( get_style("footer") );
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$tableStartRow.':Q'.$currentRow)->applyFromArray( get_style("bordersOutline") );
+
+    } else {
+        $objPHPExcel->getActiveSheet()->setCellValue('A'.$currentRow, "No hubo movimientos en el periodo seleccionado.");
+    }
+
+    # Set headers to send file
+    header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename="Cuentas por Pagar.xlsx"');
+    
+    # Save & Send Excel 2007
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+    $objWriter->save('php://output');
+
+}
+
+
 # REP_CONCEPT - RepConcept - Gastos por Concepto
 function get_report_concept($filters) {
 

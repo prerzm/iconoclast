@@ -80,6 +80,7 @@ $yearId = (isset($_GET['ano'])) ? aget('ano') : array_key_first($years);
                                                 <select class="span10 m-wrap" id="report" name="report" onchange="toggle_filters(this.value);">
                                                     <option value="0">Seleccionar Reporte</option>
                                                         <option value="REP_POS" <?=($filters['report']=="REP_POS") ? 'selected' : '';?>>Cuentas por Pagar</option>
+                                                        <option value="REP_COMP" <?=($filters['report']=="REP_COMP") ? 'selected' : '';?>>Cuentas sin Complemento de Pago</option>
                                                         <option value="REP_PROY" <?=($filters['report']=="REP_PROY") ? 'selected' : '';?>>Proyectos</option>
                                                         <option value="REP_PROVS" <?=($filters['report']=="REP_PROVS") ? 'selected' : '';?>>Proveedores</option>
                                                         <option value="REP_CONCEPT" <?=($filters['report']=="REP_CONCEPT") ? 'selected' : '';?>>Por Concepto</option>
@@ -292,6 +293,8 @@ $yearId = (isset($_GET['ano'])) ? aget('ano') : array_key_first($years);
 					$('#div_period').show();
 					$('#div_status').show();
                     $('#div_ordenar').show();
+				} else if(report=="REP_POS") {
+					$('#div_period').show();
 				} else if(report=="REP_CONCEPT") {
 					$('#div_concept').show();
                     $('#div_period').show();

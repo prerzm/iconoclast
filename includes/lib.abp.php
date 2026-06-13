@@ -1065,7 +1065,7 @@ function get_pos($projectId, $vendor, $statusId, $factura, $dateFrom, $dateTo) {
         $sql_date = " AND ( g.fechaDePago BETWEEN '$dateFrom' AND '$dateTo' OR g.fechaDePago IS NULL )";
     }
 
-    return sql_select(" SELECT 	g.gastoId, g.fechaDePago, g.prontoPago, g.facturaUuid, g.concepto, g.moneda, g.total, 
+    return sql_select(" SELECT 	g.gastoId, g.fechaDePago, g.prontoPago, g.facturaUuid, g.comprobante, g.concepto, g.moneda, g.total, 
                                 p.titulo, 
                                 v.razonSocial, v.banco, v.clabe, v.swift, v.aba, 
                                 s.pagoStatusId, s.pagoStatus 
