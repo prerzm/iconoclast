@@ -334,8 +334,8 @@ function get_report_comp($filters) {
 
     # query
 	$results = sql_select(" SELECT	CONCAT(p.clave, ' - ', p.titulo) AS proyecto, v.razonSocial, g.concepto, g.fechaDePago, fp.pagoForma, g.totalMXN, ps.pagoStatus
-							FROM ".TABLE_POS." g, ".TABLE_VENDORS." v, ".TABLE_PROJECTS." p, ".TABLE_SAT_FORMA_PAGO." fp, ".TABLE_PAYMENTS_STATUS." ps
-							WHERE g.proveedorId = v.proveedorId AND g.proyectoId = p.proyectoId AND g.pagoFormaId = fp.pagoFormaId AND 
+							FROM ".TABLE_POS." g, ".TABLE_VENDORS." v, ".TABLE_PROJECTS." p, ".TABLE_COMPANIES." c, ".TABLE_SAT_FORMA_PAGO." fp, ".TABLE_PAYMENTS_STATUS." ps
+							WHERE g.proveedorId = v.proveedorId AND g.proyectoId = p.proyectoId AND p.companyId = c.companyId AND g.pagoFormaId = fp.pagoFormaId AND 
 								g.pagoStatusId = ps.pagoStatusId AND g.pagoStatusId = 3 AND g.facturaUuid <> '' AND g.comprobante = ''
 								$sql_project 
 								$sql_date 
