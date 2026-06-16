@@ -208,6 +208,30 @@ class RepComp extends Report {
 
 	}
 
+	public function displayRows() {
+
+		if(is_array($this->rows)) {
+
+			$results = $this->rows;
+
+			for($i=0; $i<count($results); $i++) {
+				print "\t<tr>\n";
+				print "\t<td>".$results[$i]['proyecto']."</td>\n";
+				print "\t<td>".$results[$i]['razonSocial']."</td>\n";
+				print "\t<td>".$results[$i]['concepto']."</td>\n";
+				print "\t<td>".$results[$i]['fechaDePago']."</td>\n";
+				print "\t<td>".$results[$i]['pagoForma']."</td>\n";
+				print "\t<td style=\"text-align:right;white-space:nowrap;\">".number_currency($results[$i]['totalMXN'])."</td>\n";
+				print "\t<td>".$results[$i]['pagoStatus']."</td>\n";
+				print "\t</tr>\n";
+			}
+
+		} else {
+			print "\t<tr><td colspan=\"".count($this->header)."\">No hay resultados</td></tr>\n";
+		}
+
+	}
+
 	public function export() {
 
 		get_excel_comp($this->header, $this->rows);
