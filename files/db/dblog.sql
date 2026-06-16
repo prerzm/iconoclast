@@ -1,3 +1,7 @@
+# 2026-06-12 - notify vendors of payment complement missing
+
+ALTER TABLE `ico_gastos` ADD `comprobanteNotify` DATE NULL DEFAULT NULL AFTER `comprobante`;
+
 # 2026-05-08 - Initial setup
 
 DELETE FROM ico_companies WHERE companyId = 1;

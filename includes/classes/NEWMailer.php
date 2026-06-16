@@ -150,6 +150,51 @@ class NEWMailer extends PHPMailer {
     }
     
 
+    // mail for payment complement reminder
+    public function vendors_reminder_comp($vendors_emails) {
+
+		global $global_company;
+
+        if(!is_array($vendors_emails) || count($vendors_emails)==0) {
+            return false;
+        }
+    
+		# add addresses
+		if(VENDOR_EMAIL_MODE==VENDOR_EMAIL_TEST) {
+			$this->AddAddress($global_company['email']);
+		} else {
+			$this->AddAddress($global_company['email']);
+			foreach($vendors_emails as $email) {
+				$this->AddBCC($email);
+			}
+		}
+
+		# subject
+		$this->Subject = "Sube tu Complemento de Pago";
+
+        // Load mail template & replace content
+        $template = PATH_MAILS."mail.reminder.comp.html";
+		if(file_exists($template) && is_file($template)) {
+			$fp = fopen($template, "r");
+			$htmlBody = fread($fp, filesize($template));
+			fclose($fp);
+		} else {
+			return false;
+		}
+
+		$content_search = array('SITE_URL', 'COMPANY');
+		$content_replace = array(SITE_URL, $global_company['nombre']);
+		$htmlBody = str_replace($content_search, $content_replace, $htmlBody);
+
+		// set the html mail body
+		$this->Body = $htmlBody;
+		
+		// Send and verify
+		return $this->process_mail();
+
+    }
+    
+
     // mail for new contract notification
     public function vendors_notify_contract($vendors_emails, $project_title) {
 
