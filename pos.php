@@ -271,9 +271,9 @@ $yearId = (isset($_GET['ano'])) ? aget('ano') : array_key_first($years);
                                                             <?php } ?>
                                                             <?php if($results[$i]['pagoStatusId']==PAYMENT_STATUS_PAYED) { ?>
                                                                 <?php if($results[$i]['comprobante']!="") { ?>
-                                                                    <span class="label label-success">Con complemento</span>
+                                                                    <br><span class="label label-success">Con complemento</span>
                                                                 <?php } else { ?>
-                                                                    <span class="label label-important">Sin complemento</span>
+                                                                    <br><span class="label label-important">Sin complemento</span>
                                                                 <?php } ?>
                                                             <?php } ?>
                                                         </td>

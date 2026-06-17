@@ -158,9 +158,29 @@ $contracts['PF'][1] = sql_select("SELECT contratoId, nombre FROM ".TABLE_CONTRAC
                                         <input type="hidden" name="proyectoId" value="<?=$proyectoId;?>">
                                         <div class="control-group">
                                             <label class="control-label"><strong>Cargar Nómina</strong></label>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">Fecha de Pago</label>
                                             <div class="controls">
-                                                <input type="file" name="nomina" class="span10 m-wrap" style="float:left;width:70%;" /><button type="submit" class="btn btn-primary" style="float:right;">Cargar</button>
+                                                <label for="fechaFixed0"><input type="radio" name="fechaFixed" id="fechaFixed0" value="0" checked="checked" onclick="$('#div_fecha').hide();$('#fechaDePago').val('');" /> Calcular a partir de ingresar la factura</label>
+                                                <label for="fechaFixed1"><input type="radio" name="fechaFixed" id="fechaFixed1" value="1" onclick="$('#div_fecha').hide();$('#fechaDePago').val('');" /> Calcular a partir de hoy</label>
+                                                <label for="fechaFixed2"><input type="radio" name="fechaFixed" id="fechaFixed2" value="2" onclick="$('#div_fecha').show();" /> Fecha específica</label>
                                             </div>
+                                        </div>
+                                        <div id="div_fecha" class="control-group hide">
+                                            <label class="control-label">Fecha tentativa de pago</label>
+                                            <div class="controls">
+                                                <input type="text" id="fechaDePago" name="fechaDePago" class="span10 m-wrap datepicker" value=""/>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">Archivo</label>
+                                            <div class="controls">
+                                                <input type="file" name="nomina" class="span10 m-wrap" />
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label"><button type="submit" class="btn btn-primary" style="float:right;">Cargar</button></label>
                                         </div>
                                     </form>
                                     <div style="clear:both;"></div>

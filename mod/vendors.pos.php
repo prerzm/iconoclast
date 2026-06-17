@@ -76,7 +76,7 @@ switch(aglobal('cmd', 25)) {
 
                                 if($uploaded_xml===true && $uploaded_pdf===true) {
 
-                                    if($global_company['pagoPagoAPartirDe']==VENDOR_PAYMENT_INVOICE || is_null($posInfo['fechaDePago'])) {
+                                    if($posInfo['fechaFixed']==0) {
                                         $pos['fechaDePago'] = pos_get_payment_date((int)$posInfo['companyId']);
                                     }
                                     $pos['facturaUuid'] = $cfdi_info['UUID'];

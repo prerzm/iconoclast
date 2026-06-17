@@ -1101,7 +1101,7 @@ function get_po_status($poId) {
 
 function get_po_info($poId) {
 
-    return sql_select_row("SELECT   g.gastoId, g.fechaDePago, g.prontoPago, g.concepto, g.moneda, g.tipoDeCambio, 
+    return sql_select_row("SELECT   g.gastoId, g.fechaFixed, g.fechaDePago, g.prontoPago, g.concepto, g.moneda, g.tipoDeCambio, 
                                     g.monto, g.iva, g.retIVA, g.retISR, g.total, g.totalMXN, 
                                     g.pagoFormaId, g.pagoMetodoId, g.usoCfdiId, 
                                     g.facturaUuid, g.facturaInfo, g.referencia, g.notas, 

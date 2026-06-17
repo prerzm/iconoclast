@@ -21,7 +21,18 @@ switch(aglobal('cmd', 25)) {
         $vendors_emails = array();
         $proyectoId = (int)apost('proyectoId');
         $monto_total = 0;
-        $fechaDePago = pos_get_payment_date($global_company['companyId']);
+
+        # fecha de pago
+        if((int)apost('fechaFixed')==0) {
+            $fechaFixed = 0;
+            $fechaDePago = null;
+        } elseif((int)apost('fechaFixed')==1) {
+            $fechaFixed = 1;
+            $fechaDePago = pos_get_payment_date($global_company['companyId']);
+        } elseif((int)apost('fechaFixed')==2) {
+            $fechaFixed = 1;
+            $fechaDePago = apost('fechaDePago');
+        }
 
         if($global_perms['ADD']) {
 
@@ -141,7 +152,8 @@ switch(aglobal('cmd', 25)) {
                                 $honorarios_values['proveedorId'] = $vendorId;
                                 $honorarios_values['pagoStatusId'] = PAYMENT_STATUS_PENDING;
                                 $honorarios_values['concepto'] = $concepto;
-                                if($global_company['pagoPagoAPartirDe']==VENDOR_PAYMENT_LOAD) {
+                                if($fechaFixed==1) {
+                                    $honorarios_values['fechaFixed'] = $fechaFixed;
                                     $honorarios_values['fechaDePago'] = $fechaDePago;
                                 }
                                 $honorarios_values['monto'] = $monto;
@@ -275,7 +287,8 @@ switch(aglobal('cmd', 25)) {
                                 $pagos_values['pagoStatusId'] = PAYMENT_STATUS_PENDING;
                                 $pagos_values['prontoPago'] = 1;
                                 $pagos_values['concepto'] = $concepto;
-                                if($global_company['pagoPagoAPartirDe']==VENDOR_PAYMENT_LOAD) {
+                                if($fechaFixed==1) {
+                                    $pagos_values['fechaFixed'] = $fechaFixed;
                                     $pagos_values['fechaDePago'] = $fechaDePago;
                                 }
                                 $pagos_values['monto'] = $monto;
@@ -406,7 +419,8 @@ switch(aglobal('cmd', 25)) {
                                 $facturas_values['proveedorId'] = $vendorId;
                                 $facturas_values['pagoStatusId'] = PAYMENT_STATUS_PENDING;
                                 $facturas_values['concepto'] = $concepto;
-                                if($global_company['pagoPagoAPartirDe']==VENDOR_PAYMENT_LOAD) {
+                                if($fechaFixed==1) {
+                                    $facturas_values['fechaFixed'] = $fechaFixed;
                                     $facturas_values['fechaDePago'] = $fechaDePago;
                                 }
                                 $facturas_values['monto'] = $monto;
@@ -537,7 +551,8 @@ switch(aglobal('cmd', 25)) {
                                 $talento_values['proveedorId'] = $vendorId;
                                 $talento_values['pagoStatusId'] = PAYMENT_STATUS_PENDING;
                                 $talento_values['concepto'] = "Talento ".$personaje;
-                                if($global_company['pagoPagoAPartirDe']==VENDOR_PAYMENT_LOAD) {
+                                if($fechaFixed==1) {
+                                    $talento_values['fechaFixed'] = $fechaFixed;
                                     $talento_values['fechaDePago'] = $fechaDePago;
                                 }
                                 $talento_values['monto'] = $monto;
@@ -667,7 +682,8 @@ switch(aglobal('cmd', 25)) {
                                 $invoice_values['proveedorId'] = $vendorId;
                                 $invoice_values['pagoStatusId'] = PAYMENT_STATUS_PENDING;
                                 $invoice_values['concepto'] = $concepto;
-                                if($global_company['pagoPagoAPartirDe']==VENDOR_PAYMENT_LOAD) {
+                                if($fechaFixed==1) {
+                                    $invoice_values['fechaFixed'] = $fechaFixed;
                                     $invoice_values['fechaDePago'] = $fechaDePago;
                                 }
                                 $invoice_values['moneda'] = $moneda;

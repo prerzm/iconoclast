@@ -1,3 +1,7 @@
+# 2026-06-17 - payment date calculation
+
+ALTER TABLE `ico_gastos` ADD `fechaFixed` TINYINT NOT NULL DEFAULT '0' AFTER `pagoStatusId`;
+
 # 2026-06-16 - bank for vendors
 
 UPDATE ico_proveedores SET banco = 'AZTECA' WHERE extranjero = 0 AND banco <> '' AND deleted = 0 AND banco LIKE '%azteca%';
