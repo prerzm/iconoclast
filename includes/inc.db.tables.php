@@ -7,6 +7,8 @@ define("TABLE_SAT_METODO_PAGO", "sat_metodo_pago");
 define("TABLE_SAT_REGIMEN_FISCAL", "sat_regimen_fiscal");
 define("TABLE_SAT_USO_CFDI", "sat_uso_cfdi");
 
+define("TABLE_BANKS", "ico_bancos");
+
 define("TABLE_COMPANIES", "ico_companies");
 
 define("TABLE_CONTRACTS", "ico_contratos");

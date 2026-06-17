@@ -9,14 +9,16 @@ if($_SERVER['SERVER_NAME']=="localico") {
     define("ENVIRONMENT", "DEVELOPMENT");
     define("SITE_URL", "http://localico/");
     define("PATH_ROOT", "C:/Users/ramir/PRE/Sites/iconoclast/");
-    #error_reporting(E_ALL);
-    #ini_set('display_errors', '1');
-    error_reporting(0);
-    ini_set('display_errors', '0');
+    error_reporting(E_ALL);
+    ini_set('display_errors', '1');
+    #error_reporting(0);
+    #ini_set('display_errors', '0');
 } else {
     define("ENVIRONMENT", "PRODUCTION");
     define("SITE_URL", "https://iconoclast.serviciosabp.com/");
     define("PATH_ROOT", "/home/servicio/public_html/iconoclast/");
+    #error_reporting(E_ALL);
+    #ini_set('display_errors', '1');
     error_reporting(0);
     ini_set('display_errors', '0');
 }

@@ -5,6 +5,7 @@ include_once ("includes/inc.init.php");
 
 # queries
 $results = sql_select("SELECT * FROM ".TABLE_VENDORS." WHERE deleted = 0");
+$banks = get_banks();
 
 ?>
 <?php include("inc.header.main.php"); ?>
@@ -75,7 +76,9 @@ $results = sql_select("SELECT * FROM ".TABLE_VENDORS." WHERE deleted = 0");
                                         <div class="control-group">
                                             <label class="control-label">Banco</label>
                                             <div class="controls">
-                                                <input type="text" name="banco" class="span10 m-wrap"/>
+                                                <select class="span10 m-wrap" name="banco">
+                                                    <?=form_select_options($banks, "bank", "bank");?>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="control-group">

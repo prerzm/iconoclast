@@ -8,6 +8,7 @@ $vendorId = (int)session_get_data("userId");
 
 # queries
 $record = get_vendor($vendorId);
+$banks = get_banks();
 $allow_update_info = vendor_allow_edit_info($vendorId);
 
 ?>
@@ -68,12 +69,26 @@ $allow_update_info = vendor_allow_edit_info($vendorId);
                                             <button class="close" data-dismiss="alert"></button>
                                             La información es válida!
                                         </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Banco</label>
-                                            <div class="controls">
-                                                <input type="text" name="banco" class="span10 m-wrap" value="<?=$record['banco'];?>" <?=($allow_update_info) ? '' : 'disabled';?> />
+                                        <?php if($record['extranjero']==0) { ?>
+                                            <div class="control-group">
+                                                <label class="control-label">Banco</label>
+                                                <div class="controls">
+                                                    <select class="span10 m-wrap" name="banco">
+                                                        <?php if($record['banco']=="") { ?>
+                                                            <option value="" selected="selected"></option>
+                                                        <?php } ?>
+                                                        <?=form_select_options($banks, "bank", "bank", $record['banco']);?>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
+                                        <?php } else { ?>
+                                            <div class="control-group">
+                                                <label class="control-label">Banco</label>
+                                                <div class="controls">
+                                                    <input type="text" name="banco" class="span10 m-wrap" value="<?=$record['banco'];?>" />
+                                                </div>
+                                            </div>
+                                        <?php } ?>
                                         <div class="control-group">
                                             <label class="control-label">Cuenta</label>
                                             <div class="controls">

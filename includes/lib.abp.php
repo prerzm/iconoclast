@@ -953,6 +953,7 @@ function vendor_all_comps_uploaded($vendor, $po) {
 
 function vendor_verify_doc_date($doc_date, $days_limit=90) {
 
+    $doc_date = (!is_null($doc_date)) ? $doc_date : date("Y-m-d", strtotime("-3 years"));
     $lastUpdated = date_create($doc_date);
     $interval = date_diff($lastUpdated, date_create());
 
@@ -1714,6 +1715,12 @@ function contract_upload_attachment($id, $vendor_rfc, $project_path) {
 
 }
 
+
+/** Banks functions */
+
+function get_banks() {
+    return sql_select("SELECT * FROM ".TABLE_BANKS." WHERE deleted = 0");
+}
 
 /** validations **/
 

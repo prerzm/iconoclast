@@ -8,6 +8,7 @@ $vendorId = (int)aget('id');
 
 # queries
 $record = get_vendor($vendorId);
+$banks = get_banks();
 $acta = new FileHandler(PATH_VENDORS, basename($record['acta']));
 $csf = new FileHandler(PATH_VENDORS, basename($record['constancia']));
 $oc = new FileHandler(PATH_VENDORS, basename($record['opinionCumplimiento']));
@@ -118,12 +119,23 @@ $repse_valid = vendor_verify_doc_date($record['repse_fecha'], 1095);
                                                 <input type="text" name="repseAviso" class="span10 m-wrap" value="<?=$record['repseAviso'];?>" />
                                             </div>
                                         </div>
-                                        <div class="control-group">
-                                            <label class="control-label">Banco</label>
-                                            <div class="controls">
-                                                <input type="text" name="banco" class="span10 m-wrap" value="<?=$record['banco'];?>" />
+                                        <?php if($record['extranjero']==0) { ?>
+                                            <div class="control-group">
+                                                <label class="control-label">Banco</label>
+                                                <div class="controls">
+                                                    <select class="span10 m-wrap" name="banco">
+                                                        <?=form_select_options($banks, "bank", "bank", $record['banco']);?>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
+                                        <?php } else { ?>
+                                            <div class="control-group">
+                                                <label class="control-label">Banco</label>
+                                                <div class="controls">
+                                                    <input type="text" name="banco" class="span10 m-wrap" value="<?=$record['banco'];?>" />
+                                                </div>
+                                            </div>
+                                        <?php } ?>
                                         <div class="control-group">
                                             <label class="control-label">Cuenta</label>
                                             <div class="controls">
