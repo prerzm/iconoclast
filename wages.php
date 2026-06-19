@@ -79,15 +79,7 @@ $yearId = (isset($_GET['ano'])) ? aget('ano') : array_key_first($years);
                                         <div class="control-group">
                                             <label class="control-label">Fecha de Pago</label>
                                             <div class="controls">
-                                                <label for="fechaFixed0"><input type="radio" name="fechaFixed" id="fechaFixed0" value="0" checked="checked" onclick="$('#div_fecha').hide();$('#fechaDePago').val('');" /> Calcular a partir de ingresar la factura</label>
-                                                <label for="fechaFixed1"><input type="radio" name="fechaFixed" id="fechaFixed1" value="1" onclick="$('#div_fecha').hide();$('#fechaDePago').val('');" /> Calcular a partir de hoy</label>
-                                                <label for="fechaFixed2"><input type="radio" name="fechaFixed" id="fechaFixed2" value="2" onclick="$('#div_fecha').show();" /> Fecha específica</label>
-                                            </div>
-                                        </div>
-                                        <div id="div_fecha" class="control-group hide">
-                                            <label class="control-label">Fecha tentativa de pago</label>
-                                            <div class="controls">
-                                                <input type="text" id="fechaDePago" name="fechaDePago" class="span10 m-wrap datepicker" value=""/>
+                                                <input type="text" id="pagoDias" name="pagoDias" class="span2 m-wrap" value="<?=$global_company['pagoDias'];?>">&nbsp;días a partir de ingresar la factura
                                             </div>
                                         </div>
                                         <div class="control-group">

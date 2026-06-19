@@ -199,15 +199,8 @@ $uso = sql_select("SELECT usoCfdiId, CONCAT(claveUso, ' - ', uso) AS uso FROM ".
 												</td>
 											</tr>
 											<tr class="row_Pagos" style="display:none;">
-												<td>Cálculo de Fecha de Pago a Proveedores</td>
-												<td>
-													<label><input type="radio" name="field[pagoPagoAPartirDe]" value="1" <?=($company_info['pagoPagoAPartirDe']==1) ? 'checked' : '' ;?>> A partir de la carga del archivo de nómina</label>
-													<label><input type="radio" name="field[pagoPagoAPartirDe]" value="2" <?=($company_info['pagoPagoAPartirDe']==2) ? 'checked' : '' ;?>> A partir de que el proveedor suba su factura</label>
-												</td>
-											</tr>
-											<tr class="row_Pagos" style="display:none;">
-												<td>Número de semanas para pago a Proveedores</td>
-												<td><input type="text" name="field[pagoSemanas]" id="pagoSemanas" class="span6 m-wrap" value="<?=$company_info['pagoSemanas'];?>"></td>
+												<td>Número de días para pago a Proveedores</td>
+												<td><input type="text" name="field[pagoDias]" id="pagoDias" class="span6 m-wrap" value="<?=$company_info['pagoDias'];?>"></td>
 											</tr>
 										</tbody>
 									</table>

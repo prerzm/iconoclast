@@ -21,18 +21,7 @@ switch(aglobal('cmd', 25)) {
         $vendors_emails = array();
         $proyectoId = (int)apost('proyectoId');
         $monto_total = 0;
-
-        # fecha de pago
-        if((int)apost('fechaFixed')==0) {
-            $fechaFixed = 0;
-            $fechaDePago = null;
-        } elseif((int)apost('fechaFixed')==1) {
-            $fechaFixed = 1;
-            $fechaDePago = pos_get_payment_date($global_company['companyId']);
-        } elseif((int)apost('fechaFixed')==2) {
-            $fechaFixed = 1;
-            $fechaDePago = apost('fechaDePago');
-        }
+        $pago_dias = (int)apost('pagoDias');
 
         if($global_perms['ADD']) {
 
@@ -152,10 +141,7 @@ switch(aglobal('cmd', 25)) {
                                 $honorarios_values['proveedorId'] = $vendorId;
                                 $honorarios_values['pagoStatusId'] = PAYMENT_STATUS_PENDING;
                                 $honorarios_values['concepto'] = $concepto;
-                                if($fechaFixed==1) {
-                                    $honorarios_values['fechaFixed'] = $fechaFixed;
-                                    $honorarios_values['fechaDePago'] = $fechaDePago;
-                                }
+                                $honorarios_values['pagoDias'] = $pago_dias;
                                 $honorarios_values['monto'] = $monto;
                                 $honorarios_values['iva'] = $iva;
                                 $honorarios_values['retIVA'] = $retIVA;
@@ -287,10 +273,7 @@ switch(aglobal('cmd', 25)) {
                                 $pagos_values['pagoStatusId'] = PAYMENT_STATUS_PENDING;
                                 $pagos_values['prontoPago'] = 1;
                                 $pagos_values['concepto'] = $concepto;
-                                if($fechaFixed==1) {
-                                    $pagos_values['fechaFixed'] = $fechaFixed;
-                                    $pagos_values['fechaDePago'] = $fechaDePago;
-                                }
+                                $pagos_values['pagoDias'] = $pago_dias;
                                 $pagos_values['monto'] = $monto;
                                 $pagos_values['iva'] = $iva;
                                 $pagos_values['total'] = $total;
@@ -419,10 +402,7 @@ switch(aglobal('cmd', 25)) {
                                 $facturas_values['proveedorId'] = $vendorId;
                                 $facturas_values['pagoStatusId'] = PAYMENT_STATUS_PENDING;
                                 $facturas_values['concepto'] = $concepto;
-                                if($fechaFixed==1) {
-                                    $facturas_values['fechaFixed'] = $fechaFixed;
-                                    $facturas_values['fechaDePago'] = $fechaDePago;
-                                }
+                                $facturas_values['pagoDias'] = $pago_dias;
                                 $facturas_values['monto'] = $monto;
                                 $facturas_values['iva'] = $iva;
                                 $facturas_values['total'] = $total;
@@ -435,7 +415,7 @@ switch(aglobal('cmd', 25)) {
                                 $pos_id = query_insert(TABLE_POS, $facturas_values);
 
                                 if($pos_id>0) {
-                                    #add_po_log($pos_id, "Creado por ".session_get_data("name"));
+                                    add_po_log($pos_id, "Creado por ".session_get_data("name"));
                                     $vendors_emails[] = $email;
                                     $monto_total += $total;
                                     $pos_added[] = $pos_id;
@@ -551,10 +531,7 @@ switch(aglobal('cmd', 25)) {
                                 $talento_values['proveedorId'] = $vendorId;
                                 $talento_values['pagoStatusId'] = PAYMENT_STATUS_PENDING;
                                 $talento_values['concepto'] = "Talento ".$personaje;
-                                if($fechaFixed==1) {
-                                    $talento_values['fechaFixed'] = $fechaFixed;
-                                    $talento_values['fechaDePago'] = $fechaDePago;
-                                }
+                                $talento_values['pagoDias'] = $pago_dias;
                                 $talento_values['monto'] = $monto;
                                 $talento_values['iva'] = $iva;
                                 $talento_values['total'] = $total;
@@ -682,10 +659,7 @@ switch(aglobal('cmd', 25)) {
                                 $invoice_values['proveedorId'] = $vendorId;
                                 $invoice_values['pagoStatusId'] = PAYMENT_STATUS_PENDING;
                                 $invoice_values['concepto'] = $concepto;
-                                if($fechaFixed==1) {
-                                    $invoice_values['fechaFixed'] = $fechaFixed;
-                                    $invoice_values['fechaDePago'] = $fechaDePago;
-                                }
+                                $invoice_values['pagoDias'] = $pago_dias;
                                 $invoice_values['moneda'] = $moneda;
                                 $invoice_values['tipoDeCambio'] = $global_currencies[$moneda];
                                 $invoice_values['monto'] = $total;
@@ -700,7 +674,6 @@ switch(aglobal('cmd', 25)) {
 
                                 if($pos_id>0) {
                                     add_po_log($pos_id, "Creado por ".session_get_data("name"));
-                                    $vendors_emails[] = $email;
                                     $monto_total += $total;
                                     $pos_added[] = $pos_id;
                                 }

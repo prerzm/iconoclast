@@ -1101,7 +1101,7 @@ function get_po_status($poId) {
 
 function get_po_info($poId) {
 
-    return sql_select_row("SELECT   g.gastoId, g.fechaFixed, g.fechaDePago, g.prontoPago, g.concepto, g.moneda, g.tipoDeCambio, 
+    return sql_select_row("SELECT   g.gastoId, g.pagoDias, g.fechaDePago, g.prontoPago, g.concepto, g.moneda, g.tipoDeCambio, 
                                     g.monto, g.iva, g.retIVA, g.retISR, g.total, g.totalMXN, 
                                     g.pagoFormaId, g.pagoMetodoId, g.usoCfdiId, 
                                     g.facturaUuid, g.facturaInfo, g.referencia, g.notas, 
@@ -1159,7 +1159,7 @@ function get_payments_status_role($roleId, $pagoStatusId=0) {
     return sql_select("SELECT * FROM ".TABLE_PAYMENTS_STATUS." WHERE 1 $sql_status");
 }
 
-function pos_get_payment_date($company_id) {
+function pos_calc_payment_date($company_id, $days) {
 
     global $global_company;
 
@@ -1167,8 +1167,10 @@ function pos_get_payment_date($company_id) {
         $global_company = get_company_info($company_id);
     }
 
+    $days = ((int)$days>0) ? $days : $global_company['pagoDias'];
+
     $now = date("Y-m-d");
-    $weeks = strtotime("$now +".$global_company['pagoSemanas']." weeks");
+    $weeks = strtotime("$now +$days days");
     $weekday = (int)date("N", $weeks);
 
     if((int)$weekday==(int)$global_company['pagoDiaDePago']) {
@@ -1185,6 +1187,7 @@ function pos_get_payment_date($company_id) {
     return $payment_date;
 
 }
+
 
 /** Invoices functions **/
 

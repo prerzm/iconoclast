@@ -75,14 +75,10 @@ switch(aglobal('cmd', 25)) {
                                 $uploaded_pdf = document_upload($invoice_pdf['tmp_name'], $posInfo['pathFacturas'], $new_file_name.".pdf");
 
                                 if($uploaded_xml===true && $uploaded_pdf===true) {
-
-                                    if($posInfo['fechaFixed']==0) {
-                                        $pos['fechaDePago'] = pos_get_payment_date((int)$posInfo['companyId']);
-                                    }
+                                    $pos['fechaDePago'] = pos_calc_payment_date((int)$posInfo['companyId'], (int)$posInfo['pagoDias']);
                                     $pos['facturaUuid'] = $cfdi_info['UUID'];
                                     $pos['facturaInfo'] = str_replace("'", "", json_encode($cfdi_info));
                                     $pos['facturaNombre'] = $new_file_name;
-
                                 }
 
                             }
