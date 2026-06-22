@@ -1,3 +1,7 @@
+# 2026-06-18 - Fix for payment date calculation
+
+ALTER TABLE `ico_gastos` ADD `pagoDias` TINYINT NOT NULL DEFAULT '35' AFTER `fechaFixed`;
+
 # 2026-06-17 - payment date calculation
 
 ALTER TABLE `ico_gastos` ADD `fechaFixed` TINYINT NOT NULL DEFAULT '0' AFTER `pagoStatusId`;

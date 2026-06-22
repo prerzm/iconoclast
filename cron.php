@@ -17,11 +17,11 @@ $global_company = get_company_info($iconoclast_id);
 load_settings();
 
 # payment complement
-$sql_date = "AND (g.comprobanteNotify IS NULL OR g.comprobanteNotify > '".date("Y-m-d", strtotime("-10 days"))."')";
+$sql_date = "AND (g.comprobanteNotify IS NULL OR g.comprobanteNotify < '".date("Y-m-d", strtotime("-5 days"))."')";
 $pos = sql_select(" SELECT	g.gastoId, CONCAT(p.clave, ' - ', p.titulo) AS proyecto, v.razonSocial, v.email, g.concepto, g.fechaDePago, g.comprobante, g.comprobanteNotify, fp.pagoForma, g.totalMXN, ps.pagoStatus
                     FROM ".TABLE_POS." g, ".TABLE_VENDORS." v, ".TABLE_PROJECTS." p, ".TABLE_COMPANIES." c, ".TABLE_SAT_FORMA_PAGO." fp, ".TABLE_PAYMENTS_STATUS." ps
                     WHERE g.proveedorId = v.proveedorId AND g.proyectoId = p.proyectoId AND p.companyId = c.companyId AND g.pagoFormaId = fp.pagoFormaId AND g.pagoStatusId = ps.pagoStatusId AND 
-                        g.pagoStatusId = 3 AND g.pagoMetodoId <> 1 AND g.facturaUuid <> '' AND g.comprobante = ''
+                        g.pagoStatusId = 3 AND g.pagoMetodoId <> 1 AND g.facturaUuid <> '' AND g.comprobante = '' AND v.extranjero = 0 
                         $sql_date 
                     ORDER BY g.fechaDePago DESC
                     LIMIT 0, 30");
