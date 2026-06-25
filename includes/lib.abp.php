@@ -978,7 +978,10 @@ function vendor_has_contracts_pending($vendorId) {
 
 function vendor_has_complementos_pending($vendorId, $poId) {
     if(!vendor_is_foreign($vendorId)) {
-        return (int)query_select_single_value("COUNT(gastoId) AS total", TABLE_POS, "proveedorId = $vendorId AND gastoId <> $poId AND pagoMetodoId <> ".FACTURAS_TIPO_COMPROBACION." AND comprobante = '' AND fechaDePago >= '2022-01-01' AND pagoStatusId = ".PAYMENT_STATUS_PAYED, "");
+        return (int)query_select_single_value("COUNT(g.gastoId) AS total", TABLE_POS." g, ".TABLE_PROJECTS." p, ".TABLE_COMPANIES." c", 
+                                                "g.proyectoId = p.proyectoId AND p.companyId = c.companyId AND proveedorId = $vendorId AND 
+                                                gastoId <> $poId AND pagoMetodoId <> ".FACTURAS_TIPO_COMPROBACION." AND comprobante = '' AND 
+                                                fechaDePago >= '2022-01-01' AND pagoStatusId = ".PAYMENT_STATUS_PAYED, "");
     } else {
         return 0;
     }
