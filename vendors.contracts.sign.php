@@ -59,19 +59,26 @@ $contract_html = $contract->get_html();
                                 </div>
                                 <div class="block-content collapse in">
 
-                                    <form id="form-sign" method="post" action="mod/vendors.contracts.php">
+                                    <form id="form-sign" method="post" action="mod/vendors.contracts.php" enctype="multipart/form-data">
                                     <input type="hidden" name="cmd" value="sign">
+                                    <input type="hidden" id="signed" name="signed" value="0">
+                                    <input type="hidden" id="formimage" name="image" value="">
 
                                         <div><?=$contract_html;?></div>
 
                                         <div class="alert alert-error" id="alertAccept" style="margin-top:10px;">
-                                            <h4><input name="signed" type="checkbox" style="margin-bottom:7px;" value="1" onclick="$('#buttonSign').toggle();">&nbsp;&nbsp;Bajo protesta de decir verdad, declaro que toda la información aquí proporcionada es correcta y verídica al momento de la firma de este contrato y acepto los términos y condiciones del mismo.</h4>
+                                            <h4><input id="agreed" name="agreed" type="checkbox" style="margin-bottom:7px;" value="1">&nbsp;&nbsp;Bajo protesta de decir verdad, declaro que toda la información aquí proporcionada es correcta y verídica al momento de la firma de este contrato y acepto los términos y condiciones del mismo.</h4>
+                                        </div>
+
+                                        <div id="canvas">
+                                            <canvas id="newSignature" style="position: relative; margin: 0; padding: 0; border: 2px solid #9197b1;background: url('vendors/signsend/background.png');"></canvas>
                                         </div>
 
                                         <div class="control-group">
                                             <label class="control-label">&nbsp;</label>
                                             <div class="controls">
-                                                <button type="submit" id="buttonSign" class="btn btn-primary" style="display:none;"><i class="icon-edit icon-white"></i> Firmar y guardar el presente Contrato</button>
+                                                <button type="button" class="btn btn-secondary" onclick="signatureClear()">Borrar Firma</button>
+                                                <button type="button" class="btn btn-primary" id="buttonSign" onclick="signatureSave()"><i class="icon-edit icon-white"></i> Firmar y guardar el presente Contrato</button>
                                                 <a href="#" class="btn btn-inverse" onclick="history.back();"><i class="icon-arrow-left icon-white"></i> Regresar</a>
                                             </div>
                                         </div>
@@ -96,5 +103,12 @@ $contract_html = $contract->get_html();
                 <p> <?=SITE_FOOTER_COPY;?></p>
             </footer>
         </div><!--/.fluid-container-->
+
+        <!-- extra js -->
+         <script src="vendors/signsend/signaturesave.js"></script>
+        <script>
+            signatureCapture();
+        </script>
+
 
 <?php include("inc.footer.php"); ?>

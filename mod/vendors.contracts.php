@@ -74,12 +74,16 @@ switch(aglobal('cmd', 25)) {
 
         # vars
         $contract_vendor_id = (int)session_get_data("contract_id");
+        $agreed = (int)apost('agreed');
         $signed = (int)apost('signed');
+        $image_str = $_POST['image'];
         $contract = new ContractsAdendas($contract_vendor_id);
+        $signature = new SignatureImage();
+        $signature->fromstr($image_str);
 
-        if($contract->get_id()>0) {
-            if($signed==1) {
-                $contract->sign();
+        if($contract->get_id()>0 && $signature->valid()) {
+            if($agreed==1 && $signed==1) {
+                $contract->sign($signature->str());
                 session_unset_data("contract_id");
                 $return = "vendors.contracts.php";
                 set_alert("success", "El documento ha sido firmado correctamente.");

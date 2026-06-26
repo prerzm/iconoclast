@@ -1,3 +1,7 @@
+# 2026-06-22 - add field for vendors signature
+
+ALTER TABLE `ico_contratos_proveedores` ADD `firma` TEXT NOT NULL AFTER `firmaFecha`;
+
 # 2026-06-18 - Fix for payment date calculation
 
 ALTER TABLE `ico_gastos` ADD `pagoDias` TINYINT NOT NULL DEFAULT '35' AFTER `fechaFixed`;

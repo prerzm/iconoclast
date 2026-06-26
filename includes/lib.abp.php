@@ -1606,6 +1606,7 @@ function vendor_add_contract($vendor, $project, $tipo="", $fields_values="") {
     $values['contratoId'] = (int)query_select_single_value("contratoId", TABLE_CONTRACTS, "subtipo = '$subtype'");
     $values['fechaCreado'] = date("Y-m-d");
     $values['fieldsValues'] = $fields_values;
+    $values['firma'] = "";
     $values['info'] = "";
     
     return query_insert(TABLE_CONTRACTS_VENDORS, $values);
@@ -1621,6 +1622,7 @@ function vendor_add_adenda($vendor, $project_id, $parent_id, $subtype, $fields_v
         $values['contratoId'] = (int)query_select_single_value("contratoId", TABLE_CONTRACTS, "subtipo = '".str_replace("Contrato", "Adenda", $subtype)."'");
         $values['fechaCreado'] = date("Y-m-d");
         $values['fieldsValues'] = $fields_values;
+        $values['firma'] = "";
         $values['info'] = "";
         return query_insert(TABLE_CONTRACTS_VENDORS, $values);
     }

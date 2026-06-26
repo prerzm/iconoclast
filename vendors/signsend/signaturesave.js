@@ -1,32 +1,28 @@
 function signatureCapture() {
+
 	var canvas = document.getElementById("newSignature");
 	var context = canvas.getContext("2d");
+	var signed = document.getElementById("signed");
 
 	if (!context) {
 		throw new Error("Failed to get canvas' 2d context");
 	}
 
-	canvas.width = 280 ;
-	canvas.height = 130 ;
-	
+	screenwidth = screen.width;
+
+	if (screenwidth < 480) {
+		canvas.width = screenwidth - 8;
+		canvas.height = (screenwidth * 0.58);
+	} else {
+		canvas.width = 280;
+		canvas.height = 170;
+	}
+
 	context.fillStyle = "#fff";
-	context.strokeStyle = "#444";
+	context.strokeStyle = "#222";
 	context.lineWidth = 1.2;
 	context.lineCap = "round";
 
-	//context.fillRect(0, 0, canvas.width, canvas.height);
-
-	context.fillStyle = "#3a87ad";
-	context.strokeStyle = "#3a87ad";
-	context.lineWidth = 1;
-	//context.moveTo(20,220);
-	//context.lineTo(454,220);
-	//context.stroke();
-
-	context.fillStyle = "#fff";
-	context.strokeStyle = "#444";
-	
-	var disableSave = true;
 	var pixels = [];
 	var cpixels = [];
 	var xyLast = {};
@@ -80,6 +76,8 @@ function signatureCapture() {
 			document.body.addEventListener('mouseup', on_mouseup, false);
 			document.body.addEventListener('touchend', on_mouseup, false);
 
+			signed.value = 1;
+
 			empty = false;
 			var xy = get_board_coords(e);
 			context.beginPath();
@@ -87,8 +85,6 @@ function signatureCapture() {
 			context.moveTo(xy.x, xy.y);
 			pixels.push(xy.x, xy.y);
 			xyLast = xy;
-
-			document.getElementById("formsigned").value = 1;
 		};
 
 		function on_mousemove(e, finish) {
@@ -121,7 +117,6 @@ function signatureCapture() {
 
 		function on_mouseup(e) {
 			remove_event_listeners();
-			disableSave = false;
 			context.stroke();
 			pixels.push('e');
 			calculate = false;
@@ -134,46 +129,26 @@ function signatureCapture() {
 }
 
 function signatureSave() {
-
 	var canvas = document.getElementById("newSignature");
-	var signed = parseInt(document.getElementById("formsigned").value);
-
-	if(signed==1) {
-		// save canvas image as data url (png format by default)
-		var dataURL = canvas.toDataURL("image/png");
-		document.getElementById("formimage").value = dataURL;
+	var dataURL = canvas.toDataURL("image/png");
+	var agreed = document.getElementById("agreed");
+	var signed = document.getElementById("signed");
+	document.getElementById("formimage").value = dataURL;
+	if(agreed.checked && parseInt(signed.value)==1) {
 		document.getElementById("form-sign").submit();
 	} else {
-		alert("Es necesario que firme el en el espacio en blanco antes de continuar.");
-		return false;
+		alert("Es necesario verificar la casilla de aceptación y firmar el contrato");
 	}
-
 };
 
 function signatureClear() {
 	var canvas = document.getElementById("newSignature");
 	var context = canvas.getContext("2d");
+	var signed = document.getElementById("signed");
 	context.clearRect(0, 0, canvas.width, canvas.height);
-	document.getElementById("formsigned").value = 0;
+	context.fillStyle = "#fff";
+	context.strokeStyle = "#222";
+	context.lineWidth = 1;
+	signed.value = 0;
 }
 
-
-// http://stackoverflow.com/questions/11385471/save-canvas-image-post-the-data-string-to-php
-
-function signatureSend() {
-	var canvas = document.getElementById("newSignature");
-	var dataURL = canvas.toDataURL("image/png");
-	document.getElementById("saveSignature").src = dataURL;
-	var sendemail = document.getElementById('sendemail').value;
-	var replyemail = document.getElementById('replyemail').value;
-
-	var form = document.createElement("form");
-	form.setAttribute("action","upload_file.php");
-	form.setAttribute("enctype","multipart/form-data");
-	form.setAttribute("method","POST");
-	form.setAttribute("target","_self");
-	// form.action = location.href.replace(/^http:/, 'https:');
-	form.innerHTML = '<input type="text" name="image" value="'+dataURL+'"/>'+'<input type="email" name="email" value="'+sendemail+'"/>'+'<input type="email" name="replyemail" value="'+replyemail+'"/>';
-	form.submit();
-
-}

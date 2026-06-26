@@ -300,6 +300,7 @@ switch(aglobal('cmd', 20)) {
         $values['contratoId'] = $contract_id;
         $values['fechaCreado'] = date("Y-m-d");
         $values['fieldsValues'] = array_to_db(array("Servicios_Proporcionados_o_Personaje" => $servicios, "Monto_de_Pago" => $monto_letra));
+        $values['firma'] = "";
         $values['info'] = "";
         
         $id = query_insert(TABLE_CONTRACTS_VENDORS, $values);

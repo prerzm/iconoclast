@@ -9,12 +9,14 @@ class ContractsAdendas {
 
     public function __construct($id) {
 
-		$record = sql_select_row("SELECT cv.id, cv.parentId, cv.fechaCreado, cv.firmaStatusId, cv.firmaFecha, cv.contrato, cv.anexo, cv.carta, cv.fieldsValues, cv.info, 
+		$record = sql_select_row("SELECT cv.id, cv.parentId, cv.fechaCreado, cv.firmaStatusId, cv.firmaFecha, cv.contrato, cv.anexo, cv.carta, 
+									cv.fieldsValues, cv.info, cv.firma, 
 									c.contratoId, c.tipo, c.subtipo, c.nombre, c.contrato, 
 									v.proveedorId, v.rfc, v.razonSocial, v.repseNumero, v.repseAviso, v.email, v.banco, v.cuenta, v.clabe, 
 									p.proyectoId, p.clave, p.titulo, p.fechaInicio, p.fechaFin, p.lugar, CONCAT('".PATH_PROJECTS."', uniqId, '/contratos/') AS pathContratos, 
+									co.companyId, co.firmaContratos, 
 									cs.contratoStatus 
-								FROM ".TABLE_CONTRACTS_VENDORS." cv, ".TABLE_CONTRACTS." c, ".TABLE_CONTRACTS_STATUS." cs, ".TABLE_VENDORS." v, ".TABLE_PROJECTS." p
+								FROM ".TABLE_CONTRACTS_VENDORS." cv, ".TABLE_CONTRACTS." c, ".TABLE_CONTRACTS_STATUS." cs, ".TABLE_VENDORS." v, ".TABLE_PROJECTS." p, ".TABLE_COMPANIES." co 
 								WHERE cv.contratoId = c.contratoId AND cv.proveedorId = v.proveedorId AND cv.firmaStatusId = cs.contratoStatusId AND 
 									cv.proyectoId = p.proyectoId AND cv.id = $id");
 		
@@ -175,6 +177,28 @@ class ContractsAdendas {
 		$text = str_replace($search_project, $replace_project, $this->get("raw"));
 		$text = str_replace($search_vendor, $replace_vendor, $text);
 
+		// replace fecha firma
+		$text = str_replace("Contrato_Firma_Fecha", DateES::format("d \d\\e F \d\\e\l Y", $this->get("firmaFecha")), $text);
+
+		// replace signatures
+		# company signature
+		$cs = new SignatureImage();
+		$cs->fromfile(PATH_SIGNATURES.$this->get("firmaContratos"));
+		$comp_sign = $cs->img();
+
+		# vendor signature
+		$vs = new SignatureImage();
+		$vs->fromstr($this->get("firma"));
+		$vendor_sign = $vs->img();
+
+		if($vendor_sign!="") {
+			$text = str_replace("EMPRESA_FIRMA", $comp_sign, $text);
+			$text = str_replace("PROVEEDOR_FIRMA", $vendor_sign, $text);
+		} else {
+			$text = str_replace("EMPRESA_FIRMA", "", $text);
+			$text = str_replace("PROVEEDOR_FIRMA", "", $text);
+		}
+		
 		// replace adenda fields
 		if($this->get("tipo")=="Adenda") {
 			$fecha_contrato = query_select_single_value("fechaCreado", TABLE_CONTRACTS_VENDORS, "id = ".$this->get("parentId"));
@@ -197,13 +221,6 @@ class ContractsAdendas {
 
 	}
 
-	public function get_html() {
-		$this->build();
-		$this->fill();
-		$html = text_to_html($this->html);
-		return $html;
-	}
-
 	public function save_fields() {
 		$fields = array();
 		if(is_array($this->fields)) {
@@ -214,8 +231,8 @@ class ContractsAdendas {
 		return query_update(TABLE_CONTRACTS_VENDORS, array("fieldsValues" => array_to_db($fields)), "id = ".$this->get_id());
 	}
 
-	public function sign() {
-		return query_update(TABLE_CONTRACTS_VENDORS, array("firmaStatusId" => CONTRACT_STATUS_SIGNED, "firmaFecha" => date("Y-m-d")), "id = ".$this->get_id());
+	public function sign($signature) {
+		return query_update(TABLE_CONTRACTS_VENDORS, array("firmaStatusId" => CONTRACT_STATUS_SIGNED, "firmaFecha" => date("Y-m-d"), "firma" => $signature), "id = ".$this->get_id());
 	}
 
 	public function reject() {
@@ -223,38 +240,29 @@ class ContractsAdendas {
 	}
 
     public function delete() {
-
-        # delete files
         file_delete($this->get("anexo"));
-
-		# delete adendas
 		query_delete(TABLE_CONTRACTS_VENDORS, "parentId = ".$this->get_id());
-
-		# delete contrato
 		return query_delete(TABLE_CONTRACTS_VENDORS, "id = ".$this->get_id());
-
     }
 
 	public function delete_attachment() {
-
-		# delete file
 		file_delete($this->get("pathContratos").$this->get("anexo"));
-
-		#update
 		return query_update(TABLE_CONTRACTS_VENDORS, array("anexo" => ""), "id = ".$this->get_id());
+	}
 
+	public function get_html() {
+		$this->build();
+		$this->fill();
+		$html = text_to_html($this->html);
+		return $html;
 	}
 
 	public function pdf() {
-
-		$sign_date = get_date_es("d \d\\e F \d\\e Y", $this->get("firmaFecha"));
-		$html = str_replace("Acordado y aceptado por", "Acordado, aceptado y firmado el día $sign_date por:", $this->get_html());
-
+		$html = $this->get_html();
         $pdf = new ContractPDF();
         $pdf->load_body($html);
         $pdf->render();
         $pdf->stream("Contrato.pdf");
-
 	}
 
 }
