@@ -95,7 +95,7 @@ switch(aglobal('cmd', 20)) {
             if((int)$vendor['repseReq']==-1 && !vendor_has_carta_repse($vendorId)) {
                 $vendor['repseNumero'] = "";
                 $vendor['repseAviso'] = "";
-                vendor_add_carta_repse($vendor);
+                vendor_add_carta_repse($vendorId);
             }
 
             # files
