@@ -1077,7 +1077,7 @@ function get_pos($projectId, $vendor, $statusId, $factura, $dateFrom, $dateTo) {
 
     return sql_select(" SELECT 	g.gastoId, g.fechaDePago, g.prontoPago, g.facturaUuid, g.comprobante, g.concepto, g.moneda, g.total, 
                                 p.titulo, 
-                                v.razonSocial, v.banco, v.clabe, v.swift, v.aba, 
+                                v.razonSocial, v.extranjero, v.banco, v.clabe, v.swift, v.aba, 
                                 s.pagoStatusId, s.pagoStatus 
                         FROM 	".TABLE_POS." g, ".TABLE_PROJECTS." p, ".TABLE_VENDORS." v, ".TABLE_PAYMENTS_STATUS." s
                         WHERE 	g.proyectoId = p.proyectoId AND g.proveedorId = v.proveedorId AND 
