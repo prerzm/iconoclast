@@ -60,7 +60,7 @@ if($contract->get_id()==0) {
                 <!-- ./alerts -->
                 <div class="block">
                     <div class="navbar navbar-inner block-header">
-                        <h2 style="color:#1b54a3;">Contrato de <?=$contract->get("razonSocial")." para ".$contract->get("titulo");?></h2>
+                        <h2 style="color:#1b54a3;"><?=$contract->get("tipo");?> de <?=$contract->get("razonSocial")." para ".$contract->get("titulo");?></h2>
                     </div>
                 </div>
                 <!-- breadcrumb -->

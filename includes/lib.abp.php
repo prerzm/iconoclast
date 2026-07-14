@@ -755,10 +755,13 @@ function add_get_vendor($rfc, $razon_social, $email, $contract_type="") {
         $vendor['rfc'] = $rfc;
         $vendor['razonSocial'] = $razon_social;
         $vendor['email'] = $email;
-        $vendor['repseReq'] = ($contract_type=="CON REPSE") ? 1 : 0;
+        $vendor['repseReq'] = ($contract_type=="CON REPSE") ? 1 : -1;
         $vendor['extranjero'] = (var_is_valid_rfc($rfc)) ? 0 : 1;
         $id = query_insert(TABLE_VENDORS, $vendor);
         $vendor['proveedorId'] = $id;
+        if($vendor['repseReq']==-1 && !vendor_has_carta_repse($id)) {
+            vendor_add_carta_repse($vendor);
+        }
     }
     return $vendor;
 }
@@ -841,14 +844,9 @@ function vendor_valid_bank_info($vendor) {
 }
 
 function vendor_valid_acta($vendor) {
-    if( (bool)VENDOR_REQ_ACTA==true && $vendor['extranjero']==0 ) {
-        if(file_is_valid($vendor['constancia'])) {
-            if( !vendor_verify_doc_date($vendor['constancia_fecha']) ) {
-                set_alert("error", "Es necesario que actualices tu Constancia de Situación Fiscal, ésta es requisito para poder recibir cualquier pago.");
-                return false;
-            }
-        } else {
-            set_alert("error", "Hace falta tu Constancia de Situación Fiscal, ésta es requisito para poder recibir cualquier pago.");
+    if( (bool)VENDOR_REQ_ACTA==true && $vendor['extranjero']==0 && get_vendor_type($vendor['rfc'])=="PM") {
+        if(!file_is_valid($vendor['acta'])) {
+            set_alert("error", "Hace falta tu Acta Constitutiva, ésta es requisito para poder recibir cualquier pago.");
             return false;
         }
     }
@@ -899,13 +897,8 @@ function vendor_valid_identificacion($vendor) {
 
 function vendor_valid_repse($vendor) {
     if( (bool)VENDOR_REQ_REPSE==true && $vendor['extranjero']==0 ) {
-        if(file_is_valid($vendor['repse'])) {
-            if( !vendor_verify_doc_date($vendor['repse_fecha'], 1095) ) {
-                set_alert("error", "Es necesario que actualices tu registro al REPSE o Carta Protesta, éste es requisito para poder recibir cualquier pago.");
-                return false;
-            }
-        } else {
-            set_alert("error", "Hace falta tu registro al REPSE o Carta Protesta, éste es requisito para poder recibir cualquier pago.");
+        if( $vendor['repseReq']==0 || ( $vendor['repseReq']==1 && (trim($vendor['repseNumero'])=="" || trim($vendor['repseAviso'])=="") ) ) {
+            set_alert("error", "Es necesario que actualices tu información sobre el REPSE, éste es requisito para poder recibir cualquier pago.");
             return false;
         }
     }
@@ -966,10 +959,8 @@ function vendor_verify_doc_date($doc_date, $days_limit=90) {
 }
 
 function vendor_has_contracts_pending($vendorId) {
-    $result = sql_select_row("SELECT COUNT(*) AS total
-                            FROM ".TABLE_CONTRACTS_VENDORS." cp, ".TABLE_PROJECTS." p 
-                            WHERE cp.proyectoId = p.proyectoId AND cp.proveedorId = $vendorId AND 
-                                (cp.firmaStatusId = 1 OR cp.firmaFecha IS NULL)");
+    $result = sql_select_row("  SELECT COUNT(*) AS total FROM ".TABLE_CONTRACTS_VENDORS." 
+                                WHERE proveedorId = $vendorId AND (firmaStatusId = 1 OR firmaFecha IS NULL)");
     if((int)$result['total']>0) {
         return true;
     }
@@ -1537,7 +1528,7 @@ function get_contracts_vendors($projectId, $vendor, $statusId) {
 
     $sql_status = ($statusId>0) ? " AND cp.firmaStatusId = $statusId" : "";
 
-    return sql_select(" SELECT p.proyectoId, p.titulo, v.razonSocial, 
+    return sql_select(" SELECT p.proyectoId, IF(p.proyectoId = 0, 'Carta REPSE', p.titulo) AS titulo, v.razonSocial, 
                             CONCAT('".PATH_PROJECTS."', p.uniqId, '/contratos/', contrato) AS contrato, 
                             CONCAT('".PATH_PROJECTS."', p.uniqId, '/contratos/', anexo) AS anexo, 
                             CONCAT('".PATH_PROJECTS."', p.uniqId, '/contratos/', carta) AS carta, 
@@ -1586,6 +1577,29 @@ function get_contract_type_for_vendor($rfc, $tipo="") {
     
     return $class_name;
 
+}
+
+function vendor_has_carta_repse($vendorId) {
+    return (bool)sql_select_row("SELECT cp.id FROM ".TABLE_CONTRACTS." c, ".TABLE_CONTRACTS_VENDORS." cp 
+                                WHERE cp.contratoId = c.contratoId AND cp.proveedorId = $vendorId AND c.subtipo = 'CartaRepse'");
+}
+
+function vendor_add_carta_repse($vendorId, $fields_values="") {
+
+    $values['proveedorId'] = $vendorId;
+    $values['contratoId'] = (int)query_select_single_value("contratoId", TABLE_CONTRACTS, "subtipo = 'CartaRepse'");
+    $values['fechaCreado'] = date("Y-m-d");
+    $values['fieldsValues'] = $fields_values;
+    $values['firma'] = "";
+    $values['info'] = "";
+    
+    return query_insert(TABLE_CONTRACTS_VENDORS, $values);
+
+}
+
+function vendor_del_carta_repse($vendorId) {
+    return sql_query("DELETE FROM ".TABLE_CONTRACTS_VENDORS." WHERE proveedorId = $vendorId AND 
+                        contratoId = (SELECT contratoId FROM ".TABLE_CONTRACTS." WHERE subtipo = 'CartaRepse')");
 }
 
 function vendor_has_contract_for_project($vendorId, $proyectoId) {

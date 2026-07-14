@@ -13,7 +13,6 @@ $allow_update_info = vendor_allow_edit_info($vendorId);
 $csf_valid = vendor_verify_doc_date($record['constancia_fecha']);
 $oc_valid = vendor_verify_doc_date($record['opinionCumplimiento_fecha']);
 $dom_valid = vendor_verify_doc_date($record['residencia_fecha']);
-$repse_valid = vendor_verify_doc_date($record['repse_fecha'], 1095);
 
 ?>
 <?php include("inc.header.main.php"); ?>
@@ -124,21 +123,6 @@ $repse_valid = vendor_verify_doc_date($record['repse_fecha'], 1095);
                                                 <?php } else { ?>
                                                     <div class="filebox_content"><img src="images/icon_file_missing.png" /></div>
                                                     <div class="filebox_footer"><input type="file" name="identificacion" /></div>
-                                                <?php } ?>
-                                            </div>
-                                            <div class="filebox">
-                                                <div class="filebox_header"><a href="file.download.php?f=<?=base64_encode(PATH_ROOT."files/files/FormatoBajoProtestaDeDecirVerdad.doc");?>" title="Descargar">Formato bajo protesta</a></div>
-                                                <?php if(file_is_valid($record['repse'])) { ?>
-                                                    <?php if($repse_valid) { ?>
-                                                        <div class="filebox_content"><a href="file.download.php?f=<?=base64_encode($record['repse']);?>&t=o" title="Descargar"><img src="images/icon_file_valid.png" /></a></div>
-                                                        <div class="filebox_footer"><a href="mod/vendors.info.php?cmd=delrep" class="btn btn-small btn-danger" onclick="return confirm('Está seguro que desea eliminar este documento?');">Eliminar</a></div>
-                                                    <?php } else { ?>
-                                                        <div class="filebox_content"><img src="images/icon_file_invalid.png" /></div>
-                                                        <div class="filebox_footer"><input type="file" name="repse" /></div>
-                                                    <?php } ?>
-                                                <?php } else { ?>
-                                                    <div class="filebox_content"><img src="images/icon_file_missing.png" /></div>
-                                                    <div class="filebox_footer"><input type="file" name="repse" /></div>
                                                 <?php } ?>
                                             </div>
                                         <?php } ?>

@@ -33,7 +33,13 @@ switch(aglobal('cmd', 20)) {
                     if($repse_req==-1) {
                         $vendor['repseNumero'] = "";
                         $vendor['repseAviso'] = "";
+                        if(!vendor_has_carta_repse($vendorId)) {
+                            vendor_add_carta_repse($vendorId);
+                        }
                     } else {
+                        if(vendor_has_carta_repse($vendorId)) {
+                            vendor_del_carta_repse($vendorId);
+                        }
                         $vendor['repseNumero'] = trim(apost('repseNumero', 30));
                         $vendor['repseAviso'] = trim(apost('repseAviso', 30));
                         if($vendor['repseNumero']=="" || $vendor['repseAviso']=="") {

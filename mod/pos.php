@@ -28,7 +28,7 @@ switch(aglobal('cmd', 25)) {
             $pos['notas'] = apost('notas', 200);
             $extranjero = vendor_is_foreign($pos['proveedorId']);
             $notify = (int)apost('notify_vendor');
-            $contract = (int)apost('add_contract');
+            $gen_contract = (int)apost('add_contract');
 
             $project = get_project($pos['proyectoId']);
             $vendor = get_vendor($pos['proveedorId']);
@@ -72,7 +72,7 @@ switch(aglobal('cmd', 25)) {
                 }
 
                 # contract
-                if((bool)$global_company['generarContrato']) {
+                if($gen_contract==1 && (bool)$global_company['generarContrato']) {
                     if($vendor['extranjero']==0 || (bool)VENDOR_CONTRACT_TO_FOREIGN==true) {
                         $contract = vendor_has_contract_for_project($pos['proveedorId'], $pos['proyectoId']);
                         if($contract===false) {

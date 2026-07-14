@@ -31,9 +31,8 @@ if(!vendor_valid_bank_info($vendor)) {
 $acta = vendor_valid_acta($vendor);
 $csf = vendor_valid_constancia($vendor);
 $oc = vendor_valid_opinion_cumplimiento($vendor);
-$repse = vendor_valid_repse($vendor);
 $edo = vendor_valid_estado_cuenta($vendor);
-if(!$acta || !$csf || !$oc || !$repse || !$edo) {
+if(!$acta || !$csf || !$oc || !$edo) {
     redirect("vendors.info.docs.php");
 }
 

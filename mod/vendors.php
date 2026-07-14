@@ -42,6 +42,9 @@ switch(aglobal('cmd', 20)) {
                 $id = query_insert(TABLE_VENDORS, $vendor);
 
                 if($id>0) {
+                    if($vendor['repseReq']==-1 && !vendor_has_carta_repse($id)) {
+                        vendor_add_carta_repse($vendor);
+                    }
                     system_log($id, TABLE_VENDORS, "Add", json_encode($vendor));
                     set_alert("success", "La información ha sido actualizada.");
                 } else {
@@ -89,9 +92,10 @@ switch(aglobal('cmd', 20)) {
             }
 
             # repse
-            if((int)$vendor['repseReq']==0 || (int)$vendor['repseReq']) {
+            if((int)$vendor['repseReq']==-1 && !vendor_has_carta_repse($vendorId)) {
                 $vendor['repseNumero'] = "";
                 $vendor['repseAviso'] = "";
+                vendor_add_carta_repse($vendor);
             }
 
             # files

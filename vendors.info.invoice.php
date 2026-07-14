@@ -84,13 +84,9 @@ $allow_update_info = vendor_allow_edit_info($vendorId);
                                             <label class="control-label"><span <?=((int)$record['repseReq']==0) ? 'class="required"' : '' ;?>>REPSE</span> <span class="required">*</span></label>
                                             <div class="controls">
                                                 <select name="repseReq" id="repseReq" class="span5 m-wrap" onchange="repseToggle(this.value);">
-                                                    <option value="0" <?=((int)$record['repseReq']==0) ? 'selected' : '' ;?>> -- SELECCIONAR --</option>
                                                     <option value="-1" <?=((int)$record['repseReq']==-1) ? 'selected' : '' ;?>>NO necesito estar en el REPSE</option>
                                                     <option value="1" <?=((int)$record['repseReq']==1) ? 'selected' : '' ;?>>SI necesito estar en el REPSE</option>
                                                 </select>
-                                                <div class="alert alert-warning" id="repseAlert" <?=((int)$record['repseReq']==-1) ? '' : 'style="display:none;"' ;?>>
-                                                    <h4>Bajo protesta de decir verdad, manifiesto que no necesito estar inscrito en el REPSE.</h4>
-                                                </div>
                                             </div>
                                         </div>
                                         <div id="repseNumero" class="control-group" <?=((int)$record['repseReq']==1) ? '' : 'style="display:none;"' ;?>>
@@ -174,17 +170,14 @@ $allow_update_info = vendor_allow_edit_info($vendorId);
             function repseToggle(val) {
                 var value = parseInt(val);
                 if(value==0) {
-                    $("#repseAlert").hide();
                     $("#repseNumero").hide();
                     $("#repseAviso").hide();
                 }
                 if(value==-1) {
-                    $("#repseAlert").show();
                     $("#repseNumero").hide();
                     $("#repseAviso").hide();
                 }
                 if(value==1) {
-                    $("#repseAlert").hide();
                     $("#repseNumero").show();
                     $("#repseAviso").show();
                 }

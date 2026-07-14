@@ -1,3 +1,7 @@
+# 2026-07-02 - firma autógrafa de carta repse
+
+DELETE FROM ico_contratos WHERE companyId <> 2;
+
 # 2026-06-22 - add field for vendors signature
 
 ALTER TABLE `ico_contratos_proveedores` ADD `firma` TEXT NOT NULL AFTER `firmaFecha`;
