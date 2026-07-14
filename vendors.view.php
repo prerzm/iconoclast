@@ -13,7 +13,7 @@ $contracts = get_contracts_vendor($vendorId);
 $csf_valid = vendor_verify_doc_date($record['constancia_fecha']);
 $oc_valid = vendor_verify_doc_date($record['opinionCumplimiento_fecha']);
 $dom_valid = vendor_verify_doc_date($record['residencia_fecha']);
-$repse_valid = vendor_verify_doc_date($record['repse_fecha'], 1095);
+$repse_valid = vendor_verify_repse_date($record, $contracts);
 
 ?>
 <?php include("inc.header.main.php"); ?>
@@ -146,15 +146,11 @@ $repse_valid = vendor_verify_doc_date($record['repse_fecha'], 1095);
                                         <tr>
                                             <td>Acuse de Inscripción REPSE</td>
                                             <td>
-                                                <?php if( file_is_valid($record['repse']) ) { ?>
-                                                    <?php if($repse_valid) { ?>
-                                                        <a href="file.download.php?f=<?=base64_encode($record['repse']);?>&t=o" title="Descargar"><img src="images/icon_file_valid.png" /></a>
-                                                    <?php } else { ?>
-                                                        <a href="file.download.php?f=<?=base64_encode($record['repse']);?>&t=o" title="Descargar"><img src="images/icon_file_invalid.png" /></a>
-                                                        <span class="label label-important" style="margin-left:20px;">Vencida</span>
-                                                    <?php } ?>
+                                                <?php if($repse_valid) { ?>
+                                                    <a href="contracts.admin.php"><img src="images/icon_file_valid.png" /></a>
                                                 <?php } else { ?>
-                                                    <img src="images/icon_file_missing.png" /> <span class="label label-warning" style="margin-left:20px;">Pendiente</span>
+                                                    <img src="images/icon_file_invalid.png" />
+                                                    <span class="label label-important" style="margin-left:20px;">Vencida o no firmada</span>
                                                 <?php } ?>
                                             </td>
                                         </tr>

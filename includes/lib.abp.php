@@ -944,6 +944,21 @@ function vendor_all_comps_uploaded($vendor, $po) {
     return true;
 }
 
+function vendor_verify_repse_date($vendor) {
+    if(is_array($vendor) && count($vendor)>0) {
+        if($vendor['repseReq']==-1) {
+            $repse = sql_select_row("SELECT * FROM ".TABLE_CONTRACTS_VENDORS." WHERE proyectoId = 0 AND proveedorId = ".$vendor['proveedorId']);
+            if($repse) {
+                return vendor_verify_doc_date($repse['firmaFecha'], 1095);
+            }
+        } elseif($vendor['repseReq']==1) {
+            if(trim($vendor['repseNumero'])!="" && trim($vendor['repseAviso'])!="") {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 function vendor_verify_doc_date($doc_date, $days_limit=90) {
 
     $doc_date = (!is_null($doc_date)) ? $doc_date : date("Y-m-d", strtotime("-3 years"));
@@ -1706,7 +1721,7 @@ function save_contract_attach($document, $path, $filename) {
 
 function get_contracts_vendor($vendorId) {
 
-    return sql_select(" SELECT 	p.proyectoId, p.titulo, cp.*, cs.contratoStatus, c.razonSocial, 
+    return sql_select(" SELECT 	p.proyectoId, IF(p.titulo = '', 'Carta REPSE', p.titulo) AS titulo, cp.*, cs.contratoStatus, c.razonSocial, 
                                 IF(con.tipo IS NULL, '-', con.tipo) AS tipo, 
                                 CONCAT('".PATH_PROJECTS."', p.uniqId, '/contratos/', cp.contrato) AS contrato, 
                                 CONCAT('".PATH_PROJECTS."', p.uniqId, '/contratos/', cp.anexo) AS anexo, 
