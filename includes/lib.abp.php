@@ -947,13 +947,12 @@ function vendor_all_comps_uploaded($vendor, $po) {
 function vendor_verify_repse_date($vendor) {
     if(is_array($vendor) && count($vendor)>0) {
         if($vendor['repseReq']==-1) {
+            if(vendor_verify_doc_date($vendor['repse_fecha'], 1095)===true) {
+                return true;
+            }
             $repse = sql_select_row("SELECT * FROM ".TABLE_CONTRACTS_VENDORS." WHERE proyectoId = 0 AND proveedorId = ".$vendor['proveedorId']);
             if($repse) {
                 return vendor_verify_doc_date($repse['firmaFecha'], 1095);
-            }
-        } elseif($vendor['repseReq']==1) {
-            if(trim($vendor['repseNumero'])!="" && trim($vendor['repseAviso'])!="") {
-                return true;
             }
         }
     }
