@@ -149,51 +149,44 @@ switch(aglobal('cmd', 25)) {
             $comprobante_xml = (isset($_FILES) && isset($_FILES['comprobanteXML']) && $_FILES['comprobanteXML']['size']>0 && $_FILES['comprobanteXML']['error']==0) ? $_FILES['comprobanteXML'] : false;
             $comprobante_pdf = (isset($_FILES) && isset($_FILES['comprobantePDF']) && $_FILES['comprobantePDF']['size']>0 && $_FILES['comprobantePDF']['error']==0) ? $_FILES['comprobantePDF'] : false;
 
-            if($comprobante_xml===false || $comprobante_pdf===false) {
+            if($comprobante_xml!==false && $comprobante_pdf!==false) {
+                $comp = new XMLDocument(file_get_contents($comprobante_xml['tmp_name']));
+                if($comp->is_valid()) {
+                    $comp_uuid = $comp->get_by_path("cfdi:Comprobante/cfdi:Complemento/tfd:TimbreFiscalDigital/@attributes/UUID");
+                    if((bool)VALIDA_COMP==true) {
+                        $comp_cfdi_uuid = $comp->get_by_path("cfdi:Comprobante/cfdi:Complemento/pago20:Pagos/pago20:Pago/pago20:DoctoRelacionado/@attributes/IdDocumento");
+                        if(complement_exists($comp_uuid)==true || $posInfo['facturaUuid']!=$comp_cfdi_uuid) {
+                            $error = true;
+                            set_alert("error", "El complemento de pago no corresponde a la factura subida.");
+                        }
+                    }
+                } else {
+                    $error = true;
+                    set_alert("error", "El archivo XML no es un archivo válido.");
+                }
+            } else {
                 $error = true;
                 set_alert("error", "Hubo un error al subir los archivos.");
             }
 
-            # validate xml
-            libxml_use_internal_errors(TRUE);
-            $dom = new DOMDocument();
-            $dom->load($comprobante_xml['tmp_name']);
-            $errors = libxml_get_errors();
-
-            if(empty($errors) || (is_array($errors) && count($errors)==1 && $errors[0]->code==99) ) {
-                
-            } else {
-                $error = true;
-                set_alert("error", "Hubo un error al procesar el archivo xml o el archivo es inválido.");
-            }
-
-            # file upload
+            # upload & update
             if($error==false) {
                 $new_file_name = get_comprobante_filename($comprobante_xml['name']);
                 $uploaded_xml = document_upload($comprobante_xml['tmp_name'], $posInfo['pathComprobantes'], $new_file_name.".xml");
                 $uploaded_pdf = document_upload($comprobante_pdf['tmp_name'], $posInfo['pathComprobantes'], $new_file_name.".pdf");
-
-                if($uploaded_pdf!==true || $uploaded_xml!==true) {
-                    $error = true;
+                if($uploaded_pdf===true && $uploaded_xml===true) {
+                    $values['comprobante'] = $new_file_name;
+                    $values['complementoUuid'] = $comp_uuid;
+                    if(query_update(TABLE_POS, $values, "gastoId = $posId")>0) {
+                        system_log($posId, TABLE_POS, "Update", json_encode($values));
+                        add_po_log($posId, "Complemento de pago agregado por ".session_get_data("name"));
+                        set_alert("success", "La información ha sido actualizada.");
+                    } else {
+                        set_alert("error", "Hubo un problema al actualizar la información.");
+                    }
+                } else {
                     set_alert("error", "La factura no se pudo subir correctamente al servidor.");
                 }
-            }
-
-            # update
-            if($error==false) {
-
-                $values['comprobante'] = $new_file_name;
-
-                $updated = query_update(TABLE_POS, $values, "gastoId = $posId");
-
-                if($updated>0) {
-                    system_log($posId, TABLE_POS, "Update", json_encode($values));
-                    add_po_log($posId, "Comprobante de pago agregado por ".session_get_data("name"));
-                    set_alert("success", "La información ha sido actualizada.");
-                } else {
-                    set_alert("error", "Hubo un problema al actualizar la información.");
-                }
-
             }
 
         } else {

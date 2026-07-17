@@ -1243,6 +1243,14 @@ function invoice_exists($uuid) {
 
 }
 
+function complement_exists($uuid) {
+    $result = sql_select_row("SELECT gastoId FROM ".TABLE_POS." WHERE complementoUuid = '$uuid'");
+    if($result==false) {
+        return false;
+    }
+    return true;
+}
+
 function document_upload($filename, $path, $new_file_name) {
 
     $upload = file_upload($filename, $path, $new_file_name);

@@ -1,3 +1,9 @@
+# 2026-07-17 - Validate payment complement
+
+ALTER TABLE `ico_gastos` ADD `complementoUuid` VARCHAR(40) NOT NULL DEFAULT '' AFTER `facturaNombre`;
+
+INSERT INTO `ico_configuracion` (`configId`, `configKey`, `configCat`, `configName`, `configValue`, `configPublic`, `configType`, `configOptions`) VALUES (NULL, 'VALIDA_COMP', 'Facturas', 'Facturas: Validar Complemento', '1', '0', 'Radio', '[{\"text\":\"Si\",\"value\":\"1\"},{\"text\":\"No\",\"value\":\"0\"}]');
+
 # 2026-07-02 - firma autógrafa de carta repse
 
 DELETE FROM ico_contratos WHERE companyId <> 2;

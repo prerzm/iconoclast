@@ -317,7 +317,7 @@ $yearId = (isset($_GET['ano'])) ? aget('ano') : array_key_first($years);
                     "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
                     "sPaginationType": "bootstrap",
                     "iDisplayLength": 50,
-                    "aaSorting": [[7, 'desc']],
+                    "aaSorting": [[<?=($global_perms['AUTHORIZE']) ? '6' : '5';?>, 'desc']],
                 } );
 
                 $(".datepicker").datepicker();
