@@ -1,0 +1,73 @@
+2026-04-28 - Iconoclast
+Gabriela Giancarli
+
+Portal independiente para iconoclast
+
+- Migrar información
+- Nueva cuenta/host/subdominio
+- Adaptación de contratos
+  - Revisar regresar a firma con canvas
+  - Revisar update de contrato al actualizar la CxP
+- Reporte de cuentas sin complemento de pago o cron para recordatorio
+
+- Solicitar actualizar la CSF cada mes (no cada 3 meses)
+- Retenciones: Leer CSF para calcular impuestos/retenciones
+- CxP: permitir diferentes cálculos de fecha de pago por carga de nómina
+- Proveedores: Agregar combo para seleccionar banco
+
+- Revisar reporte de CxP: Números de cuentas/proveedor
+- Reporte CxP: Agregar ' al inicio de clabe para evitar formato de Excel
+- Proveedores: Reforzar validación de input para clabe
+
+- Proveedores: Carta/Firma Formato bajo protesta de decir verdad no Repse
+
+
+---- Migration ----
+
+1. Aviso de Privacidad - Anexo el aviso de privacidad para que me ayuden a revisarlo y cambiar la información pertinente o si ustedes prefieren cambiarlo por completo.
+
+2. Te comparto la siguiente lista de usuarios para que me ayudes a corroborar que éstos siguen activos y de una vez agregar más si es que lo requieren:
+
+	Sofía Gramilla (Autorización)
+	Test Conta (Contabilidad)
+	Gabriela Giancarli (Producción)
+	Usuario ICO (Visor)
+
+3. Acceso proveedores - Agregaremos un aviso en la plataforma de PRIMO cuando algún proveedor ingrese a través del acceso anterior (primo.serviciosabp.com) e intente subir una factura. Esto se hará en cuanto ustedes den el visto bueno para que los proveedores no experimenten ningún problema.
+
+4. Te molesto con la siguiente información (en lo que se modifica esto para cada nómina):
+
+	Día de pago a proveedores: (por ahora es miércoles)
+	Cálculo de fecha de pago: (por ahora es a partir de que el proveedor sube su factura)
+	Número de semanas para pago: (por ahora son 5 semanas)
+
+5. Te molesto si me confirmas los siguientes datos de ICONOCLAST:
+
+	RFC: ICO220202HZ9
+	Razón Social: ICONOCLAST S.A. DE C.V.
+	Dirección: Avenida Gustavo Baz 2160 Edificio 3 Piso 1, Colonia La Loma, Tlalnepantla de Baz, Estado de México, CP 54060
+	Correo: gabriela@iconoclast.tv
+
+6. Por como se dio de alta originalmente ICONOCLAST, realmente existen dos empresas (ICONOCLAST e ICO-PRIMO), pregunta, que todo la información se mezcle en una sola empresa o se van a seguir manteniendo ambas?
+
+
+------------
+
+
+Ahorita son un total de 12 contratos (7 contratos y 5 adendas):
+
+01.- Contrato Proveedores Persona Moral
+02.- Contrato Proveedores Persona Física
+03.- Contrato Repse Persona Moral
+04.- Contrato Repse Persona Física
+05.- Contrato Talento
+06.- Contrato de Obra por Encargo Persona Moral
+07.- Contrato de Obra por Encargo Persona Física
+08.- Adenda Contrato Proveedores Persona Moral
+09.- Adenda Contrato Proveedores Persona Física
+10.- Adenda Contrato Repse Persona Moral
+11.- Adenda Contrato Repse Persona Física
+12.- Adenda Contrato Talento
+
+El costo es de $600 + IVA por cada uno, dando un total de $7,200.00 + IVA.
+
