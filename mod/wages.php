@@ -16,7 +16,6 @@ switch(aglobal('cmd', 25)) {
         # vars
         $error = false;
         $contracts_added = 0;
-        $adendas_added = 0;
         $pos_added = array();
         $vendors_emails = array();
         $proyectoId = (int)apost('proyectoId');
@@ -160,28 +159,14 @@ switch(aglobal('cmd', 25)) {
                                     $vendors_emails[] = $email;
                                     $monto_total += $total;
                                     $pos_added[] = $pos_id;
-                                }
-
-                                # contracts
-                                if((bool)$global_company['generarContrato']) {
-                                    $contract = vendor_has_contract_for_project($vendorId, $proyectoId);
-                                    $fields_values = array("Servicios_Proporcionados_o_Personaje" => $honorarios_values['concepto'], "Monto_de_Pago" => number_amount_to_text($honorarios_values['totalMXN'])." MXN", "Proyecto_Fecha_Inicio" => $project['fechaInicio'], "Proyecto_Fecha_Fin" => $project['fechaFin']);
-                                    if($contract===false) {
-                                        if(vendor_add_contract($vendor, $project, "vendor", array_to_db($fields_values))) {
+                                    # contract
+                                    if((bool)$global_company['generarContrato']) {
+                                        $fields_values = array("Servicios_Proporcionados_o_Personaje" => $honorarios_values['concepto'], "Monto_de_Pago" => number_amount_to_text($honorarios_values['totalMXN'])." MXN", "Proyecto_Fecha_Inicio" => $project['fechaInicio'], "Proyecto_Fecha_Fin" => $project['fechaFin']);
+                                        if(vendor_add_contract($vendor, $project, "vendor", array_to_db($fields_values), $pos_id)) {
                                             $contracts_added++;
                                         }
-                                    } else {
-                                        if($contract['firmaStatusId']==CONTRACT_STATUS_PENDING) {
-                                            $new_fields_values = array_merge(array_from_db($contract['fieldsValues']), $fields_values);
-                                            query_update(TABLE_CONTRACTS_VENDORS, array("fieldsValues" => array_to_db($new_fields_values)), "id = ".(int)$contract['id']);
-                                        } else {
-                                            if(vendor_add_adenda($vendor, $proyectoId, $contract['id'], $contract['subtipo'], array_to_db($fields_values))) {
-                                                $adendas_added++;
-                                            }
-                                        }
                                     }
-                                }
-                                
+                                }                                
                             }
 
                         } else {
@@ -290,28 +275,14 @@ switch(aglobal('cmd', 25)) {
                                     $vendors_emails[] = $email;
                                     $monto_total += $total;
                                     $pos_added[] = $pos_id;
-                                }
-
-                                # contracts
-                                if((bool)$global_company['generarContrato']) {
-                                    $contract = vendor_has_contract_for_project($vendorId, $proyectoId);
-                                    $fields_values = array("Servicios_Proporcionados_o_Personaje" => $pagos_values['concepto'], "Monto_de_Pago" => number_amount_to_text($pagos_values['totalMXN'])." MXN", "Proyecto_Fecha_Inicio" => $project['fechaInicio'], "Proyecto_Fecha_Fin" => $project['fechaFin']);
-                                    if($contract===false) {
-                                        if(vendor_add_contract($vendor, $project, "vendor", array_to_db($fields_values))) {
+                                    # contract
+                                    if((bool)$global_company['generarContrato']) {
+                                        $fields_values = array("Servicios_Proporcionados_o_Personaje" => $pagos_values['concepto'], "Monto_de_Pago" => number_amount_to_text($pagos_values['totalMXN'])." MXN", "Proyecto_Fecha_Inicio" => $project['fechaInicio'], "Proyecto_Fecha_Fin" => $project['fechaFin']);
+                                        if(vendor_add_contract($vendor, $project, "vendor", array_to_db($fields_values), $pos_id)) {
                                             $contracts_added++;
-                                        }
-                                    } else {
-                                        if($contract['firmaStatusId']==CONTRACT_STATUS_PENDING) {
-                                            $new_fields_values = array_merge(array_from_db($contract['fieldsValues']), $fields_values);
-                                            query_update(TABLE_CONTRACTS_VENDORS, array("fieldsValues" => array_to_db($new_fields_values)), "id = ".(int)$contract['id']);
-                                        } else {
-                                            if(vendor_add_adenda($vendor, $proyectoId, $contract['id'], $contract['subtipo'], array_to_db($fields_values))) {
-                                                $adendas_added++;
-                                            }
                                         }
                                     }
                                 }
-
                             }
 
                         } else {
@@ -419,28 +390,14 @@ switch(aglobal('cmd', 25)) {
                                     $vendors_emails[] = $email;
                                     $monto_total += $total;
                                     $pos_added[] = $pos_id;
-                                }
-
-                                # contracts
-                                if((bool)$global_company['generarContrato']) {
-                                    $contract = vendor_has_contract_for_project($vendorId, $proyectoId);
-                                    $fields_values = array("Servicios_Proporcionados_o_Personaje" => $facturas_values['concepto'], "Monto_de_Pago" => number_amount_to_text($facturas_values['totalMXN'])." MXN", "Proyecto_Fecha_Inicio" => $project['fechaInicio'], "Proyecto_Fecha_Fin" => $project['fechaFin']);
-                                    if($contract===false) {
-                                        if(vendor_add_contract($vendor, $project, "vendor", array_to_db($fields_values))) {
+                                    # contracts
+                                    if((bool)$global_company['generarContrato']) {
+                                        $fields_values = array("Servicios_Proporcionados_o_Personaje" => $facturas_values['concepto'], "Monto_de_Pago" => number_amount_to_text($facturas_values['totalMXN'])." MXN", "Proyecto_Fecha_Inicio" => $project['fechaInicio'], "Proyecto_Fecha_Fin" => $project['fechaFin']);
+                                        if(vendor_add_contract($vendor, $project, "vendor", array_to_db($fields_values), $pos_id)) {
                                             $contracts_added++;
-                                        }
-                                    } else {
-                                        if($contract['firmaStatusId']==CONTRACT_STATUS_PENDING) {
-                                            $new_fields_values = array_merge(array_from_db($contract['fieldsValues']), $fields_values);
-                                            query_update(TABLE_CONTRACTS_VENDORS, array("fieldsValues" => array_to_db($new_fields_values)), "id = ".(int)$contract['id']);
-                                        } else {
-                                            if(vendor_add_adenda($vendor, $proyectoId, $contract['id'], $contract['subtipo'], array_to_db($fields_values))) {
-                                                $adendas_added++;
-                                            }
                                         }
                                     }
                                 }
-
                             }
 
                         } else {
@@ -548,28 +505,14 @@ switch(aglobal('cmd', 25)) {
                                     $vendors_emails[] = $email;
                                     $monto_total += $total;
                                     $pos_added[] = $pos_id;
-                                }
-
-                                # contracts
-                                if((bool)$global_company['generarContrato']) {
-                                    $contract = vendor_has_contract_for_project($vendorId, $proyectoId);
-                                    $fields_values = array("Servicios_Proporcionados_o_Personaje" => $talento_values['concepto'], "Monto_de_Pago" => number_amount_to_text($talento_values['totalMXN'])." MXN", "Proyecto_Fecha_Inicio" => $project['fechaInicio'], "Proyecto_Fecha_Fin" => $project['fechaFin']);
-                                    if($contract===false) {
-                                        if(vendor_add_contract($vendor, $project, "talento", array_to_db($fields_values))) {
+                                    # contracts
+                                    if((bool)$global_company['generarContrato']) {
+                                        $fields_values = array("Servicios_Proporcionados_o_Personaje" => $talento_values['concepto'], "Monto_de_Pago" => number_amount_to_text($talento_values['totalMXN'])." MXN", "Proyecto_Fecha_Inicio" => $project['fechaInicio'], "Proyecto_Fecha_Fin" => $project['fechaFin']);
+                                        if(vendor_add_contract($vendor, $project, "talento", array_to_db($fields_values), $pos_id)) {
                                             $contracts_added++;
-                                        }
-                                    } else {
-                                        if($contract['firmaStatusId']==CONTRACT_STATUS_PENDING) {
-                                            $new_fields_values = array_merge(array_from_db($contract['fieldsValues']), $fields_values);
-                                            query_update(TABLE_CONTRACTS_VENDORS, array("fieldsValues" => array_to_db($new_fields_values)), "id = ".(int)$contract['id']);
-                                        } else {
-                                            if(vendor_add_adenda($vendor, $proyectoId, $contract['id'], $contract['subtipo'], array_to_db($fields_values))) {
-                                                $adendas_added++;
-                                            }
                                         }
                                     }
                                 }
-
                             }
 
                         } else {
@@ -676,28 +619,14 @@ switch(aglobal('cmd', 25)) {
                                     add_po_log($pos_id, "Creado por ".session_get_data("name"));
                                     $monto_total += $total;
                                     $pos_added[] = $pos_id;
-                                }
-
-                                # contracts
-                                if((bool)$global_company['generarContrato']) {
-                                    $contract = vendor_has_contract_for_project($vendorId, $proyectoId);
-                                    $fields_values = array("Servicios_Proporcionados_o_Personaje" => $invoice_values['concepto'], "Monto_de_Pago" => number_amount_to_text($invoice_values['totalMXN'])." MXN", "Proyecto_Fecha_Inicio" => $project['fechaInicio'], "Proyecto_Fecha_Fin" => $project['fechaFin']);
-                                    if($contract===false) {
-                                        if(vendor_add_contract($vendor, $project, "vendor", array_to_db($fields_values))) {
+                                    # contracts
+                                    if((bool)$global_company['generarContrato'] && (bool)VENDOR_CONTRACT_TO_FOREIGN==true) {
+                                        $fields_values = array("Servicios_Proporcionados_o_Personaje" => $invoice_values['concepto'], "Monto_de_Pago" => number_amount_to_text($invoice_values['totalMXN'])." MXN", "Proyecto_Fecha_Inicio" => $project['fechaInicio'], "Proyecto_Fecha_Fin" => $project['fechaFin']);
+                                        if(vendor_add_contract($vendor, $project, "vendor", array_to_db($fields_values), $pos_id)) {
                                             $contracts_added++;
-                                        }
-                                    } else {
-                                        if($contract['firmaStatusId']==CONTRACT_STATUS_PENDING) {
-                                            $new_fields_values = array_merge(array_from_db($contract['fieldsValues']), $fields_values);
-                                            query_update(TABLE_CONTRACTS_VENDORS, array("fieldsValues" => array_to_db($new_fields_values)), "id = ".(int)$contract['id']);
-                                        } else {
-                                            if(vendor_add_adenda($vendor, $proyectoId, $contract['id'], $contract['subtipo'], array_to_db($fields_values))) {
-                                                $adendas_added++;
-                                            }
                                         }
                                     }
                                 }
-
                             }
 
                         } else {
@@ -740,14 +669,12 @@ switch(aglobal('cmd', 25)) {
                 $mail = new NEWMailer();
                 $mail->vendors_notify_pos($vendors_emails, $project['titulo']);
             }
-            
-            # notices
-            set_alert("warning", "Se agregaron $contracts_added contratos.");
-            set_alert("warning", "Se agregaron $adendas_added adendas.");
 
+            # notices
             if(is_array($pos_added) && count($pos_added)>0) {
                 wages_add($proyectoId, $new_file_name, $monto_total, $pos_added);
                 set_alert("success", "Se agregaron ".count($pos_added)." cuentas por pagar.");
+                set_alert("warning", "Se agregaron $contracts_added contratos.");
             } else {
                 set_alert("error", "No se agregó ninguna cuenta por pagar.");
             }

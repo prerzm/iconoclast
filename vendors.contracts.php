@@ -70,7 +70,7 @@ $results = get_contracts_vendor($vendorId);
                                                     <tr>
                                                         <td><?=$results[$i]['razonSocial'];?></td>
                                                         <td><?=$results[$i]['titulo'];?></td>
-                                                        <td><?=$results[$i]['tipo'];?><?=($results[$i]['tipo']=="Adenda") ? '&nbsp;&nbsp;<span class="label label-warning">Vigencia/Remuneración</span>': '';?></td>
+                                                        <td><?=$results[$i]['tipo'];?></td>
                                                         <td><span class="label label-<?=$results[$i]['contratoStatus'];?>"><?=$results[$i]['contratoStatus'];?></span></td>
                                                         <td><?=$results[$i]['firmaFecha'];?></td>
                                                         <td>

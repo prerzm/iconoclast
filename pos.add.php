@@ -170,7 +170,7 @@ $cfdi_uso = get_sat_uso_cfdi();
                                             </div>
                                         </div>
                                         <div class="control-group">
-                                            <label class="control-label">Agregar contrato al proveedor para este proyecto si no existe?</label>
+                                            <label class="control-label">Agregar contrato al proveedor para este proyecto?</label>
                                             <div class="controls">
                                                 <label><input type="checkbox" name="add_contract" value="1" checked> Sí, agregar contrato</label>
                                             </div>

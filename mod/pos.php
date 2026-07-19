@@ -63,10 +63,10 @@ switch(aglobal('cmd', 25)) {
 
             # query
             if($project && $vendor) {
-                $updated = query_insert(TABLE_POS, $pos);
+                $pos_id = query_insert(TABLE_POS, $pos);
             
                 # enviar correo al proveedor
-                if($updated>0 && $notify===1) {
+                if($pos_id>0 && $notify===1) {
                     $mail = new NEWMailer();
                     $mail->vendors_notify_pos(array($vendor['email']), $project['titulo']);
                 }
@@ -74,17 +74,14 @@ switch(aglobal('cmd', 25)) {
                 # contract
                 if($gen_contract==1 && (bool)$global_company['generarContrato']) {
                     if($vendor['extranjero']==0 || (bool)VENDOR_CONTRACT_TO_FOREIGN==true) {
-                        $contract = vendor_has_contract_for_project($pos['proveedorId'], $pos['proyectoId']);
-                        if($contract===false) {
-                            $fields_values = array_to_db(array("Servicios_Proporcionados_o_Personaje" => $pos['concepto'], "Monto_de_Pago" => number_amount_to_text($pos['totalMXN'])." MXN"));
-                            vendor_add_contract($vendor, $project, "vendor", $fields_values);
-                        }
+                        $fields_values = array_to_db(array("Servicios_Proporcionados_o_Personaje" => $pos['concepto'], "Monto_de_Pago" => number_amount_to_text($pos['totalMXN'])." MXN"));
+                        vendor_add_contract($vendor, $project, "vendor", $fields_values, $pos_id);
                     }
                 }
 
-                if($updated>0) {
-                    system_log($updated, TABLE_POS, "Add", json_encode($pos));
-                    add_po_log($updated, "Creado por ".session_get_data("name"));
+                if($pos_id>0) {
+                    system_log($pos_id, TABLE_POS, "Add", json_encode($pos));
+                    add_po_log($pos_id, "Creado por ".session_get_data("name"));
                     set_alert("success", "La información ha sido actualizada.");
                 } else {
                     set_alert("error", "Hubo un problema, favor de intentar nuevamente");
@@ -131,27 +128,10 @@ switch(aglobal('cmd', 25)) {
 
             # project or company changed
             if($posInfo['proyectoId']!=$pos['proyectoId']) {
-
                 $return = "pos.php";
                 $posInfo['pathFacturas'] = $new_project['pathFacturas'];
                 $posInfo['pathTransfers'] = $new_project['pathTransfers'];
                 $posInfo['pathComprobantes'] = $new_project['pathComprobantes'];
-
-                # check & delete contract in old project for vendor (new)
-                if(vendor_last_pos($posInfo['proveedorId'], $posInfo['proyectoId'])) {
-                    vendor_remove_contract($posInfo['proveedorId'], $posInfo['proyectoId']);
-                }
-
-            }
-
-            # vendor changed
-            if($posInfo['proveedorId']!=$pos['proveedorId']) {
-                
-                # check & delete contract for old vendor if this was the only pos
-                if(vendor_last_pos($posInfo['proveedorId'], $pos['proyectoId'])) {
-                    vendor_remove_contract($posInfo['proveedorId'], $pos['proyectoId']);
-                }
-                
             }
 
             # info
@@ -302,15 +282,30 @@ switch(aglobal('cmd', 25)) {
 
                 # update
                 if($error==false) {
-
                     $pos['comprobante'] = $new_file_name;
-
                 }
 
             }
 
             # query
             $updated = query_update(TABLE_POS, $pos, "gastoId = $posId");
+
+            # update contract
+            if($updated>0 && ($posInfo['proyectoId']!=$pos['proyectoId'] || $posInfo['proveedorId']!=$pos['proveedorId'] || $posInfo['concepto']!=$pos['concepto'] || $posInfo['monto']!=$pos['monto'])) {
+                $contract = sql_select_row("SELECT * FROM ".TABLE_CONTRACTS_VENDORS." WHERE gastoId = $posId");
+                if($contract===false) {
+                    $contract = sql_select_row("SELECT * FROM ".TABLE_CONTRACTS_VENDORS." WHERE proyectoId = ".$posInfo['proyectoId']." AND proveedorId = ".$posInfo['proveedorId']);
+                }
+                if($contract) {
+                    $new_con['proveedorId'] = $pos['proveedorId'];
+                    $new_con['proyectoId'] = $pos['proyectoId'];
+                    $new_con['firmaStatusId'] = CONTRACT_STATUS_PENDING;
+                    $new_con['firmaFecha'] = null;
+                    $new_con['firma'] = "";
+                    $new_con['fieldsValues'] = array_to_db(array("Servicios_Proporcionados_o_Personaje" => $pos['concepto'], "Monto_de_Pago" => number_amount_to_text($pos['totalMXN'])." MXN"));
+                    query_update(TABLE_CONTRACTS_VENDORS, $new_con, "id = ".$contract['id']);
+                }
+            }
 
             if($updated>0) {
                 system_log($posId, TABLE_POS, "Update", json_encode($pos));

@@ -121,11 +121,6 @@ $contracts['PF'][1] = sql_select("SELECT contratoId, nombre FROM ".TABLE_CONTRAC
                                         <tr class="row_Info" ><td style="width:40%;"><strong>Productor en línea</strong></td><td><?=($global_perms['EDIT']) ? '<input type="text" name="productorLinea" value="'.$record['productorLinea'].'">' : $record['productorLinea'];?></td></tr>
                                     </tbody>
                                 </table>
-                                <?php /*** Check to add adenda when dates change
-                                <div id="check_adenda_add">
-                                    <label for="adenda_add"><input type="checkbox" name="adenda_add" id="adenda_add" value="1"> Agregar adenda a todos los proveedores al cambiar las fechas del proyecto</label>
-                                </div>
-                                ****/ ?>
                                 <?php if($global_perms['EDIT']) { ?>
                                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                                 <?php } ?>

@@ -28,14 +28,6 @@ if($id<CONTRACTS_NEW_ID) {
     $contract = new ContractsAdendas($id);
     $fields = $contract->get_fields();
     $attachment = ($contract->get("anexo")!="") ? true : false;
-    $ads = sql_select("SELECT * FROM ".TABLE_CONTRACTS_VENDORS." cv WHERE cv.parentId = $id ORDER BY cv.id ASC");
-    
-    $adendas = array();
-    if($ads) {
-        foreach($ads as $a) {
-            $adendas[] = new ContractsAdendas($a['id']);
-        }
-    }
 
 }
 
@@ -282,7 +274,6 @@ if($contract->get_id()==0) {
                         <div class="block-content collapse in">
                             <div style="margin-bottom:10px;"><button type="button" id="button_Contrato" class="btn btn-primary btn-large btn-block" onclick="show_hide_div('Contrato');">Contrato</button></div>
                             <?php if($attachment) { ?><div style="margin-bottom:10px;"><button type="button" id="button_Anexo" class="btn btn-large btn-block" onclick="show_hide_div('Anexo');">Anexo</button></div><?php } ?>
-                            <?php if(count($adendas)>0) { ?><div style="margin-bottom:10px;"><button type="button" id="button_Adendas" class="btn btn-large btn-block" onclick="show_hide_div('Adendas');">Adendas</button></div><?php } ?>
                         </div>
                     </div><!-- /block -->
                     <div class="block">
@@ -331,7 +322,7 @@ if($contract->get_id()==0) {
                                             <h3>Eliminar Contrato</h3>
                                         </div>
                                         <div class="modal-body">
-                                            Está seguro que desea eliminar este contrato, sus adendas y archivos asociados?
+                                            Está seguro que desea eliminar este contrato y archivos asociados?
                                         </div>
                                         <div class="modal-footer">
                                             <a href="mod/contracts.admin.php?cmd=del&id=<?=$id;?>" class="btn btn-primary">Eliminar</button>
@@ -392,46 +383,6 @@ if($contract->get_id()==0) {
                             </form>
                         </div>
                     </div><!-- /block -->
-
-                    <!-- generar adenda -->
-                    <?php if($contract->get("firmaStatusId")==CONTRACT_STATUS_SIGNED && substr($contract->get("subtipo"), 0, strlen($contract->get("subtipo"))-2)!="ContratoObraEncargo") { ?>
-                    <div class="block">
-                        <div class="navbar navbar-inner block-header">
-                            <div class="muted pull-left">Generar Adenda</div>
-                        </div>
-                        <div class="block-content collapse in">
-                            <form name="contract" method="post" action="mod/contracts.admin.php">
-                                <input type="hidden" name="cmd" value="adenda">
-                                <input type="hidden" name="id" value="<?=$id;?>">
-                                <table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" id="results">
-                                    <thead>
-                                        <tr>
-                                            <th>Campo</th>
-                                            <th>Valor</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="row_Info" >
-                                            <td>Fecha de Inicio</td>
-                                            <td><input type="text" name="PROYECTO_FECHA_INICIO" id="Proyecto_Fecha_Inicio" class="span10 m-wrap datepicker" value="<?=$contract->get('fechaInicio');?>" onchange="activate_adenda();"></td>
-                                        </tr>
-                                        <tr class="row_Info" >
-                                            <td>Fecha de Fin</td>
-                                            <td><input type="text" name="PROYECTO_FECHA_FIN" id="Proyecto_Fecha_Fin" class="span10 m-wrap datepicker" value="<?=$contract->get('fechaFin');?>" onchange="activate_adenda();"></td>
-                                        </tr>
-                                        <tr class="row_Info" >
-                                            <td>Remuneración</td>
-                                            <td><input type="text" name="Monto_de_Pago" id="Monto_de_Pago" class="span10 m-wrap" value="0" onchange="activate_adenda();"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div style="margin-top:10px;">
-                                    <button type="submit" id="button_adenda" class="btn btn-primary" style="display:none;" onclick="return check_adenda();">Generar Adenda</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div><!-- /block -->
-                    <?php } ?>
 
                 </div><!-- ./row -->
             </div><!-- ./content span3 -->
@@ -495,78 +446,6 @@ if($contract->get_id()==0) {
             </div><!-- ./content span3 -->
             <?php } ?>
 
-            <!-- adendas -->
-            <?php if(count($adendas)>0) { ?>
-            <div class="span4 div_Adendas" style="display:none;">
-                <div class="row-fluid">
-                    <div class="block">
-                        <div class="navbar navbar-inner block-header">
-                            <div class="muted pull-left">Adendas Generadas</div>
-                        </div>
-                        <div class="block-content collapse in">
-                            <table cellpadding="0" cellspacing="0" class="table table-striped table-bordered" id="results">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Agregada</th>
-                                        <th>Firmada</th>
-                                        <th>Estatus</th>
-                                        <th style="width:90px;">&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach($adendas as $a) { ?>
-                                        <tr class="row_Info" >
-                                            <td><?=$a->get_id();?></td>
-                                            <td><?=$a->get("fechaCreado");?></td>
-                                            <td><?=$a->get("firmaFecha");?></td>
-                                            <td><span class="label label-<?=$a->get("contratoStatus");?>"><?=$a->get("contratoStatus");?></span></td>
-                                            <td style="width:90px;">
-                                                <a href="#" class="btn" title="Ver Adenda" onclick="adenda_display(<?=$a->get_id();?>);"><i class="icon-eye-open"></i></a>
-                                                <a href="#adendaDelete<?=$a->get_id();?>" data-toggle="modal" class="btn btn-danger" title="Eliminar Adenda" onclick="adenda_display(<?=$a->get_id();?>);"><i class="icon-remove icon-white"></i></a>
-                                                <div id="adendaDelete<?=$a->get_id();?>" class="modal hide">
-                                                    <div class="modal-header">
-                                                        <button data-dismiss="modal" class="close" type="button">&times;</button>
-                                                        <h3>Eliminar Adenda</h3>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>Está seguro que desea eliminar esta adenda?</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <a class="btn btn-primary" href="mod/contracts.admin.php?cmd=delad&id=<?=$id;?>&aId=<?=$a->get_id();?>">Confirmar</a>
-                                                        <a data-dismiss="modal" class="btn" href="#">Cancelar</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div><!-- /block -->
-                </div><!-- ./row -->
-            </div><!-- ./content span3 -->
-
-            <div class="span6 div_Adendas" style="display:none;">
-                <div class="row-fluid">
-                    <div class="block">
-                        <div class="navbar navbar-inner block-header">
-                            <div class="muted pull-left">Adenda</div>
-                        </div>
-                        <div class="block-content collapse in">
-
-                            <?php for($i=0; $i<count($adendas); $i++) { $a = $adendas[$i]; ?>
-                                <div class="div_adenda" id="div_adenda_<?=$a->get_id();?>" style="<?=($i==0) ? 'display:block;' : 'display:none;';?>">
-                                    <div id="adenda_<?=$a->get_id();?>"><?=$a->get_html();?></div>
-                                </div>
-                            <?php } ?>
-
-                        </div>
-                    </div><!-- /block -->
-                </div><!-- ./row -->
-            </div><!-- ./content span3 -->
-            <?php } ?>
-
         </div>
         <!-- /row-fluid new id -->
 
@@ -606,40 +485,11 @@ if($contract->get_id()==0) {
         function show_hide_div(cat) {
             $(".div_Contrato").hide();
             $(".div_Anexo").hide();
-            $(".div_Adendas").hide();
             $("#button_Contrato").removeClass('btn-primary');
             $("#button_Anexo").removeClass('btn-primary');
-            $("#button_Adendas").removeClass('btn-primary');
 
             $("#button_"+cat).addClass('btn-primary')
             $(".div_"+cat).show();
-        }
-
-        function activate_adenda() {
-            var fecha_ini = $("#Proyecto_Fecha_Inicio").val();
-            var fecha_fin = $("#Proyecto_Fecha_Fin").val();
-            var monto_pag = $("#Monto_de_Pago").val();
-            if(fecha_ini!="" && fecha_fin !="" && monto_pag!="") {
-                $("#button_adenda").show();
-            } else {
-                $("#button_adenda").hide();
-            }
-        }
-
-        function check_adenda() {
-            var plazo = $("#adenda_plazo").val();
-            var pago = $("#adenda_pago").val();
-            var calculo = $("#adenda_calculo").val();
-            if( (plazo=="" || pago=="" || calculo=="" ) ) {
-                alert("Es necesario modificar toda la información de los servicios para generar la adenda.");
-                return false;
-            }
-            return true;
-        }
-
-        function adenda_display(id) {
-            $(".div_adenda").hide();
-            $("#div_adenda_"+id).show();
         }
 
     <?php } ?>

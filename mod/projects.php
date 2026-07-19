@@ -286,13 +286,11 @@ switch(aglobal('cmd', 20)) {
                                 $extranjero = (bool)$vendor['extranjero'];
     
                                 if((bool)$global_company['generarContrato'] && ($extranjero==false || VENDOR_CONTRACT_TO_FOREIGN==true) ) {
-                                    if(vendor_has_contract_for_project($vendorId, $proyectoId)===false) {
-                                        $fields_values = array_to_db(array("Servicios_Proporcionados_o_Personaje" => $puesto));
-                                        $contract_id = vendor_add_contract($vendor, $project, $contrato, $fields_values);
-                                        if($contract_id>0) {
-                                            $contracts_added[] = $contract_id;
-                                            $vendors_emails[] = $email;
-                                        }
+                                    $fields_values = array_to_db(array("Servicios_Proporcionados_o_Personaje" => $puesto));
+                                    $contract_id = vendor_add_contract($vendor, $project, $contrato, $fields_values);
+                                    if($contract_id>0) {
+                                        $contracts_added[] = $contract_id;
+                                        $vendors_emails[] = $email;
                                     }
                                 } else {
                                     if( (bool)$global_company['generarContrato'] && $extranjero==true && VENDOR_CONTRACT_TO_FOREIGN==false ) {

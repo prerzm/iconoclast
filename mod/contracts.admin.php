@@ -39,51 +39,6 @@ switch(aglobal('cmd', 20)) {
 
     break;
 
-    case 'adenda':
-
-        # vars
-        $id = (int)apost('id');
-        $return = "contracts.admin.detail.php";
-        params_add("id", $id);
-
-        if($global_perms['EDIT']) {
-
-            # vars
-            $contract = new ContractsAdendas($id);
-
-            # verify fields
-            if($contract->get_id()>0) {
-
-                # get values
-                $fields_values['Proyecto_Fecha_Inicio'] = apost('Proyecto_Fecha_Inicio');
-                $fields_values['Proyecto_Fecha_Fin'] = apost('Proyecto_Fecha_Fin');
-                $fields_values['Monto_de_Pago'] = apost('Monto_de_Pago');
-
-                # get adenda id
-                $contract_id = (int)query_select_single_value("contratoId", TABLE_CONTRACTS, "subtipo = '".str_replace("Contrato", "Adenda", $contract->get("subtipo"))."'");
-
-                # insert adenda
-                if($contract_id>0) {
-                    $vendor = array("proveedorId" => $contract->get("proveedorId"), "rfc" => $contract->get("rfc"));
-                    $adenda_id = vendor_add_adenda($vendor, $id, (int)$contract->get("proyectoId"), $contract->get("subtipo"), array_to_db($fields_values));
-                    if($adenda_id>0) {
-                        params_add("aId", $adenda_id);
-                        set_alert("success", "La información ha sido actualizada.");
-                    } else {
-                        set_alert("error", "La adenda no pudo ser agregada");
-                    }
-                } else {
-                    set_alert("error", "La adenda no pudo ser agregada");
-                }
-
-            }
-
-        } else {
-            set_alert("error", "No cuenta con los permisos para acceder a este módulo");
-        }
-
-    break;
-
     case 'reject':
 
         if($global_perms['EDIT']) {
@@ -177,30 +132,6 @@ switch(aglobal('cmd', 20)) {
                 } else {
                     set_alert("error", "No se pudo eliminar el archivo, favor de intentar nuevamente.");                 
                 }
-            }
-
-        } else {
-            set_alert("error", "No cuenta con los permisos para acceder a este módulo");
-        }
-
-    break;
-    
-    case 'delad':
-
-        if($global_perms['DELETE']) {
-
-            # vars
-            $id = (int)aget('id');
-            $aId = (int)aget('aId');
-            $return = "contracts.admin.detail.php";
-            params_add("id", $id);
-
-            # delete adenda
-            if(query_delete(TABLE_CONTRACTS_VENDORS, "id = $aId")) {
-                system_log($aId, TABLE_CONTRACTS_VENDORS, "Delete", json_encode(array("id" => "$id")));
-                set_alert("success", "La información ha sido actualizada.");
-            } else {
-                set_alert("error", "No se pudo eliminar la adenda, favor de intentar nuevamente.");
             }
 
         } else {

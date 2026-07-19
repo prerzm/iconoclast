@@ -1624,13 +1624,7 @@ function vendor_del_carta_repse($vendorId) {
                         contratoId = (SELECT contratoId FROM ".TABLE_CONTRACTS." WHERE subtipo = 'CartaRepse')");
 }
 
-function vendor_has_contract_for_project($vendorId, $proyectoId) {
-    return sql_select_row("SELECT cv.id, cv.firmaStatusId, cv.fieldsValues, c.tipo, c.subtipo, c.nombre 
-                            FROM ".TABLE_CONTRACTS." c, ".TABLE_CONTRACTS_VENDORS." cv 
-                            WHERE c.contratoId = cv.contratoId AND cv.proveedorId = $vendorId AND cv.proyectoId = $proyectoId AND c.tipo = 'Contrato'");
-}
-
-function vendor_add_contract($vendor, $project, $tipo="", $fields_values="") {
+function vendor_add_contract($vendor, $project, $tipo, $fields_values, $pos_id=0) {
 
     if(substr($project['titulo'], 0, 5)=="POST ") {
         $tipo = "post";
@@ -1639,6 +1633,7 @@ function vendor_add_contract($vendor, $project, $tipo="", $fields_values="") {
 
     $values['proveedorId'] = $vendor['proveedorId'];
     $values['proyectoId'] = (int)$project['proyectoId'];
+    $values['gastoId'] = (int)$pos_id;
     $values['contratoId'] = (int)query_select_single_value("contratoId", TABLE_CONTRACTS, "subtipo = '$subtype'");
     $values['fechaCreado'] = date("Y-m-d");
     $values['fieldsValues'] = $fields_values;
@@ -1646,24 +1641,6 @@ function vendor_add_contract($vendor, $project, $tipo="", $fields_values="") {
     $values['info'] = "";
     
     return query_insert(TABLE_CONTRACTS_VENDORS, $values);
-
-}
-
-function vendor_add_adenda($vendor, $project_id, $parent_id, $subtype, $fields_values="") {
-
-    if($subtype!="ContratoObraEncargoPM" && $subtype!="ContratoObraEncargoPF") {
-        $values['parentId'] = $parent_id;
-        $values['proveedorId'] = $vendor['proveedorId'];
-        $values['proyectoId'] = $project_id;
-        $values['contratoId'] = (int)query_select_single_value("contratoId", TABLE_CONTRACTS, "subtipo = '".str_replace("Contrato", "Adenda", $subtype)."'");
-        $values['fechaCreado'] = date("Y-m-d");
-        $values['fieldsValues'] = $fields_values;
-        $values['firma'] = "";
-        $values['info'] = "";
-        return query_insert(TABLE_CONTRACTS_VENDORS, $values);
-    }
-
-    return false;
 
 }
 

@@ -1,3 +1,7 @@
+# 2026-07-17 - Add contract per pos
+
+ALTER TABLE `ico_contratos_proveedores` ADD `gastoId` INT NOT NULL DEFAULT '0' AFTER `proyectoId`;
+
 # 2026-07-17 - Validate payment complement
 
 ALTER TABLE `ico_gastos` ADD `complementoUuid` VARCHAR(40) NOT NULL DEFAULT '' AFTER `facturaNombre`;
