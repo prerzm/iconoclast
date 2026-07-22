@@ -74,12 +74,14 @@ switch(aglobal('cmd', 25)) {
                 $talento_header = 0;
                 $invoice_header = 0;
                 for ($row = 1; $row <= $lastRow; $row++) {
-                    $cell = trim($worksheet->getCell('A'.$row)->getValue());
-                    if($cell=="PAGO RECIBO DE HONORARIOS") { $honorarios_header = $row + 1; }
-                    if($cell=="PRONTOS PAGOS FACTURA") { $ppagos_header = $row + 1; }
-                    if($cell=="PAGO NORMAL FACTURA") { $facturas_header = $row + 1; }
-                    if($cell=="TALENTO POR PAGAR") { $talento_header = $row + 1; }
-                    if($cell=="PAGO FACTURAS AL EXTRANJERO") { $invoice_header = $row + 1; }
+                    if(!is_null($worksheet->getCell('A'.$row)->getValue())) {
+                        $cell = trim($worksheet->getCell('A'.$row)->getValue());
+                        if($cell=="PAGO RECIBO DE HONORARIOS") { $honorarios_header = $row + 1; }
+                        if($cell=="PRONTOS PAGOS FACTURA") { $ppagos_header = $row + 1; }
+                        if($cell=="PAGO NORMAL FACTURA") { $facturas_header = $row + 1; }
+                        if($cell=="TALENTO POR PAGAR") { $talento_header = $row + 1; }
+                        if($cell=="PAGO FACTURAS AL EXTRANJERO") { $invoice_header = $row + 1; }
+                    }
                 }
                 
             }
@@ -90,18 +92,20 @@ switch(aglobal('cmd', 25)) {
                 # get headers
                 $col_nombre = 0; $col_rfc = 0; $col_razon = 0; $col_concepto = 0; $col_email = 0; $col_monto = 0; $col_retiva = 0; $col_retisr = 0; $col_subtotal = 0; $col_total = 0;
                 foreach(range('A', 'Z') as $column) {
-                    $cell = trim(mb_strtolower($worksheet->getCell($column.$honorarios_header)->getValue(), mb_detect_encoding($worksheet->getCell($column.$honorarios_header)->getValue())));
-                    switch($cell) {
-                        case 'nombre': $col_nombre = $column; break;
-                        case 'razon social': case 'razón social': $col_razon = $column; break;
-                        case 'rfc': $col_rfc = $column; break;
-                        case 'concepto': $col_concepto = $column; break;
-                        case 'mail al que se notifica el pago': $col_email = $column; break;
-                        case 'pago normal': $col_monto = $column; break;
-                        case 'ret. iva': $col_retiva = $column; break;
-                        case 'ret. isr': $col_retisr = $column; break;
-                        case 'subtotal': $col_subtotal = $column; break;
-                        case 'total': $col_total = $column; break;
+                    if(!is_null($worksheet->getCell($column.$honorarios_header)->getValue())) {
+                        $cell = trim(mb_strtolower($worksheet->getCell($column.$honorarios_header)->getValue(), mb_detect_encoding($worksheet->getCell($column.$honorarios_header)->getValue())));
+                        switch($cell) {
+                            case 'nombre': $col_nombre = $column; break;
+                            case 'razon social': case 'razón social': $col_razon = $column; break;
+                            case 'rfc': $col_rfc = $column; break;
+                            case 'concepto': $col_concepto = $column; break;
+                            case 'mail al que se notifica el pago': $col_email = $column; break;
+                            case 'pago normal': $col_monto = $column; break;
+                            case 'ret. iva': $col_retiva = $column; break;
+                            case 'ret. isr': $col_retisr = $column; break;
+                            case 'subtotal': $col_subtotal = $column; break;
+                            case 'total': $col_total = $column; break;
+                        }
                     }
                 }
 
@@ -117,16 +121,16 @@ switch(aglobal('cmd', 25)) {
                     $nombre = "";
                     while($nombre!="SUBTOTAL") {
 
-                        $nombre = trim($worksheet->getCell($col_nombre.$row)->getValue());
-                        $rfc = strtoupper(trim($worksheet->getCell($col_rfc.$row)->getValue()));
-                        $razonSocial = trim($worksheet->getCell($col_razon.$row)->getValue());
-                        $concepto = trim($worksheet->getCell($col_concepto.$row)->getValue());
-                        $email = trim($worksheet->getCell($col_email.$row)->getValue());
-                        $monto = number_float($worksheet->getCell($col_monto.$row)->getCalculatedValue());
+                        $nombre = (!is_null($worksheet->getCell($col_nombre.$row)->getValue())) ? trim($worksheet->getCell($col_nombre.$row)->getValue()) : "";
+                        $rfc = (!is_null($worksheet->getCell($col_rfc.$row)->getValue())) ? trim($worksheet->getCell($col_rfc.$row)->getValue()) : "";
+                        $razonSocial = (!is_null($worksheet->getCell($col_razon.$row)->getValue())) ? trim($worksheet->getCell($col_razon.$row)->getValue()) : "";
+                        $concepto = (!is_null($worksheet->getCell($col_concepto.$row)->getValue())) ? trim($worksheet->getCell($col_concepto.$row)->getValue()) : "";
+                        $email = (!is_null($worksheet->getCell($col_email.$row)->getValue())) ? trim($worksheet->getCell($col_email.$row)->getValue()) : "";
+                        $monto = (!is_null($worksheet->getCell($col_monto.$row)->getValue())) ? trim($worksheet->getCell($col_monto.$row)->getValue()) : "";
                         $iva = number_float($monto * TAX_IVA);
-                        $retIVA = number_float($worksheet->getCell($col_retiva.$row)->getCalculatedValue());
-                        $retISR = number_float($worksheet->getCell($col_retisr.$row)->getCalculatedValue());
-                        $total = number_float($worksheet->getCell($col_total.$row)->getCalculatedValue());
+                        $retIVA = (!is_null($worksheet->getCell($col_retiva.$row)->getValue())) ? trim($worksheet->getCell($col_retiva.$row)->getValue()) : "";
+                        $retISR = (!is_null($worksheet->getCell($col_retisr.$row)->getValue())) ? trim($worksheet->getCell($col_retisr.$row)->getValue()) : "";
+                        $total = (!is_null($worksheet->getCell($col_total.$row)->getValue())) ? trim($worksheet->getCell($col_total.$row)->getValue()) : "";
 
                         if($nombre!="" && $nombre!="SUBTOTAL" && $rfc!="" && $razonSocial!="" && var_is_valid_rfc($rfc) && var_is_email($email) && $monto>0 && $total>0) {
 
@@ -210,16 +214,18 @@ switch(aglobal('cmd', 25)) {
                 # get headers
                 $col_nombre = 0; $col_rfc = 0; $col_razon = 0; $col_concepto = 0; $col_email = 0; $col_monto = 0; $col_iva = 0; $col_total = 0;
                 foreach(range('A', 'Z') as $column) {
-                    $cell = trim(mb_strtolower($worksheet->getCell($column.$ppagos_header)->getValue(), mb_detect_encoding($worksheet->getCell($column.$ppagos_header)->getValue())));
-                    switch($cell) {
-                        case 'nombre': $col_nombre = $column; break;
-                        case 'razon social': case 'razón social': $col_razon = $column; break;
-                        case 'rfc': $col_rfc = $column; break;
-                        case 'concepto': $col_concepto = $column; break;
-                        case 'mail al que se notifica el pago': $col_email = $column; break;
-                        case 'pronto pago': $col_monto = $column; break;
-                        case 'iva': $col_iva = $column; break;
-                        case 'subtotal': $col_total = $column; break;
+                    if(!is_null($worksheet->getCell($column.$ppagos_header)->getValue())) {
+                        $cell = trim(mb_strtolower($worksheet->getCell($column.$ppagos_header)->getValue(), mb_detect_encoding($worksheet->getCell($column.$ppagos_header)->getValue())));
+                        switch($cell) {
+                            case 'nombre': $col_nombre = $column; break;
+                            case 'razon social': case 'razón social': $col_razon = $column; break;
+                            case 'rfc': $col_rfc = $column; break;
+                            case 'concepto': $col_concepto = $column; break;
+                            case 'mail al que se notifica el pago': $col_email = $column; break;
+                            case 'pronto pago': $col_monto = $column; break;
+                            case 'iva': $col_iva = $column; break;
+                            case 'subtotal': $col_total = $column; break;
+                        }
                     }
                 }
 
@@ -235,14 +241,14 @@ switch(aglobal('cmd', 25)) {
                     $nombre = "";
                     while($nombre!="SUBTOTAL") {
 
-                        $nombre = trim($worksheet->getCell($col_nombre.$row)->getValue());
-                        $rfc = strtoupper(trim($worksheet->getCell($col_rfc.$row)->getValue()));
-                        $razonSocial = trim($worksheet->getCell($col_razon.$row)->getValue());
-                        $concepto = trim($worksheet->getCell($col_concepto.$row)->getValue());
-                        $email = trim($worksheet->getCell($col_email.$row)->getValue());
-                        $monto = number_float($worksheet->getCell($col_monto.$row)->getCalculatedValue());
-                        $iva = number_float($worksheet->getCell($col_iva.$row)->getCalculatedValue());
-                        $total = number_float($worksheet->getCell($col_total.$row)->getCalculatedValue());
+                        $nombre = (!is_null($worksheet->getCell($col_nombre.$row)->getValue())) ? trim($worksheet->getCell($col_nombre.$row)->getValue()) : "";
+                        $rfc = (!is_null($worksheet->getCell($col_rfc.$row)->getValue())) ? trim($worksheet->getCell($col_rfc.$row)->getValue()) : "";
+                        $razonSocial = (!is_null($worksheet->getCell($col_razon.$row)->getValue())) ? trim($worksheet->getCell($col_razon.$row)->getValue()) : "";
+                        $concepto = (!is_null($worksheet->getCell($col_concepto.$row)->getValue())) ? trim($worksheet->getCell($col_concepto.$row)->getValue()) : "";
+                        $email = (!is_null($worksheet->getCell($col_email.$row)->getValue())) ? trim($worksheet->getCell($col_email.$row)->getValue()) : "";
+                        $monto = (!is_null($worksheet->getCell($col_monto.$row)->getCalculatedValue())) ? trim($worksheet->getCell($col_monto.$row)->getCalculatedValue()) : "";
+                        $iva = (!is_null($worksheet->getCell($col_iva.$row)->getCalculatedValue())) ? trim($worksheet->getCell($col_iva.$row)->getCalculatedValue()) : "";
+                        $total = (!is_null($worksheet->getCell($col_total.$row)->getCalculatedValue())) ? trim($worksheet->getCell($col_total.$row)->getCalculatedValue()) : "";
 
                         if($nombre!="" && $nombre!="SUBTOTAL" && $rfc!="" && $razonSocial!="" && var_is_valid_rfc($rfc) && var_is_email($email) && $monto>0 && $total>0) {
 
@@ -326,16 +332,18 @@ switch(aglobal('cmd', 25)) {
                 # get headers
                 $col_nombre = 0; $col_rfc = 0; $col_razon = 0; $col_concepto = 0; $col_email = 0; $col_monto = 0; $col_iva = 0; $col_total = 0;
                 foreach(range('A', 'Z') as $column) {
-                    $cell = trim(mb_strtolower($worksheet->getCell($column.$facturas_header)->getValue(), mb_detect_encoding($worksheet->getCell($column.$facturas_header)->getValue())));
-                    switch($cell) {
-                        case 'nombre': $col_nombre = $column; break;
-                        case 'razon social': case 'razón social': $col_razon = $column; break;
-                        case 'rfc': $col_rfc = $column; break;
-                        case 'concepto': $col_concepto = $column; break;
-                        case 'mail al que se notifica el pago': $col_email = $column; break;
-                        case 'pago normal': $col_monto = $column; break;
-                        case 'iva': $col_iva = $column; break;
-                        case 'subtotal': $col_total = $column; break;
+                    if(!is_null($worksheet->getCell($column.$facturas_header)->getValue())) {
+                        $cell = trim(mb_strtolower($worksheet->getCell($column.$facturas_header)->getValue(), mb_detect_encoding($worksheet->getCell($column.$facturas_header)->getValue())));
+                        switch($cell) {
+                            case 'nombre': $col_nombre = $column; break;
+                            case 'razon social': case 'razón social': $col_razon = $column; break;
+                            case 'rfc': $col_rfc = $column; break;
+                            case 'concepto': $col_concepto = $column; break;
+                            case 'mail al que se notifica el pago': $col_email = $column; break;
+                            case 'pago normal': $col_monto = $column; break;
+                            case 'iva': $col_iva = $column; break;
+                            case 'subtotal': $col_total = $column; break;
+                        }
                     }
                 }
 
@@ -351,14 +359,14 @@ switch(aglobal('cmd', 25)) {
                     $nombre = "";
                     while($nombre!="SUBTOTAL") {
 
-                        $nombre = trim($worksheet->getCell($col_nombre.$row)->getValue());
-                        $rfc = strtoupper(trim($worksheet->getCell($col_rfc.$row)->getValue()));
-                        $razonSocial = trim($worksheet->getCell($col_razon.$row)->getValue());
-                        $concepto = trim($worksheet->getCell($col_concepto.$row)->getValue());
-                        $email = trim($worksheet->getCell($col_email.$row)->getValue());
-                        $monto = number_float($worksheet->getCell($col_monto.$row)->getCalculatedValue());
-                        $iva = number_float($worksheet->getCell($col_iva.$row)->getCalculatedValue());
-                        $total = number_float($worksheet->getCell($col_total.$row)->getCalculatedValue());
+                        $nombre = (!is_null($worksheet->getCell($col_nombre.$row)->getValue())) ? trim($worksheet->getCell($col_nombre.$row)->getValue()) : "";
+                        $rfc = (!is_null($worksheet->getCell($col_rfc.$row)->getValue())) ? trim($worksheet->getCell($col_rfc.$row)->getValue()) : "";
+                        $razonSocial = (!is_null($worksheet->getCell($col_razon.$row)->getValue())) ? trim($worksheet->getCell($col_razon.$row)->getValue()) : "";
+                        $concepto = (!is_null($worksheet->getCell($col_concepto.$row)->getValue())) ? trim($worksheet->getCell($col_concepto.$row)->getValue()) : "";
+                        $email = (!is_null($worksheet->getCell($col_email.$row)->getValue())) ? trim($worksheet->getCell($col_email.$row)->getValue()) : "";
+                        $monto = (!is_null($worksheet->getCell($col_monto.$row)->getCalculatedValue())) ? trim($worksheet->getCell($col_monto.$row)->getCalculatedValue()) : "";
+                        $iva = (!is_null($worksheet->getCell($col_iva.$row)->getCalculatedValue())) ? trim($worksheet->getCell($col_iva.$row)->getCalculatedValue()) : "";
+                        $total = (!is_null($worksheet->getCell($col_total.$row)->getCalculatedValue())) ? trim($worksheet->getCell($col_total.$row)->getCalculatedValue()) : "";
 
                         if($nombre!="" && $nombre!="SUBTOTAL" && $rfc!="" && $razonSocial!="" && var_is_valid_rfc($rfc) && var_is_email($email) && $monto>0 && $total>0) {
 
@@ -441,16 +449,18 @@ switch(aglobal('cmd', 25)) {
                 # get headers
                 $col_nombre = 0; $col_rfc = 0; $col_razon = 0; $col_personaje = 0; $col_email = 0; $col_monto = 0; $col_iva = 0; $col_total = 0;
                 foreach(range('A', 'Z') as $column) {
-                    $cell = trim(mb_strtolower($worksheet->getCell($column.$talento_header)->getValue(), mb_detect_encoding($worksheet->getCell($column.$talento_header)->getValue())));
-                    switch($cell) {
-                        case 'nombre': $col_nombre = $column; break;
-                        case 'personaje': $col_personaje = $column; break;
-                        case 'subtotal 2': $col_monto = $column; break;
-                        case 'iva': $col_iva = $column; break;
-                        case 'total': $col_total = $column; break;
-                        case 'agencia': $col_razon = $column; break;
-                        case 'rfc': $col_rfc = $column; break;
-                        case 'mail al que se notifica el pago': $col_email = $column; break;
+                    if(!is_null($worksheet->getCell($column.$talento_header)->getValue())) {
+                        $cell = trim(mb_strtolower($worksheet->getCell($column.$talento_header)->getValue(), mb_detect_encoding($worksheet->getCell($column.$talento_header)->getValue())));
+                        switch($cell) {
+                            case 'nombre': $col_nombre = $column; break;
+                            case 'personaje': $col_personaje = $column; break;
+                            case 'subtotal 2': $col_monto = $column; break;
+                            case 'iva': $col_iva = $column; break;
+                            case 'total': $col_total = $column; break;
+                            case 'agencia': $col_razon = $column; break;
+                            case 'rfc': $col_rfc = $column; break;
+                            case 'mail al que se notifica el pago': $col_email = $column; break;
+                        }
                     }
                 }
 
@@ -466,14 +476,14 @@ switch(aglobal('cmd', 25)) {
                     $nombre = "";
                     while($nombre!="SUBTOTAL") {
 
-                        $nombre = trim($worksheet->getCell($col_nombre.$row)->getValue());
-                        $personaje = trim($worksheet->getCell($col_personaje.$row)->getValue());
-                        $monto = number_float($worksheet->getCell($col_monto.$row)->getCalculatedValue());
-                        $iva = number_float($worksheet->getCell($col_iva.$row)->getCalculatedValue());
-                        $total = number_float($worksheet->getCell($col_total.$row)->getCalculatedValue());
-                        $razonSocial = trim($worksheet->getCell($col_razon.$row)->getValue());
-                        $rfc = strtoupper(trim($worksheet->getCell($col_rfc.$row)->getValue()));
-                        $email = trim($worksheet->getCell($col_email.$row)->getValue());
+                        $nombre = (!is_null($worksheet->getCell($col_nombre.$row)->getValue())) ? trim($worksheet->getCell($col_nombre.$row)->getValue()) : "";
+                        $rfc = (!is_null($worksheet->getCell($col_rfc.$row)->getValue())) ? trim($worksheet->getCell($col_rfc.$row)->getValue()) : "";
+                        $razonSocial = (!is_null($worksheet->getCell($col_razon.$row)->getValue())) ? trim($worksheet->getCell($col_razon.$row)->getValue()) : "";
+                        $personaje = (!is_null($worksheet->getCell($col_personaje.$row)->getValue())) ? trim($worksheet->getCell($col_personaje.$row)->getValue()) : "";
+                        $email = (!is_null($worksheet->getCell($col_email.$row)->getValue())) ? trim($worksheet->getCell($col_email.$row)->getValue()) : "";
+                        $monto = (!is_null($worksheet->getCell($col_monto.$row)->getCalculatedValue())) ? trim($worksheet->getCell($col_monto.$row)->getCalculatedValue()) : "";
+                        $iva = (!is_null($worksheet->getCell($col_iva.$row)->getCalculatedValue())) ? trim($worksheet->getCell($col_iva.$row)->getCalculatedValue()) : "";
+                        $total = (!is_null($worksheet->getCell($col_total.$row)->getCalculatedValue())) ? trim($worksheet->getCell($col_total.$row)->getCalculatedValue()) : "";
 
                         if($nombre!="" && $nombre!="SUBTOTAL" && $rfc!="" && $razonSocial!="" && var_is_valid_rfc($rfc) && var_is_email($email) && $monto>0 && $total>0) {
 
@@ -556,15 +566,17 @@ switch(aglobal('cmd', 25)) {
                 # get headers
                 $col_nombre = 0; $col_rfc = 0; $col_razon = 0; $col_concepto = 0; $col_email = 0; $col_total = 0; $col_moneda = 0;
                 foreach(range('A', 'Z') as $column) {
-                    $cell = trim(mb_strtolower($worksheet->getCell($column.$invoice_header)->getValue(), mb_detect_encoding($worksheet->getCell($column.$invoice_header)->getValue())));
-                    switch($cell) {
-                        case 'nombre': $col_nombre = $column; break;
-                        case 'concepto': $col_concepto = $column; break;
-                        case 'total': $col_total = $column; break;
-                        case 'moneda': $col_moneda = $column; break;
-                        case 'razon social': case 'razón social': $col_razon = $column; break;
-                        case 'nif / cuit / cif / ruc': $col_rfc = $column; break;
-                        case 'mail al que se notifica el pago': $col_email = $column; break;
+                    if(!is_null($worksheet->getCell($column.$invoice_header)->getValue())) {
+                        $cell = trim(mb_strtolower($worksheet->getCell($column.$invoice_header)->getValue(), mb_detect_encoding($worksheet->getCell($column.$invoice_header)->getValue())));
+                        switch($cell) {
+                            case 'nombre': $col_nombre = $column; break;
+                            case 'concepto': $col_concepto = $column; break;
+                            case 'total': $col_total = $column; break;
+                            case 'moneda': $col_moneda = $column; break;
+                            case 'razon social': case 'razón social': $col_razon = $column; break;
+                            case 'nif / cuit / cif / ruc': $col_rfc = $column; break;
+                            case 'mail al que se notifica el pago': $col_email = $column; break;
+                        }
                     }
                 }
 
@@ -580,13 +592,13 @@ switch(aglobal('cmd', 25)) {
                     $nombre = "";
                     while($nombre!="SUBTOTAL") {
 
-                        $nombre = trim($worksheet->getCell($col_nombre.$row)->getValue());
-                        $rfc = strtoupper(trim($worksheet->getCell($col_rfc.$row)->getValue()));
-                        $razonSocial = trim($worksheet->getCell($col_razon.$row)->getValue());
-                        $concepto = trim($worksheet->getCell($col_concepto.$row)->getValue());
-                        $email = trim($worksheet->getCell($col_email.$row)->getValue());
-                        $total = number_float($worksheet->getCell($col_total.$row)->getCalculatedValue());
-                        $moneda = strtoupper(trim($worksheet->getCell($col_moneda.$row)->getValue()));
+                        $nombre = (!is_null($worksheet->getCell($col_nombre.$row)->getValue())) ? trim($worksheet->getCell($col_nombre.$row)->getValue()) : "";
+                        $rfc = (!is_null($worksheet->getCell($col_rfc.$row)->getValue())) ? trim($worksheet->getCell($col_rfc.$row)->getValue()) : "";
+                        $razonSocial = (!is_null($worksheet->getCell($col_razon.$row)->getValue())) ? trim($worksheet->getCell($col_razon.$row)->getValue()) : "";
+                        $concepto = (!is_null($worksheet->getCell($col_concepto.$row)->getValue())) ? trim($worksheet->getCell($col_concepto.$row)->getValue()) : "";
+                        $email = (!is_null($worksheet->getCell($col_email.$row)->getValue())) ? trim($worksheet->getCell($col_email.$row)->getValue()) : "";
+                        $total = (!is_null($worksheet->getCell($col_total.$row)->getCalculatedValue())) ? trim($worksheet->getCell($col_total.$row)->getCalculatedValue()) : "";
+                        $moneda = (!is_null($worksheet->getCell($col_moneda.$row)->getValue())) ? trim($worksheet->getCell($col_moneda.$row)->getValue()) : "";
                         $moneda = (isset($global_currencies[$moneda])) ? $moneda : "MXN";
 
                         if($nombre!="" && $nombre!="SUBTOTAL" && $rfc!="" && $razonSocial!="" && var_is_email($email) && $total>0) {
