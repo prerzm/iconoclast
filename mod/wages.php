@@ -676,12 +676,6 @@ switch(aglobal('cmd', 25)) {
 
             }
 
-            # email vendors
-            if(count($vendors_emails)>0) {
-                $mail = new NEWMailer();
-                $mail->vendors_notify_pos($vendors_emails, $project['titulo']);
-            }
-
             # notices
             if(is_array($pos_added) && count($pos_added)>0) {
                 wages_add($proyectoId, $new_file_name, $monto_total, $pos_added);
@@ -689,6 +683,14 @@ switch(aglobal('cmd', 25)) {
                 set_alert("warning", "Se agregaron $contracts_added contratos.");
             } else {
                 set_alert("error", "No se agregó ninguna cuenta por pagar.");
+            }
+
+            # email vendors
+            if(count($vendors_emails)>0) {
+                $mail = new NEWMailer();
+                if(!$mail->vendors_notify_pos($vendors_emails, $project['titulo'])) {
+                    set_alert("warning", "No se envió el correo a los proveedores");
+                }
             }
 
         } else {
