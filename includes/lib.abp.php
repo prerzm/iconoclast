@@ -755,13 +755,10 @@ function add_get_vendor($rfc, $razon_social, $email, $contract_type="") {
         $vendor['rfc'] = $rfc;
         $vendor['razonSocial'] = $razon_social;
         $vendor['email'] = $email;
-        $vendor['repseReq'] = ($contract_type=="CON REPSE") ? 1 : -1;
+        $vendor['repseReq'] = ($contract_type!="" && $contract_type=="CON REPSE") ? 1 : 0;
         $vendor['extranjero'] = (var_is_valid_rfc($rfc)) ? 0 : 1;
         $id = query_insert(TABLE_VENDORS, $vendor);
         $vendor['proveedorId'] = $id;
-        if($vendor['repseReq']==-1 && !vendor_has_carta_repse($id)) {
-            vendor_add_carta_repse($vendor);
-        }
     }
     return $vendor;
 }
