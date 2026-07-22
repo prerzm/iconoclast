@@ -53,7 +53,7 @@ define("MAIL_FROM_NAME", "Plataforma ABP");
 define("MAIL_HOST", "mail.serviciosabp.com");
 define("MAIL_PORT", "465");
 define("MAIL_USER", "iconoclast@serviciosabp.com");
-define("MAIL_PSWD", "o7MEppRv2HoNq5c2");
+define("MAIL_PSWD", "ji4t1MxFyW7d6AST");
 
 # Other settings
 define("PAYMENT_STATUS_PENDING", "1");
