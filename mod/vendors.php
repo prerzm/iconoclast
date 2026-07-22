@@ -43,7 +43,7 @@ switch(aglobal('cmd', 20)) {
 
                 if($id>0) {
                     if($vendor['repseReq']==-1 && !vendor_has_carta_repse($id)) {
-                        vendor_add_carta_repse($vendor);
+                        vendor_add_carta_repse($id);
                     }
                     system_log($id, TABLE_VENDORS, "Add", json_encode($vendor));
                     set_alert("success", "La información ha sido actualizada.");
