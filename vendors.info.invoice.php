@@ -80,27 +80,29 @@ $allow_update_info = vendor_allow_edit_info($vendorId);
                                                 <input type="text" name="rfc" class="span10 m-wrap" value="<?=$record['rfc'];?>" />
                                             </div>
                                         </div>
-                                        <div class="control-group">
-                                            <label class="control-label"><span <?=((int)$record['repseReq']==0) ? 'class="required"' : '' ;?>>REPSE</span> <span class="required">*</span></label>
-                                            <div class="controls">
-                                                <select name="repseReq" id="repseReq" class="span5 m-wrap" onchange="repseToggle(this.value);">
-                                                    <option value="-1" <?=((int)$record['repseReq']==-1) ? 'selected' : '' ;?>>NO necesito estar en el REPSE</option>
-                                                    <option value="1" <?=((int)$record['repseReq']==1) ? 'selected' : '' ;?>>SI necesito estar en el REPSE</option>
-                                                </select>
+                                        <?php if($record['extranjero']==0) { ?>
+                                            <div class="control-group">
+                                                <label class="control-label"><span <?=((int)$record['repseReq']==0) ? 'class="required"' : '' ;?>>REPSE</span> <span class="required">*</span></label>
+                                                <div class="controls">
+                                                    <select name="repseReq" id="repseReq" class="span5 m-wrap" onchange="repseToggle(this.value);">
+                                                        <option value="-1" <?=((int)$record['repseReq']==-1) ? 'selected' : '' ;?>>NO necesito estar en el REPSE</option>
+                                                        <option value="1" <?=((int)$record['repseReq']==1) ? 'selected' : '' ;?>>SI necesito estar en el REPSE</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div id="repseNumero" class="control-group" <?=((int)$record['repseReq']==1) ? '' : 'style="display:none;"' ;?>>
-                                            <label class="control-label">Número de REPSE</label>
-                                            <div class="controls">
-                                                <input type="text" name="repseNumero" class="span10 m-wrap" value="<?=$record['repseNumero'];?>" />
+                                            <div id="repseNumero" class="control-group" <?=((int)$record['repseReq']==1) ? '' : 'style="display:none;"' ;?>>
+                                                <label class="control-label">Número de REPSE</label>
+                                                <div class="controls">
+                                                    <input type="text" name="repseNumero" class="span10 m-wrap" value="<?=$record['repseNumero'];?>" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div id="repseAviso" class="control-group" <?=((int)$record['repseReq']==1) ? '' : 'style="display:none;"' ;?>>
-                                            <label class="control-label">Número de Aviso de Inscripción en el REPSE</label>
-                                            <div class="controls">
-                                                <input type="text" name="repseAviso" class="span10 m-wrap" value="<?=$record['repseAviso'];?>" />
+                                            <div id="repseAviso" class="control-group" <?=((int)$record['repseReq']==1) ? '' : 'style="display:none;"' ;?>>
+                                                <label class="control-label">Número de Aviso de Inscripción en el REPSE</label>
+                                                <div class="controls">
+                                                    <input type="text" name="repseAviso" class="span10 m-wrap" value="<?=$record['repseAviso'];?>" />
+                                                </div>
                                             </div>
-                                        </div>
+                                        <?php } ?>
                                         <div class="control-group">
                                             <label class="control-label">&nbsp;</label>
                                             <div class="controls">

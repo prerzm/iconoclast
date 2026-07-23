@@ -9,9 +9,16 @@ $vendorId = session_get_data("userId");
 $vendor = get_vendor($vendorId);
 
 # verify datos fiscales
-if($vendor['rfc']=="" || $vendor['razonSocial']=="" || (int)$vendor['repseReq']==0 || ((int)$vendor['repseReq']==1 && ($vendor['repseNumero']=="" || $vendor['repseAviso']=="")) ) {
-    set_alert("error", "Es necesario que ingrese su RFC o NIF, su Razón Social y su registro al REPSE para continuar.");
-    redirect("vendors.info.invoice.php");
+if($vendor['extranjero']==0) {
+    if($vendor['rfc']=="" || $vendor['razonSocial']=="" || (int)$vendor['repseReq']==0 || ((int)$vendor['repseReq']==1 && ($vendor['repseNumero']=="" || $vendor['repseAviso']=="")) ) {
+        set_alert("error", "Es necesario que ingrese su RFC o NIF, su Razón Social y su registro al REPSE para continuar.");
+        redirect("vendors.info.invoice.php");
+    }
+} else {
+    if($vendor['rfc']=="" || $vendor['razonSocial']=="") {
+        set_alert("error", "Es necesario que ingrese su RFC o NIF, su Razón Social.");
+        redirect("vendors.info.invoice.php");
+    }
 }
 
 # verify datos bancarios

@@ -24,52 +24,44 @@ switch(aglobal('cmd', 20)) {
                 $vendor['rfc'] = apost('rfc', 15);
                 $vendor['razonSocial'] = apost('razonSocial', 150);
 
-                $repse_req = (int)apost('repseReq');
-                if($repse_req==0) {
-                    $error = true;
-                    set_alert("error", "Es necesario que seleccione su estatus sobre el registro REPSE");
-                } else {
-                    $vendor['repseReq'] = $repse_req;
-                    if($repse_req==-1) {
-                        $vendor['repseNumero'] = "";
-                        $vendor['repseAviso'] = "";
-                        if(!vendor_has_carta_repse($vendorId)) {
-                            vendor_add_carta_repse($vendorId);
-                        }
+                if($record['extranjero']==0) {
+                    $repse_req = (int)apost('repseReq');
+                    if($repse_req==0) {
+                        $error = true;
+                        set_alert("error", "Es necesario que seleccione su estatus sobre el registro REPSE");
                     } else {
-                        if(vendor_has_carta_repse($vendorId)) {
-                            vendor_del_carta_repse($vendorId);
-                        }
-                        $vendor['repseNumero'] = trim(apost('repseNumero', 30));
-                        $vendor['repseAviso'] = trim(apost('repseAviso', 30));
-                        if($vendor['repseNumero']=="" || $vendor['repseAviso']=="") {
-                            $error = true;
-                            set_alert("error", "Es necesario que ingrese la información de su registro en el REPSE");
+                        $vendor['repseReq'] = $repse_req;
+                        if($repse_req==-1) {
+                            $vendor['repseNumero'] = "";
+                            $vendor['repseAviso'] = "";
+                            if(!vendor_has_carta_repse($vendorId)) {
+                                vendor_add_carta_repse($vendorId);
+                            }
+                        } else {
+                            if(trim(apost('repseNumero', 30))=="" || trim(apost('repseAviso', 30))=="") {
+                                $error = true;
+                                set_alert("error", "Es necesario que ingrese la información de su registro en el REPSE");
+                            } else {
+                                $vendor['repseNumero'] = trim(apost('repseNumero', 30));
+                                $vendor['repseAviso'] = trim(apost('repseAviso', 30));
+                                if(vendor_has_carta_repse($vendorId)) {
+                                    vendor_del_carta_repse($vendorId);
+                                }
+                            }
                         }
                     }
                 }
 
                 # update
-                if($error==false) {
-                    $updated = query_update(TABLE_VENDORS, $vendor, "proveedorId = $vendorId");
-                    # update contracts to repse contracts
-                    if($repse_req==1) {
-                        # es repse, update all pending contracts to repse contracts
-                        $subtipo = "Contrato".get_contract_type_for_vendor($vendor['rfc'], "con repse");
-                        $contratoId = query_select_single_value("contratoId", TABLE_CONTRACTS, "subtipo = '$subtipo'");
-                        query_update(TABLE_CONTRACTS_VENDORS, array("contratoId" => $contratoId), "proveedorId = $vendorId AND firmaStatusId = ".CONTRACT_STATUS_PENDING." AND parentId = 0", true);
-                    }
+                if($error==false && query_update(TABLE_VENDORS, $vendor, "proveedorId = $vendorId")) {
+                    system_log($vendorId, TABLE_VENDORS, "Update", json_encode($vendor));
+                    set_alert("success", "La información ha sido actualizada.");
+                } else {
+                    set_alert("error", "Hubo un problema, favor de intentar nuevamente");
                 }
 
             } else {
                 set_alert("error", "Por el momento no tiene permitido editar su información, favor de contactar a la administración");
-            }
-
-            if($updated>0) {
-                system_log($vendorId, TABLE_VENDORS, "Update", json_encode($vendor));
-                set_alert("success", "La información ha sido actualizada.");
-            } else {
-                set_alert("error", "Hubo un problema, favor de intentar nuevamente");
             }
         
         } else {
