@@ -184,6 +184,7 @@ switch(aglobal('cmd', 25)) {
 
                             if($uploaded_xml===true && $uploaded_pdf===true) {
 
+                                $pos['fechaDePago'] = pos_calc_payment_date((int)$posInfo['companyId'], (int)$posInfo['pagoDias']);
                                 $pos['facturaUuid'] = $cfdi_info['UUID'];
                                 $pos['facturaInfo'] = str_replace("'", "", json_encode($cfdi_info));
                                 $pos['facturaNombre'] = $new_file_name;
@@ -290,20 +291,13 @@ switch(aglobal('cmd', 25)) {
             # query
             $updated = query_update(TABLE_POS, $pos, "gastoId = $posId");
 
-            # update contract
+            # add new contract
             if($updated>0 && ($posInfo['proyectoId']!=$pos['proyectoId'] || $posInfo['proveedorId']!=$pos['proveedorId'] || $posInfo['concepto']!=$pos['concepto'] || $posInfo['monto']!=$pos['monto'])) {
-                $contract = sql_select_row("SELECT * FROM ".TABLE_CONTRACTS_VENDORS." WHERE gastoId = $posId");
-                if($contract===false) {
-                    $contract = sql_select_row("SELECT * FROM ".TABLE_CONTRACTS_VENDORS." WHERE proyectoId = ".$posInfo['proyectoId']." AND proveedorId = ".$posInfo['proveedorId']);
-                }
-                if($contract) {
-                    $new_con['proveedorId'] = $pos['proveedorId'];
-                    $new_con['proyectoId'] = $pos['proyectoId'];
-                    $new_con['firmaStatusId'] = CONTRACT_STATUS_PENDING;
-                    $new_con['firmaFecha'] = null;
-                    $new_con['firma'] = "";
-                    $new_con['fieldsValues'] = array_to_db(array("Servicios_Proporcionados_o_Personaje" => $pos['concepto'], "Monto_de_Pago" => number_amount_to_text($pos['totalMXN'])." MXN"));
-                    query_update(TABLE_CONTRACTS_VENDORS, $new_con, "id = ".$contract['id']);
+                if((bool)$global_company['generarContrato']) {
+                    if($vendor['extranjero']==0 || (bool)VENDOR_CONTRACT_TO_FOREIGN==true) {
+                        $fields_values = array_to_db(array("Servicios_Proporcionados_o_Personaje" => $pos['concepto'], "Monto_de_Pago" => number_amount_to_text($pos['totalMXN'])." MXN"));
+                        vendor_add_contract($vendor, $project, "vendor", $fields_values, $posId);
+                    }
                 }
             }
 
