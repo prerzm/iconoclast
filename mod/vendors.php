@@ -116,6 +116,7 @@ switch(aglobal('cmd', 20)) {
             $estado = vendor_document_upload($vendorId, "estadoDeCuenta");
             if($estado!==false) {
                 $vendor['estadoDeCuenta'] = $estado;
+                $vendor['estadoDeCuenta_fecha'] = date("Y-m-d");
             }
             $identificacion = vendor_document_upload($vendorId, "identificacion");
             if($identificacion!==false) {
