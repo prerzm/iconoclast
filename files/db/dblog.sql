@@ -1,3 +1,7 @@
+# 2026-09-22 - vigencia estado de cuenta
+
+ALTER TABLE `ico_proveedores` ADD `estadoDeCuenta_fecha` DATE NULL DEFAULT NULL AFTER `estadoDeCuenta`;
+
 # 2026-07-17 - Add contract per pos
 
 ALTER TABLE `ico_contratos_proveedores` ADD `gastoId` INT NOT NULL DEFAULT '0' AFTER `proyectoId`;

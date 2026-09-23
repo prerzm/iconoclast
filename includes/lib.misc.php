@@ -4,60 +4,44 @@
 
 // Generate token
 function sec_generate_token() {
-	
 	# generate token
 	$token = md5( SEC_SALT . $_SERVER['HTTP_USER_AGENT'] );
-	
 	return $token;
-	
 }
 	
 // Generate random token
 function sec_generate_random_token() {
-
 	# generate token
 	$token = md5( SEC_SALT . uniqid() );
-	
 	return $token;
-	
 }
-
 
 // Set alerts in session
 function set_alert($type, $message) {
-	
 	# get alerts array
 	$alerts = session_get_data("alerts");
-
 	# set new alert
 	if(!is_array($alerts)) {
 		$alerts = array();
 	}
 	$alerts["alerts"][] = array("type" => $type, "message" => $message);
-
 	session_set_data( array("alerts" => $alerts) );
-
 }
 
 // get alerts
 function get_alerts() {
-	
 	$alerts = session_get_data("alerts");
-
 	if( is_array($alerts) && count($alerts)>0 ) {
 		session_unset_data("alerts");
 		return $alerts["alerts"];
 	} else {
 		return false;
 	}
-
 }
 
 // display alerts
 function display_alerts() {
-
 	$alerts = get_alerts();
-
 	if( $alerts!=false ) {
         foreach($alerts as $alert) {
 			print '<div class="alert alert-'.$alert["type"].'">';
@@ -67,7 +51,49 @@ function display_alerts() {
 			print '</div>';
         }
 	}
+}
 
+
+// Set modals in session
+function set_modal($title, $message) {
+	$modals = session_get_data("modals");
+	$modals = is_array($modals) ? $modals : array();
+	$modals[] = array("title" => $title, "message" => $message);
+	session_set_data( array("modals" => $modals) );
+}
+
+// get modals
+function get_modals() {
+	$modals = session_get_data("modals");
+	return (is_array($modals)) ? $modals : array();
+}
+
+// display modals
+function display_modals() {
+	$modals = get_modals();
+	foreach($modals as $key => $m) {
+		print "<div id=\"ModalAlert_$key\" class=\"modal hide\">\n";
+		print "\t<div class=\"modal-header\">\n";
+		print "\t<button data-dismiss=\"modal\" class=\"close\" type=\"button\">&times;</button>\n";
+		print "\t\t<h3>".$m['title']."</h3>\n";
+		print "\t</div>\n";
+		print "\t<div class=\"modal-body\">\n";
+		print "\t<p style=\"font-size: 22px;line-height: 24px;\">".$m['message']."</p>\n";
+		print "\t</div>\n";
+		print "</div>\n";
+	}
+}
+
+function display_modals_js() {
+	$modals = get_modals();
+	foreach($modals as $key => $m) {
+		print "$('#ModalAlert_$key').modal('show');\n";
+	}
+	clear_modals();
+}
+
+function clear_modals() {
+	session_unset_data("modals");
 }
 
 

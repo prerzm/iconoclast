@@ -10,12 +10,16 @@ $vendorId = (int)session_get_data("userId");
 $record = get_vendor($vendorId);
 $allow_update_info = vendor_allow_edit_info($vendorId);
 
-$csf_valid = vendor_verify_doc_date($record['constancia_fecha']);
-$oc_valid = vendor_verify_doc_date($record['opinionCumplimiento_fecha']);
-$dom_valid = vendor_verify_doc_date($record['residencia_fecha']);
+$csf_valid = vendor_verify_doc_date($record['constancia_fecha'], VENDOR_EXPIRE_CSF);
+$oc_valid = vendor_verify_doc_date($record['opinionCumplimiento_fecha'], VENDOR_EXPIRE_OC);
+$dom_valid = vendor_verify_doc_date($record['residencia_fecha'], VENDOR_EXPIRE_RESIDENCY);
+$ec_valid = vendor_verify_doc_date($record['estadoDeCuenta_fecha'], VENDOR_EXPIRE_EC);
 
 ?>
 <?php include("inc.header.main.php"); ?>
+
+        <!-- modals -->
+        <?php display_modals(); ?>
 
         <div class="container-fluid">
             
@@ -144,8 +148,13 @@ $dom_valid = vendor_verify_doc_date($record['residencia_fecha']);
                                         <div class="filebox">
                                             <div class="filebox_header">Carátula Estado de Cuenta</div>
                                             <?php if( file_is_valid($record['estadoDeCuenta']) ) { ?>
-                                                <div class="filebox_content"><a href="file.download.php?f=<?=base64_encode($record['estadoDeCuenta']);?>&t=o" title="Descargar"><img src="images/icon_file_valid.png" /></a></div>
-                                                <div class="filebox_footer"><a href="mod/vendors.info.php?cmd=deledo" class="btn btn-small btn-danger" onclick="return confirm('Está seguro que desea eliminar este documento?');">Eliminar</a></div>
+                                                <?php if($ec_valid) { ?>
+                                                    <div class="filebox_content"><a href="file.download.php?f=<?=base64_encode($record['estadoDeCuenta']);?>&t=o" title="Descargar"><img src="images/icon_file_valid.png" /></a></div>
+                                                    <div class="filebox_footer"><a href="mod/vendors.info.php?cmd=deledo" class="btn btn-small btn-danger" onclick="return confirm('Está seguro que desea eliminar este documento?');">Eliminar</a></div>
+                                                <?php } else { ?>
+                                                    <div class="filebox_content"><img src="images/icon_file_missing.png" /></div>
+                                                    <div class="filebox_footer"><input type="file" name="estadoDeCuenta" /></div>
+                                                <?php } ?>
                                             <?php } else { ?>
                                                 <div class="filebox_content"><img src="images/icon_file_missing.png" /></div>
                                                 <div class="filebox_footer"><input type="file" name="estadoDeCuenta" /></div>
@@ -182,6 +191,8 @@ $dom_valid = vendor_verify_doc_date($record['residencia_fecha']);
         <script>
 
             $(document).ready(function() {
+
+                <?php display_modals_js(); ?>
 
                 $('#form_add').validate({
                     errorClass: 'help-inline',

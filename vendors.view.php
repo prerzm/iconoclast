@@ -10,9 +10,10 @@ $vendorId = (int)aget('id');
 $record = get_vendor($vendorId);
 $contracts = get_contracts_vendor($vendorId);
 
-$csf_valid = vendor_verify_doc_date($record['constancia_fecha']);
-$oc_valid = vendor_verify_doc_date($record['opinionCumplimiento_fecha']);
-$dom_valid = vendor_verify_doc_date($record['residencia_fecha']);
+$csf_valid = vendor_verify_doc_date($record['constancia_fecha'], VENDOR_EXPIRE_CSF);
+$oc_valid = vendor_verify_doc_date($record['opinionCumplimiento_fecha'], VENDOR_EXPIRE_OC);
+$dom_valid = vendor_verify_doc_date($record['residencia_fecha'], VENDOR_EXPIRE_RESIDENCY);
+$ec_valid = vendor_verify_doc_date($record['estadoDeCuenta_fecha'], VENDOR_EXPIRE_EC);
 $repse_valid = vendor_verify_repse_date($record, $contracts);
 
 ?>
@@ -174,7 +175,12 @@ $repse_valid = vendor_verify_repse_date($record, $contracts);
                                         <td>Carátula Estado de Cuenta</td>
                                         <td>
                                             <?php if( file_is_valid($record['estadoDeCuenta']) ) { ?>
-                                                <a href="file.download.php?f=<?=base64_encode($record['estadoDeCuenta']);?>&t=o" title="Descargar"><img src="images/icon_file_valid.png" /></a>
+                                                <?php if($ec_valid) { ?>
+                                                    <a href="file.download.php?f=<?=base64_encode($record['estadoDeCuenta']);?>&t=o" title="Descargar"><img src="images/icon_file_valid.png" /></a>
+                                                <?php } else { ?>
+                                                    <a href="file.download.php?f=<?=base64_encode($record['estadoDeCuenta']);?>&t=o" title="Descargar"><img src="images/icon_file_invalid.png" /></a>
+                                                    <span class="label label-important" style="margin-left:20px;">Vencida</span>
+                                                <?php } ?>
                                             <?php } else { ?>
                                                 <img src="images/icon_file_missing.png" /> <span class="label label-warning" style="margin-left:20px;">Pendiente</span>
                                             <?php } ?>

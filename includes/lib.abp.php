@@ -723,7 +723,7 @@ function get_vendor($vendorId) {
                                 IF(identificacion <> '', CONCAT('".PATH_VENDORS."', identificacion), FALSE) AS identificacion,
                                 IF(residencia <> '', CONCAT('".PATH_VENDORS."', residencia), FALSE) AS residencia, 
                                 IF(repse <> '', CONCAT('".PATH_VENDORS."', repse), FALSE) AS repse, 
-                                    constancia_fecha, opinionCumplimiento_fecha, residencia_fecha, repse_fecha 
+                                    constancia_fecha, opinionCumplimiento_fecha, estadoDeCuenta_fecha, residencia_fecha, repse_fecha 
                             FROM ".TABLE_VENDORS." 
                             WHERE proveedorId = $vendorId
                         ");
@@ -828,12 +828,12 @@ function vendor_document_upload($vendorId, $doc) {
 function vendor_valid_bank_info($vendor) {
     if($vendor['extranjero']==0) {
         if(var_is_empty($vendor['banco']) || var_is_empty($vendor['cuenta']) || var_is_empty($vendor['clabe']) ) {
-            set_alert("warning", "La información de tus datos bancarios está incompleta, es necesario que la completes para poder recibir cualquier pago.");
+            set_modal("Falta Información!", "La información de tus datos bancarios está incompleta, es necesario que la completes para poder recibir cualquier pago.");
             return false;
         }
     } else {
         if(var_is_empty($vendor['banco']) || var_is_empty($vendor['cuenta'])  || (var_is_empty($vendor['swift']) && var_is_empty($vendor['aba'])) ) {
-            set_alert("warning", "La información de tus datos bancarios está incompleta, es necesario que la completes para poder recibir cualquier pago.");
+            set_modal("Falta Información!", "La información de tus datos bancarios está incompleta, es necesario que la completes para poder recibir cualquier pago.");
             return false;
         }
     }
@@ -843,7 +843,7 @@ function vendor_valid_bank_info($vendor) {
 function vendor_valid_acta($vendor) {
     if( (bool)VENDOR_REQ_ACTA==true && $vendor['extranjero']==0 && get_vendor_type($vendor['rfc'])=="PM") {
         if(!file_is_valid($vendor['acta'])) {
-            set_alert("error", "Hace falta tu Acta Constitutiva, ésta es requisito para poder recibir cualquier pago.");
+            set_modal("Falta Información!", "Hace falta tu <strong>Acta Constitutiva</strong>, ésta es requisito para poder recibir cualquier pago.");
             return false;
         }
     }
@@ -853,12 +853,12 @@ function vendor_valid_acta($vendor) {
 function vendor_valid_constancia($vendor) {
     if( (bool)VENDOR_REQ_CSF==true && $vendor['extranjero']==0 ) {
         if(file_is_valid($vendor['constancia'])) {
-            if( !vendor_verify_doc_date($vendor['constancia_fecha']) ) {
-                set_alert("error", "Es necesario que actualices tu Constancia de Situación Fiscal, ésta es requisito para poder recibir cualquier pago.");
+            if( !vendor_verify_doc_date($vendor['constancia_fecha'], VENDOR_EXPIRE_CSF) ) {
+                set_modal("Falta Información!", "Es necesario que actualices tu <strong>Constancia de Situación Fiscal</strong>, ésta es requisito para poder recibir cualquier pago.");
                 return false;
             }
         } else {
-            set_alert("error", "Hace falta tu Constancia de Situación Fiscal, ésta es requisito para poder recibir cualquier pago.");
+            set_modal("Falta Información!", "Hace falta tu <strong>Constancia de Situación Fiscal</strong>, ésta es requisito para poder recibir cualquier pago.");
             return false;
         }
     }
@@ -868,12 +868,12 @@ function vendor_valid_constancia($vendor) {
 function vendor_valid_opinion_cumplimiento($vendor) {
     if( (bool)VENDOR_REQ_OC==true && $vendor['extranjero']==0 ) {
         if(file_is_valid($vendor['opinionCumplimiento'])) {
-            if( !vendor_verify_doc_date($vendor['opinionCumplimiento_fecha']) ) {
-                set_alert("error", "Es necesario que actualices tu Opinión del Cumplimiento (D32), éste es requisito para poder recibir cualquier pago.");
+            if( !vendor_verify_doc_date($vendor['opinionCumplimiento_fecha'], VENDOR_EXPIRE_OC) ) {
+                set_modal("Faltan documentos!", "Es necesario que actualices tu <strong>Opinión del Cumplimiento (D32)</strong>, éste es requisito para poder recibir cualquier pago.");
                 return false;
             }
         } else {
-            set_alert("error", "Hace falta tu Opinión del Cumplimiento (D32), éste es requisito para poder recibir cualquier pago.");
+            set_modal("Faltan documentos!", "Hace falta tu <strong>Opinión del Cumplimiento (D32)</strong>, éste es requisito para poder recibir cualquier pago.");
             return false;
         }
     }
@@ -883,9 +883,9 @@ function vendor_valid_opinion_cumplimiento($vendor) {
 function vendor_valid_identificacion($vendor) {
     if((bool)VENDOR_REQ_ID==true && $vendor['extranjero']==0 && !file_is_valid($vendor['identificacion'])) {
         if(get_vendor_type($vendor['rfc'])=="PM") {
-            set_alert("error", "Es necesaria la Identificación del representante legal, ésta es requisito para poder recibir cualquier pago.");
+            set_modal("Faltan documentos!", "Es necesaria la <strong>Identificación</strong> del representante legal, ésta es requisito para poder recibir cualquier pago.");
         } else {
-            set_alert("error", "Es necesaria tu Identificación, ésta es requisito para poder recibir cualquier pago.");
+            set_modal("Faltan documentos!", "Es necesaria tu <strong>Identificación</strong>, ésta es requisito para poder recibir cualquier pago.");
         }
         return false;
     }
@@ -895,7 +895,7 @@ function vendor_valid_identificacion($vendor) {
 function vendor_valid_repse($vendor) {
     if( (bool)VENDOR_REQ_REPSE==true && $vendor['extranjero']==0 ) {
         if( $vendor['repseReq']==0 || ( $vendor['repseReq']==1 && (trim($vendor['repseNumero'])=="" || trim($vendor['repseAviso'])=="") ) ) {
-            set_alert("error", "Es necesario que actualices tu información sobre el REPSE, éste es requisito para poder recibir cualquier pago.");
+            set_modal("Falta Información!", "Es necesario que actualices tu información sobre el REPSE, éste es requisito para poder recibir cualquier pago.");
             return false;
         }
     }
@@ -905,12 +905,12 @@ function vendor_valid_repse($vendor) {
 function vendor_valid_comprobante_domicilio($vendor) {
     if( (bool)VENDOR_REQ_RESIDENCY==true ) {
         if(file_is_valid($vendor['residencia'])) {
-            if( !vendor_verify_doc_date($vendor['residencia_fecha']) ) {
-                set_alert("error", "Es necesario que actualices tu Comprobante de Domicilio, éste es requisito para poder recibir cualquier pago.");
+            if( !vendor_verify_doc_date($vendor['residencia_fecha'], VENDOR_EXPIRE_RESIDENCY) ) {
+                set_modal("Faltan documentos!", "Es necesario que actualices tu <strong>Comprobante de Domicilio</strong>, éste es requisito para poder recibir cualquier pago.");
                 return false;
             }
         } else {
-            set_alert("error", "Hace falta tu Comprobante de Domicilio, éste es requisito para poder recibir cualquier pago.");
+            set_modal("Faltan documentos!", "Hace falta tu <strong>Comprobante de Domicilio</strong>, éste es requisito para poder recibir cualquier pago.");
             return false;
         }
     }
@@ -918,16 +918,23 @@ function vendor_valid_comprobante_domicilio($vendor) {
 }
 
 function vendor_valid_estado_cuenta($vendor) {
-    if((bool)VENDOR_REQ_EC==true && !file_is_valid($vendor['estadoDeCuenta'])) {
-        set_alert("error", "Es necesario tu Estado de Cuenta, éste es requisito para poder recibir cualquier pago.");
-        return false;
+    if( (bool)VENDOR_REQ_EC==true ) {
+        if(file_is_valid($vendor['estadoDeCuenta'])) {
+            if( !vendor_verify_doc_date($vendor['estadoDeCuenta_fecha'], VENDOR_EXPIRE_EC) ) {
+                set_modal("Faltan documentos!", "Es necesario que actualices tu <strong>Estado de Cuenta</strong>, éste es requisito para poder recibir cualquier pago.");
+                return false;
+            }
+        } else {
+            set_modal("Faltan documentos!", "Hace falta tu <strong>Estado de Cuenta<strong>, éste es requisito para poder recibir cualquier pago.");
+            return false;
+        }
     }
     return true;
 }
 
 function vendor_all_contracts_signed($vendor) {
     if((bool)VENDOR_REQ_CONTRACT==true && vendor_has_contracts_pending($vendor['proveedorId'])) {
-        set_alert("error", "Tienes contratos o NDAs pendientes por firmar, éstos son necesarios para poder recibir cualquier pago.");
+        set_modal("Faltan Contratos por Firmar!", "Tienes contratos o NDAs pendientes por firmar, éstos son necesarios para poder recibir cualquier pago.");
         return false;
     }
     return true;
@@ -935,7 +942,7 @@ function vendor_all_contracts_signed($vendor) {
 
 function vendor_all_comps_uploaded($vendor, $po) {
     if((bool)VENDOR_REQ_COMPLEMENTO==true && $po['pagoStatusId']==PAYMENT_STATUS_PENDING && vendor_has_complementos_pending($vendor['proveedorId'], $po['gastoId'])) {
-        set_alert("error", "Tienes complementos pendientes por subir, es necesario subirlos para poder recibir cualquier pago.");
+        set_modal("Faltan documentos!", "Tienes complementos pendientes por subir, es necesario subirlos para poder recibir cualquier pago.");
         return false;
     }
     return true;
@@ -944,12 +951,12 @@ function vendor_all_comps_uploaded($vendor, $po) {
 function vendor_verify_repse_date($vendor) {
     if(is_array($vendor) && count($vendor)>0) {
         if($vendor['repseReq']==-1) {
-            if(vendor_verify_doc_date($vendor['repse_fecha'], 1095)===true) {
+            if(vendor_verify_doc_date($vendor['repse_fecha'], VENDOR_EXPIRE_REPSE)===true) {
                 return true;
             }
             $repse = sql_select_row("SELECT * FROM ".TABLE_CONTRACTS_VENDORS." WHERE proyectoId = 0 AND proveedorId = ".$vendor['proveedorId']);
             if($repse) {
-                return vendor_verify_doc_date($repse['firmaFecha'], 1095);
+                return vendor_verify_doc_date($repse['firmaFecha'], VENDOR_EXPIRE_REPSE);
             }
         }
     }
