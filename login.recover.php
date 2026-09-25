@@ -61,7 +61,7 @@ session_set_data( array("token" => sec_generate_random_token() ) );
 
 				<div class="control-group">
 					<div class="controls">
-						<input type="text" name="rfcemail" data-required="1" class="input-block-level" placeholder="RFC o Email" /><br>
+						<input type="text" name="rfcemail" data-required="1" class="input-block-level" placeholder="RFC" /><br>
 					</div>
 				</div>
 

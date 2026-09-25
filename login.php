@@ -42,6 +42,11 @@ session_set_data( array("token" => sec_generate_random_token() ) );
             <input type="hidden" name="token" value="<?php print session_get_data("token"); ?>">
 
                 <h2 class="form-signin-heading">Iniciar Sesión</h2>
+
+                <div class="alert alert-warning">
+                    <h4>A partir de ahora favor de ingresar con su RFC y contraseña únicamente por favor.</h4>
+                </div>
+
 				<div class="alert alert-error hide">
 					<button class="close" data-dismiss="alert"></button>
 					Hubo un problema. Favor de revisar la información.
@@ -53,7 +58,7 @@ session_set_data( array("token" => sec_generate_random_token() ) );
 
                 <?php display_alerts(); ?>
 
-                <input type="text" id="rfcemail" name="user" class="input-block-level" placeholder="RFC o Email">
+                <input type="text" id="rfcemail" name="user" class="input-block-level" placeholder="RFC">
                 <input type="password" id="password" name="password" class="input-block-level" placeholder="Contraseña">
                 <div class="control-group">
 					<div class="controls">

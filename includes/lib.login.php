@@ -5,42 +5,42 @@
 // Login function
 function login($user, $password, $aviso) {
 
-	$admin = sql_select_row("SELECT usuarioId, companyId, rolId, nombre, password FROM ".TABLE_USERS." WHERE email = '$user' AND deleted = 0 LIMIT 1");
-	$vendor = sql_select_row("SELECT proveedorId, razonSocial, password, tmp FROM ".TABLE_VENDORS." WHERE (email = '$user' OR rfc = '$user') AND token = '' AND deleted = 0 LIMIT 1");
+	#  query
+	if(var_is_email($user)) {
+		$is_admin = 1;
+		$user = sql_select_row("SELECT usuarioId, companyId, rolId, nombre, password FROM ".TABLE_USERS." WHERE email = '$user' AND deleted = 0 LIMIT 1");
+	} else {
+		$is_admin = 0;
+		if($aviso==false) {
+			set_alert("error", "Es necesario que lea y verifique la casilla del Aviso de Privacidad.");
+			return false;
+		}
+		$user = sql_select_row("SELECT proveedorId, razonSocial, password, tmp FROM ".TABLE_VENDORS." WHERE rfc = '$user' AND token = '' AND deleted = 0 LIMIT 1");
+	}
 
-	if($admin && $vendor) {
+	if($user!==false) {
 
-		// Error/Duplicate Account
-		set_alert("error", "Hubo un error en la información, favor de notificar al administrador");
+		if($is_admin==1) {
 
-	} elseif($admin || $vendor) {
-
-		if($admin) {
-
-			$user_id = (int)$admin['usuarioId'];
-			$company_access = (int)$admin['companyId'];
-			$company_id = ((int)$admin['companyId']==0) ? 1 : (int)$admin['companyId'];
-			$role_id = (int)$admin['rolId'];
+			$user_id = (int)$user['usuarioId'];
+			$company_access = (int)$user['companyId'];
+			$company_id = ((int)$user['companyId']==0) ? 1 : (int)$user['companyId'];
+			$role_id = (int)$user['rolId'];
 			$is_admin = 1;
-			$name = $admin['nombre'];
-			$db_password = $admin['password'];
+			$name = $user['nombre'];
+			$db_password = $user['password'];
 			$tmp_password = "";
 
 		} else {
 
-			$user_id = (int)$vendor['proveedorId'];
+			$user_id = (int)$user['proveedorId'];
 			$company_access = 0;
 			$company_id = 0;
 			$role_id = (int)ROLE_VENDOR;
 			$is_admin = 0;
-			$name = $vendor['razonSocial'];
-			$db_password = $vendor['password'];
-			$tmp_password = $vendor['tmp'];
-
-			if($aviso==false) {
-				set_alert("error", "Es necesario que lea y verifique la casilla del Aviso de Privacidad.");
-				return false;
-			}
+			$name = $user['razonSocial'];
+			$db_password = $user['password'];
+			$tmp_password = $user['tmp'];
 
 		}
 
