@@ -155,7 +155,7 @@ switch(aglobal('cmd', 25)) {
                     $comp_uuid = $comp->get_by_path("cfdi:Comprobante/cfdi:Complemento/tfd:TimbreFiscalDigital/@attributes/UUID");
                     if((bool)VALIDA_COMP==true) {
                         $comp_cfdi_uuid = $comp->get_by_path("cfdi:Comprobante/cfdi:Complemento/pago20:Pagos/pago20:Pago/pago20:DoctoRelacionado/@attributes/IdDocumento");
-                        if(complement_exists($comp_uuid)==true || $posInfo['facturaUuid']!=$comp_cfdi_uuid) {
+                        if(complement_exists($comp_uuid)==true || strtoupper($posInfo['facturaUuid'])!=strtoupper($comp_cfdi_uuid)) {
                             $error = true;
                             set_alert("error", "El complemento de pago no corresponde a la factura subida.");
                         }
