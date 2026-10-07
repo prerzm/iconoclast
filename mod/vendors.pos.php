@@ -158,8 +158,6 @@ switch(aglobal('cmd', 25)) {
                         $pago20_uuid = $comp->get_by_path("cfdi:Comprobante/cfdi:Complemento/pago20:Pagos/pago20:Pago/pago20:DoctoRelacionado/@attributes/IdDocumento");
                         if(complement_exists($comp_uuid)==true || (strtoupper($posInfo['facturaUuid'])!=strtoupper($pago10_uuid) && strtoupper($posInfo['facturaUuid'])!=strtoupper($pago20_uuid))) {
                             $error = true;
-                            var_dump(strtoupper($posInfo['facturaUuid']), strtoupper($pago10_uuid));
-                            die();
                             set_alert("error", "El complemento de pago no corresponde a la factura subida.");
                         }
                     }
