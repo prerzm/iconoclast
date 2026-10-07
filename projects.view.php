@@ -29,6 +29,8 @@ $contracts['PF'][0] = sql_select("SELECT contratoId, nombre FROM ".TABLE_CONTRAC
 $contracts['PF'][-1] = sql_select("SELECT contratoId, nombre FROM ".TABLE_CONTRACTS." WHERE tipo = 'Contrato' AND subtipo NOT LIKE '%PM%' AND subtipo NOT LIKE '%Repse%' ORDER BY nombre ASC");
 $contracts['PF'][1] = sql_select("SELECT contratoId, nombre FROM ".TABLE_CONTRACTS." WHERE tipo = 'Contrato' AND subtipo NOT LIKE '%PM%' AND (subtipo LIKE '%Repse%' OR subtipo LIKE '%Talent%' OR subtipo LIKE '%Encargo%') ORDER BY nombre ASC");
 
+$path = (file_exists(PATH_PROJECTS.$record['uniqId']) && is_dir(PATH_PROJECTS.$record['uniqId']));
+
 ?>
 <?php include("inc.header.main.php"); ?>
 
@@ -73,6 +75,21 @@ $contracts['PF'][1] = sql_select("SELECT contratoId, nombre FROM ".TABLE_CONTRAC
             <div id="div_menu" class="span3">
 
                 <div class="row-fluid">
+
+                    <?php if(session_get_data("roleId")==ROLE_WEBMASTER && $path===false) { ?>
+                        <div class="block">
+                            <div class="navbar navbar-inner block-header">
+                                <div class="muted pull-left">Ruta del proyecto no existe</div>
+                            </div>
+                            <div class="block-content collapse in">
+                                <form name="info" method="post" action="mod/projects.php">
+                                    <input type="hidden" name="cmd" value="mkpaths">
+                                    <input type="hidden" name="id" value="<?=$proyectoId;?>">
+                                    <button type="submit" class="btn btn-primary">Crear carpeta del proyecto</button>
+                                </form>
+                            </div>
+                        </div><!-- /block -->
+                    <?php } ?>
 
                     <div class="block">
                         <div class="navbar navbar-inner block-header">

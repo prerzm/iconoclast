@@ -112,6 +112,17 @@ switch(aglobal('cmd', 20)) {
 
     break;
 
+    case 'mkpaths':
+
+        # vars
+        $projectId = (int)apost('id');
+        $project = get_project($projectId);
+
+        # paths
+        project_create_paths($project['uniqId']);
+
+    break;
+
 	case 'del':
     
         if($global_perms['DELETE']) {
